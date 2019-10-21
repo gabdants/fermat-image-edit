@@ -31,10 +31,18 @@ export class AddImageComponent implements OnInit {
     cordX: "",
     cordY: "",
   }
+  disabled = false;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  addVariavel(){
+
+  }
+  salvarImage(){
+    
   }
 
   onClickNext(number){

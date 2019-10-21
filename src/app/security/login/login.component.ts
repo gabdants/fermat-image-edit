@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class LoginComponent implements OnInit {
 
   constructor() { }
+  txtLogin: string;
+  txtPass: string;
 
   ngOnInit() {
   }
