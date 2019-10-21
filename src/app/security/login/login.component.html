@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="left-content">
+
+  </div>
+  <div class="right-content">
+    <form #form="ngForm">
+      <img src="../../../assets/images/logo_petlandbr.png" alt="Logo petland">
+      <input [(ngModel)]='txtLogin' type='text' id='txtLogin' name='txtLogin' placeholder="Login" #nameVerify="ngModel" required>
+
+      <input [(ngModel)]='txtPass' type='password' id='txtPass' name='txtPass' placeholder="Senha" #nameVerify="ngModel" required>
+
+      <button class="green-btn" (click)="submitForm();">Concluir</button>
+    </form>
+  </div>
+</div>

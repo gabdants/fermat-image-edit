@@ -1,0 +1,103 @@
+<div class="container">
+  <div class="dashHeader">
+    <h4>Edição de peças</h4>
+    <p (click)="callAddImage();" >Adicionar imagem</p>
+  </div>
+  <div class="dashContent">
+    <div class="categoriesBox">
+      <h4>Categorias</h4>
+
+      <p>Categoria 1</p>
+      <p>Categoria 2</p>
+      <p>Categoria 3</p>
+      <p>Categoria 4</p>
+      <p>Categoria 5</p>
+    </div>
+    <div class="imagesBox">
+      <div class="imagesToEdit">
+
+        <!-- Mensagem que será exibida caso não tenha nenhuma foto -->
+        <div *ngIf="semFotos" class="semFotos">
+          <div *ngIf="isAdmin">
+            <h3>Selecione uma imagem ou adicione uma nova</h3>
+          </div>
+          <div *ngIf="!isAdmin">
+            <h3>Não há imagens para editar</h3>
+          </div>
+        </div>
+
+        <!-- Fotos para download ou edição -->
+        <div *ngIf="!semFotos" class="toEdit">
+          <div class="singleImage">
+            <img src="../../assets/images/bg-login.png">
+            <h4>Necessidades básica cão</h4>
+            <div class="tagsImage">
+              <p>Editável</p>
+              <p>Papel: A4</p>
+              <p>Obs</p>
+              <p>Obs</p>
+              <p>Obs</p>
+              <p>Obs</p>
+              <p>Obs</p>
+              <p>Obs</p>
+            </div>
+            <div>
+              <button class="orange-button">Excluir</button>
+              <button class="orange-button">Configurar</button>
+              <button class="orange-button">Download</button>
+              <button class="orange-button">Personalizar</button>
+            </div>
+          </div>
+
+          <div class="singleImage">
+              <img src="../../assets/images/jimmy.jpg">
+              <h4>Necessidades básica cão</h4>
+              <div class="tagsImage">
+                <p>Editável</p>
+                <p>Papel: A4</p>
+                <p>Obs</p>
+                <p>Obs</p>
+                <p>Obs</p>
+                <p>Obs</p>
+                <p>Obs</p>
+                <p>Obs</p>
+              </div>
+            </div>
+
+            <div class="singleImage">
+                <img src="../../assets/images/bg-login.png">
+                <h4>Necessidades básica cão</h4>
+                <div class="tagsImage">
+                  <p>Editável</p>
+                  <p>Papel: A4</p>
+                  <p>Obs</p>
+                  <p>Obs</p>
+                  <p>Obs</p>
+                  <p>Obs</p>
+                  <p>Obs</p>
+                  <p>Obs</p>
+                </div>
+              </div>
+
+              <div class="singleImage">
+                  <img src="../../assets/images/bg-login.png">
+                  <h4>Necessidades básica cão</h4>
+                  <div class="tagsImage">
+                    <p>Editável</p>
+                    <p>Papel: A4</p>
+                    <p>Obs</p>
+                    <p>Obs</p>
+                    <p>Obs</p>
+                    <p>Obs</p>
+                    <p>Obs</p>
+                    <p>Obs</p>
+                  </div>
+                </div>
+        </div>
+      </div>
+      <!-- <div *ngIf="isAdmin" class="toApproveBox">
+        
+      </div> -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,108 @@
+<div class="container">
+  <div class="content-tabs">
+    <mat-tab-group>
+      <mat-tab label="First">
+          <form #form="ngForm">
+            <div class="dir">
+              <div>
+                  <label for='txtNome'>Nome da peça</label>
+                  <input [(ngModel)]='newImage.name' type='text' id='txtNome' name='txtNome' placeholder="Nome da peça" #nameVerify="ngModel" required>
+        
+                  <label for='txtCrm'>Observações e público alvo</label>
+                  <input [(ngModel)]='newImage.obsPublico'  type='text' id='txtCrm' name='txtCrm' placeholder="Observações e público alvo" #nameVerify="ngModel" required>
+      
+                  <label for='txtUf'>Formato Fechado</label>
+                  <input [(ngModel)]='newImage.fmtFechado' type='text' id='txtUf' name='txtUf' placeholder="Formato do trabalho fechado" #nameVerify="ngModel" required>
+      
+                  <label for='txtEmail'>Formato Aberto</label>
+                  <input [(ngModel)]='newImage.fmtAberto' type='email' id='txtEmail' name='txtEmail' placeholder="Formato do trabalho aberto" #nameVerify="ngModel" required>
+              </div>
+            </div>
+            <div class="esq">
+              <div>
+                <label for='txtNome'>Acabamento</label>
+                <input [(ngModel)]='newImage.acabamento' type='text' id='txtNome' name='txtNome' placeholder="Acabamento" #nameVerify="ngModel" required>
+      
+                <label for='txtCrm'>Observações sobre a impressão</label>
+                <input [(ngModel)]='newImage.obsPrint'  type='text' id='txtCrm' name='txtCrm' placeholder="Observações adicionais sobre a impressão" #nameVerify="ngModel" required>
+    
+                <label for='txtUf'>Categoria</label>
+                <input [(ngModel)]='newImage.categoria' type='text' id='txtUf' name='txtUf' placeholder="Categoria" #nameVerify="ngModel" required>
+  
+                <mat-slide-toggle [checked]="newImage.aprovacao" [disabled]="disabled" (change)="newImage.aprovacao = !newImage.aprovacao">Precisa de aprovação</mat-slide-toggle>
+  
+                <mat-slide-toggle [checked]="newImage.editavel" [disabled]="disabled" (change)="newImage.editavel = !newImage.editavel">Imagem editável</mat-slide-toggle>
+                
+                
+              </div>
+
+            </div>
+            <div class="bot-dir">
+              <button class="orange-button" (click)="onClickNext(1);">PRÓXIMO</button>
+            </div>
+            
+          </form>
+      </mat-tab>
+      <mat-tab label="Second">
+          <form #form="ngForm" class="paddingSpace">
+            <div class="esqImage">
+              <h4 class="formTitle">Imagem base</h4>
+              <div class="uploader" onclick="$('#filePhoto').click()">
+                  Arraste o arquivo ou clique para selecionar
+                  <img src="{{image}}" alt="">
+                  <input type="file" (change)="getImage($event);" name="userprofile_picture"  id="filePhoto" />
+              </div>
+            </div>
+            <div class="dirImage">
+              <h4 class="formTitle">Thumb</h4>
+              <div class="uploader" onclick="$('#filePhoto2').click()">
+                  Arraste o arquivo ou clique para selecionar
+                  <img src="{{imageThumb}}" alt="">
+                  <input type="file" (change)="getImageThumb($event);" name="userprofile_picture"  id="filePhoto2" />
+              </div>
+            </div>
+            <div class="bot-dir">
+              <button class="orange-button" (click)="onClickNext(2);">PRÓXIMO</button>
+            </div>
+          </form>
+      </mat-tab>
+      <mat-tab label="Third">
+        <form #form="ngForm" class="paddingSpace">
+          <div class="main-content">
+              <div class="leftVariavel">
+                  <h4 class="formTitle">Adicionar variáveis</h4>
+                  <input [(ngModel)]='variavel.titulo' type='text' id='titulo' name='titulo' placeholder="Título" #nameVerify="ngModel" required>
+        
+                  <input [(ngModel)]='variavel.textoModelo'  type='text' id='textoModelo' name='textoModelo' placeholder="Texto Modelo" #nameVerify="ngModel" required>
+      
+                  <input [(ngModel)]='variavel.obs' type='text' id='obs' name='obs' placeholder="Observação" #nameVerify="ngModel" required>
+      
+                  <input [(ngModel)]='variavel.fonte' type='text' id='fonte' name='fonte' placeholder="Fonte" #nameVerify="ngModel" required>
+    
+                  <input [(ngModel)]='variavel.tamanho' type='text' id='tamanho' name='tamanho' class="halfInput marginRight" placeholder="Tamanho" #nameVerify="ngModel" required>
+    
+                  <input [(ngModel)]='variavel.cor' type='text' id='cor' name='cor' placeholder="Cor" class="halfInput" #nameVerify="ngModel" required>
+    
+                  <input [(ngModel)]='variavel.alinhamento' type='text' id='alinhamento' name='alinhamento' placeholder="Alinhamento" #nameVerify="ngModel" required>
+    
+                  <mat-slide-toggle style="width: 100%;" [checked]="variavel.obrigatorio" [disabled]="disabled" (change)="variavel.obrigatorio = !variavel.obrigatorio">Obrigatório</mat-slide-toggle> 
+    
+                  <button class="orange-button" style="width: 90%; margin-top: 10px;" (click)="addVariavel();">Adicionar Variável</button>
+    
+              </div>
+              <div class="rightVariavel">
+                <h4 class="formTitle">Pré visualizar</h4>
+                <div class="boxImagePreview">
+                  <img src="{{image}}" alt="">
+                </div>
+                <div class="bot-dir add-variavel">
+                  <button class="orange-button" (click)="salvarImage();">Salvar</button>
+                </div>
+    
+              </div>
+          </div>
+        </form>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
