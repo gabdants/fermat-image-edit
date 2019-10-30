@@ -1,2 +1,3 @@
 # src/_redirects
 /* /index.html 200
+/addImage /addImage 200
