@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit {
   }
 
   async carregaMenu(){
-    console.log("teste");
+    TREE_DATA = []
     await this.categoryService.getCategory().subscribe(response => {
       console.log(response);
       
@@ -97,7 +97,7 @@ export class DashboardComponent implements OnInit {
     console.log(nome)
   }
   callAddImage(){
-    
+    this.router.navigateByUrl('addImage');
   }
   chamaEdicao(){
     this.router.navigateByUrl('editImage/d914defb-fd4e-437e-bdf7-cf45e08d6f56')

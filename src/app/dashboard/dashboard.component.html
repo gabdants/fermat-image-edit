@@ -1,7 +1,7 @@
 <div class="container">
   <div class="dashHeader">
     <h4>Edição de peças</h4>
-    <p (click)="callAddImage();" >Adicionar imagem</p>
+    <p class="addImageBtn" (click)="callAddImage();" >Adicionar imagem</p>
   </div>
   <div class="dashContent">
     <div class="categoriesBox">
@@ -54,9 +54,7 @@
               <p>Obs</p>
               <p>Obs</p>
             </div>
-            <div>
-              <button class="orange-button">Excluir</button>
-              <button class="orange-button">Configurar</button>
+            <div class="btnImagesEdit">
               <button class="orange-button">Download</button>
               <button class="orange-button" (click)="chamaEdicao()">Personalizar</button>
             </div>
@@ -75,6 +73,10 @@
                 <p>Obs</p>
                 <p>Obs</p>
               </div>
+              <div class="btnImagesEdit">
+                <button class="orange-button">Download</button>
+                <button class="orange-button" (click)="chamaEdicao()">Personalizar</button>
+              </div>
             </div>
 
             <div class="singleImage">
@@ -90,6 +92,10 @@
                   <p>Obs</p>
                   <p>Obs</p>
                 </div>
+                <div class="btnImagesEdit">
+                  <button class="orange-button">Download</button>
+                  <button class="orange-button" (click)="chamaEdicao()">Personalizar</button>
+                </div>
               </div>
 
               <div class="singleImage">
@@ -104,6 +110,10 @@
                     <p>Obs</p>
                     <p>Obs</p>
                     <p>Obs</p>
+                  </div>
+                  <div class="btnImagesEdit">
+                    <button class="orange-button">Download</button>
+                    <button class="orange-button" (click)="chamaEdicao()">Personalizar</button>
                   </div>
                 </div>
         </div>

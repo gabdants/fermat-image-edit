@@ -10,6 +10,7 @@ import { ImageService } from '../services/image/image-service';
 export class CustomImageComponent implements OnInit {
 
   constructor(public route: ActivatedRoute, private imageService: ImageService) { }
+  titulo: string;
 
   ngOnInit() {
     let id = this.route.snapshot.params.id;
@@ -18,7 +19,7 @@ export class CustomImageComponent implements OnInit {
     })
   }
   chamaPreview(){
-    
+
   }
 
 }
