@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginService } from '../security/login/login.service'
 
 @Component({
   selector: 'app-header',
@@ -7,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   showHeaderk: boolean;
-  constructor() { }
+  constructor(private loginService: LoginService) { }
 
   ngOnInit() {
-    this.showHeaderk = true;
+    this.loginService.showHeader.subscribe(
+      mostrar => this.showHeaderk = mostrar,
+    );
   }
 
 }

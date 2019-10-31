@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './security/login/login.component';
 import { AddImageComponent } from './admin/add-image/add-image.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { CustomImageComponent } from './custom-image/custom-image.component';
 
 const routes: Routes = [
   // { path: '', redirectTo: 'home', pathMatch: 'full', canActivate: [AuthGuard], },
@@ -15,12 +16,11 @@ const routes: Routes = [
   // ], canActivate: [AuthGuard] },
   // {path: 'project/ce/:id', component: ProjectAddEditComponent, canActivate: [AuthGuard]},
   // {path: 'project/ce', component: ProjectAddEditComponent, canActivate: [AuthGuard]},
+  { path: '', redirectTo: 'login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent },
-
-  
+  { path: 'editImage/:id', component: CustomImageComponent },  
   { path: 'addImage', component: AddImageComponent },
-  { path: '**', redirectTo: 'login' },
 ];
 
 @NgModule({

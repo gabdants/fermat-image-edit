@@ -29,6 +29,7 @@ import { AuthGuardService } from '../security/auth-guard.service';
 import { LoginService } from '../security/login/login.service';
 //import { UserService } from '../user/user.service';
 import { CategoryService } from '../services/category/category-service';
+import { ImageService } from '../services/image/image-service';
 
 
 @NgModule({
@@ -87,6 +88,7 @@ export class SharedModule {
         AuthGuardService,
         LoginService,
         CategoryService,
+        ImageService,
         // UserService,
         // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
       ]

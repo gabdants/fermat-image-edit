@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
-import { CategoryService } from '../services/category/category-service'
+import { CategoryService } from '../services/category/category-service';
+import { Router } from '@angular/router';
 
 
 
@@ -11,31 +12,6 @@ interface FoodNode {
 }
 
 var TREE_DATA: FoodNode[] = [
-  {
-    name: 'Fruit',
-    children: [
-      {name: 'Apple'},
-      {name: 'Banana'},
-      {name: 'Fruit loops'},
-    ]
-  }, {
-    name: 'Vegetables',
-    children: [
-      {
-        name: 'Green',
-        children: [
-          {name: 'Broccoli'},
-          {name: 'Brussel sprouts'},
-        ]
-      }, {
-        name: 'Orange',
-        children: [
-          {name: 'Pumpkins'},
-          {name: 'Carrots'},
-        ]
-      },
-    ]
-  },
 ];
 
 interface ExampleFlatNode {
@@ -51,7 +27,7 @@ interface ExampleFlatNode {
 
 export class DashboardComponent implements OnInit {
 
-  constructor(private categoryService: CategoryService) {
+  constructor(private categoryService: CategoryService, private router: Router) {
     
    }
   isAdmin = true;
@@ -83,26 +59,48 @@ export class DashboardComponent implements OnInit {
     console.log("teste");
     await this.categoryService.getCategory().subscribe(response => {
       console.log(response);
-      let aux = {
-        name: '',
-        children: []
-      }
+      
       response.map(item => {
+        let aux = {
+          id: '',
+          name: '',
+          children: [{
+            name: '',
+            id: '',
+          }]
+        }
         aux.name = '';
         aux.children = []
+        aux.id = ''
         aux.name = item.name;
+        aux.id = item.idCategory;
         item.subCategories.map(subItem => {
-          aux.children.push(subItem.name);
+          let auxChildren = {
+            name: '',
+            id: '',
+          }
+          auxChildren.name = '';
+          auxChildren.id = '';
+          auxChildren.name = subItem.name
+          auxChildren.id = subItem.idSubCategory
+          aux.children.push(auxChildren);
         });
         console.log(aux);
         TREE_DATA.push(aux);
+        console.log(TREE_DATA)
 
       })
       this.dataSource.data = TREE_DATA;
     });
   }
+  selecionaMenu(nome){
+    console.log(nome)
+  }
   callAddImage(){
     
+  }
+  chamaEdicao(){
+    this.router.navigateByUrl('editImage/d914defb-fd4e-437e-bdf7-cf45e08d6f56')
   }
 
 }

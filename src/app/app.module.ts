@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { AddImageComponent } from './admin/add-image/add-image.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { CustomImageComponent } from './custom-image/custom-image.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     LoginComponent,
     AddImageComponent,
     DashboardComponent,
+    CustomImageComponent,
   ],
   imports: [
     BrowserModule,

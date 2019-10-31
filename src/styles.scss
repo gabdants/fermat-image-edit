@@ -77,5 +77,16 @@ app-add-image{
 .mat-slide-toggle.mat-checked .mat-slide-toggle-bar{
     background-color: rgba(207, 78, 15, 0.75);
 }
-
+.mat-tree{
+    background: transparent;
+}
+.mat-tree-node{
+    color: #CF4E0F;
+    font-weight: 100;
+    height: 30px;
+    min-height: auto !important;
+}
+.mat-tree-node{
+    cursor: pointer;
+}
 // new deploy
