@@ -19,7 +19,8 @@ import {
   MatDividerModule,
   MatListModule,
   MatSnackBarModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatTreeModule
 } from '@angular/material';
 
 import { RouterModule } from '@angular/router';
@@ -27,6 +28,7 @@ import { AuthInterceptor } from '../security/auth.interceptor';
 import { AuthGuardService } from '../security/auth-guard.service';
 import { LoginService } from '../security/login/login.service';
 //import { UserService } from '../user/user.service';
+import { CategoryService } from '../services/category/category-service';
 
 
 @NgModule({
@@ -50,7 +52,8 @@ import { LoginService } from '../security/login/login.service';
     MatDividerModule,
     MatListModule,
     MatSnackBarModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatTreeModule
   ],
   declarations: [],
   exports: [
@@ -72,7 +75,8 @@ import { LoginService } from '../security/login/login.service';
     MatDividerModule,
     MatListModule,
     MatSnackBarModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatTreeModule
   ],
 })
 export class SharedModule {
@@ -82,8 +86,9 @@ export class SharedModule {
       providers: [
         AuthGuardService,
         LoginService,
+        CategoryService,
         // UserService,
-        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+        // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
       ]
     };
   }

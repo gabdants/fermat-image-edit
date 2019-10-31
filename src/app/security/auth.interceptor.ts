@@ -13,9 +13,9 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private injector: Injector, private store: Store<AuthState>) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        this.token = localStorage.getItem('token');
+        //this.token = localStorage.getItem('token');
         if (this.token) {
-            const authRequest = request.clone({ setHeaders: { 'Authorization': `${this.token}` } });
+            const authRequest = request.clone({ setHeaders: { 'Content-Type': 'application/json' } });
             return next.handle(authRequest);
         } else {
             return next.handle(request);
