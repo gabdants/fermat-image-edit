@@ -34,7 +34,7 @@ export class AddImageComponent implements OnInit {
   */
 
   newImage: NewImage = new NewImage("", "", "", "", "", "", "", true, true, []);
-  variavel: Variavel = new Variavel("", "", "", "", "", "", "", true, "", ""); 
+  variavel: Variavel = new Variavel("", "", "", "Arial", "", "", "", true, "", ""); 
 
   listaVariaveis: Variavel[] = [];
 
@@ -44,9 +44,6 @@ export class AddImageComponent implements OnInit {
 
   @ViewChild('canvasThumb') canvasThumb: ElementRef<HTMLCanvasElement>;
   ctxThumb: CanvasRenderingContext2D;
-  
-
-  disabled = false;
 
   flagEvents = true;
 
@@ -141,12 +138,19 @@ export class AddImageComponent implements OnInit {
         return false;
       }
     }else if(number == 2){
-      if(this.imageFixed == undefined || this.imageThumbFixed == undefined){
-        alert('Por favor, insira as imagens à serem adicionadas.')
-        return false;
-      }else if(this.img.width != this.imgThumb.width || this.img.height != this.imgThumb.height){
-        alert('Ambas as imagens precisam ter o mesmo dimensionamento (altura e largura)')
-        return false;
+      if(!this.newImage.editavel){
+        if(this.imageFixed == undefined ){
+          alert('Por favor, insira as imagens à serem adicionadas.')
+          return false;
+        }
+      }else{
+        if(this.imageFixed == undefined || this.imageThumbFixed == undefined){
+          alert('Por favor, insira as imagens à serem adicionadas.')
+          return false;
+        }else if(this.img.width != this.imgThumb.width || this.img.height != this.imgThumb.height){
+          alert('Ambas as imagens precisam ter o mesmo dimensionamento (altura e largura)')
+          return false;
+        }
       }
     }
       let i = 0
