@@ -114,6 +114,10 @@ export class AddImageComponent implements OnInit {
             
             this.ctx.fillText(this.variavel.textoModelo, posX, posY + (+this.variavel.tamanho*0.8)/2);
 
+            //Setando coordenadas
+            this.variavel.cordX = ''+posX;
+            this.variavel.cordY = ''+((+this.variavel.tamanho*0.8)/2);
+
             //remove o floattext
             floatText.removeChild(floatText.childNodes[0]);
 

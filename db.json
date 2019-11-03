@@ -1,0 +1,38 @@
+{
+    "variaveis": [
+        {
+            "imageId": "d914defb-fd4e-437e-bdf7-cf45e08d6f56",
+            "alinhamento": "asd",
+            "cor": "#000",
+            "cordX": "221",
+            "cordY": "10",
+            "fonte": "Arial",
+            "obrigatorio": true,
+            "obs": "asd",
+            "tamanho": "17",
+            "textoModelo": "sd",
+            "titulo": "asda"
+        },
+        {
+            "alinhamento": "tetete",
+            "cor": "",
+            "cordX": "218",
+            "cordY": "4",
+            "fonte": "Arial",
+            "obrigatorio": true,
+            "obs": "teste",
+            "tamanho": "10",
+            "textoModelo": "teste",
+            "titulo": "teste"
+        }
+    ],
+    "imagens": [
+        {
+            "imageId": "d914defb-fd4e-437e-bdf7-cf45e08d6f56",
+            "imageUrl": "",
+            "imageSizeY": "394",
+            "imageSizeX": "394"
+
+        }
+    ]
+}
