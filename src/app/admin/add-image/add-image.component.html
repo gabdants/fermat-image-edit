@@ -48,6 +48,7 @@
             <div class="esqImage">
               <h4 class="formTitle">Imagem base</h4>
               <div class="uploader">
+                  <img class="uploadIcon" src="../../../assets/images/upload.png" />
                   Arraste o arquivo ou clique para selecionar
                   <img src="{{imageFixed}}" alt="">
                   <input type="file" (change)="getImage($event);" name="userprofile_picture"  id="filePhoto" />
@@ -59,6 +60,7 @@
                 <div *ngIf="!newImage.editavel" >
                   Não disponível
                 </div>
+                <img class="uploadIcon" src="../../../assets/images/upload.png" />
                 <div *ngIf="newImage.editavel">
                   Arraste o arquivo ou clique para selecionar
                 </div>

@@ -67,6 +67,7 @@ form label{
     align-items: center;
     justify-content: center;
     color: #bbb;
+    flex-direction: column;
 }
 
 #filePhoto{
@@ -172,4 +173,9 @@ form.paddingSpace{
 
 .hidde-error-icon{
     display: none;
+}
+.uploader .uploadIcon{
+    width: 20%;
+    height: auto;
+    position: relative;
 }

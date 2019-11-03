@@ -113,7 +113,7 @@ export class AddImageComponent implements OnInit {
             floatText.removeChild(floatText.childNodes[0]);
 
             this.listaVariaveis.push(this.variavel);
-            this.variavel = new Variavel("", "", "", "", "", "", "", true, "", "");
+            this.variavel = new Variavel("", "", "", "Arial", "", "", "", true, "", "");
           }
         })
         this.flagEvents = false;
