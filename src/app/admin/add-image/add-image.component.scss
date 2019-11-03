@@ -160,6 +160,8 @@ form.paddingSpace{
         position: absolute;
         top: 0;
         margin: 0;
+        line-height: 0;
+        pointer-events: none;
     }
 }
 

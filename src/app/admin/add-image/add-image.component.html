@@ -29,9 +29,9 @@
                 <label for='txtUf'>Categoria</label>
                 <input [(ngModel)]='newImage.categoria' type='text' id='txtUf' name='txtUf' placeholder="Categoria" #nameVerify="ngModel" required>
   
-                <mat-slide-toggle [checked]="newImage.aprovacao" [disabled]="disabled" (change)="newImage.aprovacao = !newImage.aprovacao">Precisa de aprovação</mat-slide-toggle>
+                <mat-slide-toggle [checked]="newImage.aprovacao" (change)="newImage.aprovacao = !newImage.aprovacao">Precisa de aprovação</mat-slide-toggle>
   
-                <mat-slide-toggle [checked]="newImage.editavel" [disabled]="disabled" (change)="newImage.editavel = !newImage.editavel">Imagem editável</mat-slide-toggle>
+                <mat-slide-toggle [checked]="newImage.editavel" (change)="newImage.editavel = !newImage.editavel">Imagem editável</mat-slide-toggle>
                 
                 
               </div>

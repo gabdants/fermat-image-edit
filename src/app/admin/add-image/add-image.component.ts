@@ -89,9 +89,9 @@ export class AddImageComponent implements OnInit {
       //flag para só adicionar o evento de click uma vez
       if(this.flagEvents){
         //evento que deixa o texto em cima do mouse
-        cvThumb.addEventListener('mousemove', function move(event) {
-          floatText.style.top = event.offsetY + 3 + "px";
-          floatText.style.left = event.offsetX + 3 + "px";
+        cvThumb.addEventListener('mousemove', (event) => {
+          floatText.style.top = event.offsetY + "px";
+          floatText.style.left = event.offsetX + "px";
         })
         //evento que constroi o texto na imagem base
         cvThumb.addEventListener('click', (event) => {
@@ -105,9 +105,14 @@ export class AddImageComponent implements OnInit {
             cvBase.style.display = 'block';
 
             //escreve o texto na imagem base
-            this.ctx.font = `${this.variavel.tamanho}px ${this.variavel.fonte}`;
-            this.ctx.fillStyle = this.variavel.cor;
-            this.ctx.fillText(this.variavel.textoModelo, posX + 2, posY + 2 + +this.variavel.tamanho);
+            this.ctx.font = `${this.variavel.tamanho}px ${this.variavel.fonte}`; 
+            if(this.variavel.cor == ''){
+              this.ctx.fillStyle = 'black';
+            }else{
+              this.ctx.fillStyle = this.variavel.cor;
+            }
+            
+            this.ctx.fillText(this.variavel.textoModelo, posX, posY + (+this.variavel.tamanho*0.8)/2);
 
             //remove o floattext
             floatText.removeChild(floatText.childNodes[0]);
