@@ -138,10 +138,38 @@ form.paddingSpace{
     height: 75%;
     width: 100%;
     overflow: scroll;
+    position: relative;
 }
 .main-content{
     display: flex;
     height: 85%;
+    width: 100%;
     justify-content: space-between;
     flex-direction: row;
+}
+
+.boxImagePreview{
+    .canvasThumb{
+        display: none;
+    }
+    .canvasBase{
+        display: block;
+    }
+    .floatText{
+        position: absolute;
+        top: 0;
+        margin: 0;
+    }
+}
+
+#error-icon{
+    width: 10px;
+}
+
+.show-error-icon{
+    display: block;
+}
+
+.hidde-error-icon{
+    display: none;
 }
