@@ -7,31 +7,13 @@
     <div class="leftVariavelEdit">
       <h4 class="formTitle">Personalizar campos</h4>
       <div class="variaveisBox">
-        <label>Titulo *
-        <span>Será o titulo da imagem final</span>
-        </label>
-        <input [(ngModel)]='titulo' type='text' id='titulo' name='titulo' placeholder="Título" #nameVerify="ngModel" required>
-
-        <label>Titulo *
-        <span>Será o titulo da imagem final</span>
-        </label>
-        <input [(ngModel)]='titulo' type='text' id='titulo' name='titulo' placeholder="Título" #nameVerify="ngModel" required>
-    
-        <label>Titulo *
-        <span>Será o titulo da imagem final</span>
-        </label>
-        <input [(ngModel)]='titulo' type='text' id='titulo' name='titulo' placeholder="Título" #nameVerify="ngModel" required>
+        <div *ngFor="let variavel of listaVariaveis">
+          <label>{{variavel.titulo}}
+          <span>Será o titulo da imagem final</span>
+          </label>
+          <input [(ngModel)]='variavel.titulo' type='text' id='titulo' name='titulo' placeholder="Título" #nameVerify="ngModel" required>
+        </div>
         
-        <label>Titulo *
-        <span>Será o titulo da imagem final</span>
-        </label>
-        <input [(ngModel)]='titulo' type='text' id='titulo' name='titulo' placeholder="Título" #nameVerify="ngModel" required>
-            
-        <label>Titulo *
-        <span>Será o titulo da imagem final</span>
-        </label>
-        <input [(ngModel)]='titulo' type='text' id='titulo' name='titulo' placeholder="Título" #nameVerify="ngModel" required>
-                
       </div>                   
         
       <button class="orange-button" style="width: 90%; margin-top: 10px;" (click)="chamaPreview();">Pré Visualizar</button>
