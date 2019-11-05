@@ -134,6 +134,7 @@ export class AddImageComponent implements OnInit {
   salvarImage(){
     this.newImage.variaveis = this.listaVariaveis;
     console.log(this.newImage);
+    console.log(this.img.src);
   }
 
   onClickNext(number){
