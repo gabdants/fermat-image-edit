@@ -22,6 +22,8 @@ export class CustomImageComponent implements OnInit {
   imgX: string;
   imgY: string;
 
+  savedImageURL: string;
+
   ngOnInit() {
     // let id = this.route.snapshot.params.id;
     // this.imageService.getImageById(id).subscribe(response => {
@@ -61,11 +63,48 @@ export class CustomImageComponent implements OnInit {
   }
 
   chamaPreview(){
+    //Guarda o base64 do canvas atual
+    this.savedImageURL = this.canvasPreview.nativeElement.toDataURL();
 
-  }
+
+    //Cria um canvas na memória
+    let cvWaterMark = document.createElement('canvas');
+    //Seta width e height
+    cvWaterMark.width = +this.imgX;
+    cvWaterMark.height = +this.imgY;
+    //Pega o contexto
+    let ctxWaterMark = cvWaterMark.getContext('2d');
+
+    //Inicia a marca d'agua
+    let img=new Image();
+    img.crossOrigin='anonymous';
+    img.onload = function () {
+      ctxWaterMark.drawImage(img,0,0);
+        
+          ctxWaterMark.font="240px verdana";
+          ctxWaterMark.globalAlpha=.50;
+          ctxWaterMark.fillStyle='white'
+
+          let metrics = ctxWaterMark.measureText("WaterMark Demo");
+          let width = metrics.width;
+          
+          ctxWaterMark.translate(cvWaterMark.width/2, cvWaterMark.height/2);
+          ctxWaterMark.rotate(-Math.atan(cvWaterMark.height/cvWaterMark.width));
+          ctxWaterMark.fillText("Aguarde aprovação", -width/2, 240/2);
+
+          console.log(cvWaterMark.toDataURL('image/jpeg', 0.5));
+        //console.log(cvWaterMark.toDataURL())
+    }.bind(this)
+    img.src = this.savedImageURL;
+    
+
+
+    // //chave demais isso aqui....
+    // cvWaterMark.requestFullscreen();
+  } 
 
   salvarImage(){
-    
+    this.savedImageURL = this.canvasPreview.nativeElement.toDataURL();
   }
 
   changeInput(event){

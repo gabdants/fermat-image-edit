@@ -14,7 +14,7 @@
             "titulo": "valor"
         },
         { 
-            "alinhamento": "right",
+            "alinhamento": "left",
             "cor": "#CF4E0F",
             "cordX": "218",
             "cordY": "100",
