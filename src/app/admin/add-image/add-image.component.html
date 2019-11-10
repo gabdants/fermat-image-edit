@@ -89,12 +89,19 @@
       
                   <input [(ngModel)]='variavel.fonte' disabled type='text' id='fonte' name='fonte' placeholder="Fonte" #nameVerify="ngModel" required>
     
-                  <input [(ngModel)]='variavel.tamanho' type='text' [disabled]="!newImage.editavel" id='tamanho' name='tamanho' class="halfInput marginRight" placeholder="Tamanho" #nameVerify="ngModel" required>
+                  <input [(ngModel)]='variavel.tamanho' type='number' min="0" [disabled]="!newImage.editavel" id='tamanho' name='tamanho' class="halfInput marginRight" placeholder="Tamanho" #nameVerify="ngModel" required>
     
                   <input [(ngModel)]='variavel.cor' type='color' [disabled]="!newImage.editavel" id='cor' name='cor' placeholder="Cor" class="halfInput" #nameVerify="ngModel" required>
     
-                  <input [(ngModel)]='variavel.alinhamento' [disabled]="!newImage.editavel" type='text' id='alinhamento' name='alinhamento' placeholder="Alinhamento" #nameVerify="ngModel" required>
-    
+                  <mat-form-field>
+                      <mat-label>Alinhamento</mat-label>
+                      <select [(ngModel)]='variavel.alinhamento'  [disabled]="!newImage.editavel" id='alinhamento' placeholder="Alinhamento" name='alinhamento' #nameVerify="ngModel" matNativeControl required>
+                        <option value="center">Centro</option>
+                        <option value="right">Direita</option>
+                        <option value="left">Esquerda</option>
+                      </select>
+                    </mat-form-field>
+                  
                   <mat-slide-toggle style="width: 100%;" [checked]="variavel.obrigatorio" [disabled]="!newImage.editavel" (change)="variavel.obrigatorio = !variavel.obrigatorio">Obrigatório</mat-slide-toggle> 
     
                   <button class="orange-button" [disabled]="!newImage.editavel" style="width: 90%; margin-top: 10px;" (click)="addVariavel();">Adicionar Variável</button>

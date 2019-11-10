@@ -11,9 +11,9 @@
           <label>{{variavel.titulo}}
           <span>Será o titulo da imagem final</span>
           </label>
-          <input [(ngModel)]='variavel.textoModelo' type='text' id='titulo' name='titulo' placeholder="Título" #nameVerify="ngModel" required>
+          <input [value]='variavel.textoModelo' type='text' [id]='variavel.titulo' (blur)='changeInput($event)' name='titulo' placeholder="Título" required>
         </div>
-        
+         
       </div>                   
         
       <button class="orange-button" style="width: 90%; margin-top: 10px;" (click)="chamaPreview();">Pré Visualizar</button>

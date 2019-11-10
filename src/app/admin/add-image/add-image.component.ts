@@ -25,6 +25,7 @@ export class AddImageComponent implements OnInit {
 
     A funcionalidade da adição de variável funcionará da seguinte maneira:
       1- A imagem base e a imagem thumb precisam ter o mesmo tamanho para funcionar.
+      1.1 - Não podem haver variáveis com o mesmo título na mesma imagem. (depois, o título servirá como ID).
       2- Quando clicar em adicionar imagem, a thumb vem para a frente e o usuário clica nela para posicionar a variável,
     após clicar:
         1- pegar a posição do clique.
@@ -35,6 +36,7 @@ export class AddImageComponent implements OnInit {
 
   newImage: NewImage = new NewImage("", "", "", "", "", "", "", true, true, []);
   variavel: Variavel = new Variavel("", "", "", "Arial", "", "", "", true, "", ""); 
+  alinhamentos: any[] = ["center", "left", "right", "start", "end"];
 
   listaVariaveis: Variavel[] = [];
 
@@ -54,7 +56,7 @@ export class AddImageComponent implements OnInit {
   }
 
   addVariavel(){
-    //validações para criação da variável (título, texto modelo, observação...)
+  //validações para criação da variável (título, texto modelo, observação...)
     if(this.variavel.titulo == ''){
       alert('Favor preencher o título da variável')
     }else if(this.variavel.textoModelo == ''){
@@ -63,7 +65,24 @@ export class AddImageComponent implements OnInit {
       alert('Favor preencher a fonte da variável')
     }else if(this.variavel.tamanho == ''){
       alert('Favor preencher o tamanho da variável')
+    }else if(this.variavel.alinhamento == ''){
+      alert('Favor preencher o alinhamento da variável')
     }else{
+        //Validação de titulo para ver se já não existe
+        if(this.listaVariaveis.length > 0){
+          this.listaVariaveis.forEach(variavel => {
+            if(variavel.titulo == this.variavel.titulo){
+              alert(`já existe uma variável com o título '${this.variavel.titulo}'.`);
+              this.variavel.titulo = '';
+            }
+          });
+        }  
+        //Gambiarra para sair do metodo quando o títulojá existe
+        if(this.variavel.titulo == ''){
+          return false;
+        }
+
+
       //thumb
       let cvThumb = document.getElementById('canvasThumb');
       //mostra thumb

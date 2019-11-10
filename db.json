@@ -2,28 +2,28 @@
     "variaveis": [
         {
             "imageId": "d914defb-fd4e-437e-bdf7-cf45e08d6f56",
-            "alinhamento": "asd",
-            "cor": "#000",
+            "alinhamento": "left",
+            "cor": "#CF4F",
             "cordX": "221",
-            "cordY": "10",
+            "cordY": "200",
             "fonte": "Arial",
             "obrigatorio": true,
             "obs": "asd",
-            "tamanho": "17",
-            "textoModelo": "sd",
-            "titulo": "asda"
+            "tamanho": "38",
+            "textoModelo": "24,90",
+            "titulo": "valor"
         },
-        {
-            "alinhamento": "tetete",
-            "cor": "",
+        { 
+            "alinhamento": "right",
+            "cor": "#CF4E0F",
             "cordX": "218",
-            "cordY": "4",
+            "cordY": "100",
             "fonte": "Arial",
             "obrigatorio": true,
             "obs": "teste",
-            "tamanho": "10",
-            "textoModelo": "teste",
-            "titulo": "teste"
+            "tamanho": "46",
+            "textoModelo": "chiuaua",
+            "titulo": "nome"
         }
     ],
     "imagens": [

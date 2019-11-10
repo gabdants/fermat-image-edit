@@ -49,20 +49,81 @@ export class CustomImageComponent implements OnInit {
   }
 
   constroiCanvasPreview(){
-    //pega o contexto
+    //pega o contexto 
     this.ctxPreview = this.canvasPreview.nativeElement.getContext('2d');
     //Seta o tamanho do canvas
     this.canvasPreview.nativeElement.width = this.imgPreview.width;
     this.canvasPreview.nativeElement.height = this.imgPreview.height;
     //constroi o canvas baseado na imagem BASE
     this.ctxPreview.drawImage(this.imgPreview, 0, 0);
+
+    this.escreveCampos();
   }
 
   chamaPreview(){
 
   }
+
   salvarImage(){
     
+  }
+
+  changeInput(event){
+    //Recupera o id para alterar no array
+    let id = event.target.id;
+    //recupera o que foi escrito
+    let valor = event.target.value;
+    //Altera o array
+    this.listaVariaveis.forEach(variavel => {
+      if(variavel.titulo == id){
+        if(variavel.obrigatorio && valor == ''){
+          alert('Esse campo é obrigatório')
+          return false;
+        }else{
+          variavel.textoModelo = valor;
+        }
+      } 
+    });
+    this.limpaCamposCanvas();
+    this.constroiCanvasPreview();
+  }
+
+  escreveCampos(){
+     this.listaVariaveis.forEach(variavel => {
+      //escreve o texto na imagem base
+      this.ctxPreview.font = `${variavel.tamanho}px ${variavel.fonte}`; 
+      if(variavel.cor == ''){
+        this.ctxPreview.fillStyle = 'black';
+      }else{
+        this.ctxPreview.fillStyle = variavel.cor;
+      }
+ 
+      //Case para alinhamento
+      switch (variavel.alinhamento) {
+          case 'center':
+            this.ctxPreview.textAlign = "center";
+          break;
+          case 'right':
+            this.ctxPreview.textAlign = "right";
+          break;
+          case 'left':
+            this.ctxPreview.textAlign = "left";
+          break;
+          case 'start':
+            this.ctxPreview.textAlign = "start";
+          break;
+          case 'end':
+            this.ctxPreview.textAlign = "end";
+          break;
+      }
+      
+      this.ctxPreview.fillText(variavel.textoModelo, +variavel.cordX, +variavel.cordY);
+    });
+  }
+
+  limpaCamposCanvas(){
+    //Limpa tudo
+    this.ctxPreview.clearRect(0, 0, +this.imgX, +this.imgY);
   }
 
 }
