@@ -183,3 +183,16 @@ form.paddingSpace{
     height: auto;
     position: relative;
 }
+
+.variaveis-left{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    height: 65px;
+    overflow-y: auto;
+}
+
+.variaveis-left > div{
+    margin-bottom: 5px;
+}

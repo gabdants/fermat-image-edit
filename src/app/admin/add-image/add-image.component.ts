@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { NewImage } from 'src/typings/newImage';
 import { Variavel } from 'src/typings/variavel';
+import { GoogleApiService } from 'src/app/services/commom/google-api.service';
 
 @Component({
   selector: 'app-add-image',
@@ -48,12 +49,13 @@ export class AddImageComponent implements OnInit {
   ctxThumb: CanvasRenderingContext2D;
 
   flagEvents = true;
+  flagAdd = false;
 
-  constructor() { }
+  constructor(private googleService: GoogleApiService) { }
 
   ngOnInit() {
     
-  }
+  } 
 
   addVariavel(){
   //validações para criação da variável (título, texto modelo, observação...)
@@ -82,6 +84,8 @@ export class AddImageComponent implements OnInit {
           return false;
         }
 
+        //flag para mostrar botão cancelar
+        this.flagAdd = true;
 
       //thumb
       let cvThumb = document.getElementById('canvasThumb');
@@ -131,17 +135,19 @@ export class AddImageComponent implements OnInit {
               this.ctx.fillStyle = this.variavel.cor;
             }
             
-            this.ctx.fillText(this.variavel.textoModelo, posX, posY + (+this.variavel.tamanho*0.8)/2);
+            this.ctx.fillText(this.variavel.textoModelo, posX, posY + this.ctx.measureText(this.variavel.textoModelo).actualBoundingBoxAscent/2);
 
             //Setando coordenadas
             this.variavel.cordX = ''+posX;
-            this.variavel.cordY = ''+((+this.variavel.tamanho*0.8)/2);
+            this.variavel.cordY = '' + (posY + +(this.ctx.measureText(this.variavel.textoModelo).actualBoundingBoxAscent/2)); 
 
             //remove o floattext
             floatText.removeChild(floatText.childNodes[0]);
 
             this.listaVariaveis.push(this.variavel);
             this.variavel = new Variavel("", "", "", "Arial", "", "", "", true, "", "");
+              //flag para esconder botão cancelar
+              this.flagAdd = false;
           }
         })
         this.flagEvents = false;
@@ -255,4 +261,40 @@ export class AddImageComponent implements OnInit {
     this.ctxThumb.drawImage(this.imgThumb, 0, 0);
   }
 
+  cancelVar(event){
+    //Recupera o id para alterar no array
+    let id = event.target.id;
+    
+    //Remove do array de variaveis
+    this.listaVariaveis = this.listaVariaveis.filter(function (variavel) {
+      return variavel.titulo !== id
+    })
+
+    //Redesenha o canvas
+      //limpa o canvas inteiro
+      this.limpaCamposCanvas();
+      //reconstroi o canvas
+      this.constroiCanvas();
+      //coloca as variáveis novamente
+      this.escreveCamposCanvas();
+  }
+
+  limpaCamposCanvas(){
+    //Limpa tudo
+    this.ctx.clearRect(0, 0, +this.img.width, +this.img.height);
+  }
+
+  escreveCamposCanvas(){
+    this.listaVariaveis.forEach(variavel => {
+      //escreve o texto na imagem base
+      this.ctx.font = `${variavel.tamanho}px ${variavel.fonte}`; 
+      if(variavel.cor == ''){
+        this.ctx.fillStyle = 'black';
+      }else{
+        this.ctx.fillStyle = variavel.cor;
+      }
+      
+      this.ctx.fillText(variavel.textoModelo, +variavel.cordX, +variavel.cordY);
+    });
+  }
 }

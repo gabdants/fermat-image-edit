@@ -104,9 +104,13 @@
                   
                   <mat-slide-toggle style="width: 100%;" [checked]="variavel.obrigatorio" [disabled]="!newImage.editavel" (change)="variavel.obrigatorio = !variavel.obrigatorio">Obrigatório</mat-slide-toggle> 
     
-                  <button class="orange-button" [disabled]="!newImage.editavel" style="width: 90%; margin-top: 10px;" (click)="addVariavel();">Adicionar Variável</button>
-    
-              </div>
+                  <button class="orange-button" [disabled]="!newImage.editavel || flagAdd" style="width: 90%; margin-top: 10px;" (click)="addVariavel();">Adicionar Variável</button>
+                  <div *ngIf='!flagAdd' class="variaveis-left">
+                      <div *ngFor='let variavel of listaVariaveis'>
+                        <span>{{variavel.titulo}} <button [id]='variavel.titulo' (click)="cancelVar($event);" class="red-cancel" [disabled]="!newImage.editavel" style="margin-left: 5px;">X</button></span>
+                      </div>
+                  </div>
+              </div> 
               <div class="rightVariavel">
                 <h4 class="formTitle">Pré visualizar</h4>
                 <div id="boxImagePreview" class="boxImagePreview">
