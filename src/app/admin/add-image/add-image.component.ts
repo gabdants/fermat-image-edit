@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { NewImage } from 'src/typings/newImage';
 import { Variavel } from 'src/typings/variavel';
 import { GoogleApiService } from 'src/app/services/commom/google-api.service';
+import { ImageService } from 'src/app/services/image/image-service';
 
 @Component({
   selector: 'app-add-image',
@@ -51,7 +52,11 @@ export class AddImageComponent implements OnInit {
   flagEvents = true;
   flagAdd = false;
 
-  constructor(private googleService: GoogleApiService) { }
+  //Variavel que recebe a imagem BASE no tipo file para mandar para o backend
+  fileBase: File;
+
+  constructor(private googleService: GoogleApiService,
+              private imageservice: ImageService) { }
 
   ngOnInit() {
     
@@ -158,8 +163,24 @@ export class AddImageComponent implements OnInit {
 
   salvarImage(){
     this.newImage.variaveis = this.listaVariaveis;
-    console.log(this.newImage);
-    console.log(this.img.src);
+    
+    //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
+    this.imageservice.adminPostImage(this.fileBase, this.newImage.name).subscribe(res => {
+      this.enviaVariaveis('id');
+      console.log(res);
+    }, err => {
+      console.log(err);
+    })
+    
+  }
+
+  enviaVariaveis(id: string){
+    //endpoint que utiliza o ID retornado para enviar os atributos da imagem (nome, tamanho, etc...)
+    this.imageservice.adminPostImageVariables(this.newImage, id).subscribe(res => {
+      console.log(res);
+    }, err => {
+      console.log(err);
+    })
   }
 
   onClickNext(number){
@@ -224,6 +245,7 @@ export class AddImageComponent implements OnInit {
       this.imageFixed = event.target.result;
     }.bind(this);
     reader.readAsDataURL(result.target.files[0]);
+    this.fileBase = result.target.files[0];
   }
   getImageThumb(result){
     var reader = new FileReader();

@@ -27,6 +27,18 @@ export class CustomImageComponent implements OnInit {
   ngOnInit() {
     // let id = this.route.snapshot.params.id;
     // this.imageService.getImageById(id).subscribe(response => {
+      // this.imgX = res.width; 
+      // this.imgY = res.height;
+      // this.imgPreview = new Image();
+
+      //também precisa pegar o array de variaveis e colocar no this.listaVariaveis
+
+      // this.imgPreview.src = res.s3Url;
+
+      // this.imgPreview.onload = function() {
+      //   this.constroiCanvasPreview();
+      // }.bind(this)
+
     //   console.log(response);
     // })
  
