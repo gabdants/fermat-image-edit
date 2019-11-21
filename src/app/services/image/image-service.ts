@@ -31,12 +31,12 @@ export class ImageService {
 
   adminPostImage(file: File, nomeDaPeca: string){
     let headers = new HttpHeaders({
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data; boundary=--------------------------212049611664365973243604'
     });
 
     let formData: FormData = new FormData();
 
-    formData.append('file', file);
+    formData.append('file', file, nomeDaPeca);
 
     return this.http.post<any>(`http://52.11.195.30:8181/image/uploadFile?name=${nomeDaPeca}`, formData, {headers});
 
