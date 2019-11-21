@@ -1,5 +1,5 @@
 <app-header></app-header>
-<div class="container">
+<div id="main-container" class="container">
   <div class="content-tabs">
     <mat-tab-group>
       <mat-tab label="First">
@@ -86,9 +86,16 @@
                   <input [(ngModel)]='variavel.textoModelo' [disabled]="!newImage.editavel" type='text' id='textoModelo' name='textoModelo' placeholder="Texto Modelo" #nameVerify="ngModel" required>
       
                   <input [(ngModel)]='variavel.obs' type='text' [disabled]="!newImage.editavel" id='obs' name='obs' placeholder="Observação" #nameVerify="ngModel" required>
-      
-                  <input [(ngModel)]='variavel.fonte' disabled type='text' id='fonte' name='fonte' placeholder="Fonte" #nameVerify="ngModel" required>
-    
+
+                  <mat-form-field style="width: 85%;">
+                    <mat-label>Escolha a fonte</mat-label>
+                    <mat-select id='fonte' name='fonte' (selectionChange)='mudaFonte();' [disabled]="!newImage.editavel" [(ngModel)]="selectedFont">
+                      <mat-option *ngFor="let font of googleFontsList" [value]="font">  
+                        {{font.family}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
                   <input [(ngModel)]='variavel.tamanho' type='number' min="0" [disabled]="!newImage.editavel" id='tamanho' name='tamanho' class="halfInput marginRight" placeholder="Tamanho" #nameVerify="ngModel" required>
     
                   <input [(ngModel)]='variavel.cor' type='color' [disabled]="!newImage.editavel" id='cor' name='cor' placeholder="Cor" class="halfInput" #nameVerify="ngModel" required>
