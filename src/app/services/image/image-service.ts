@@ -18,7 +18,7 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`${API_URL}:8181/image/approvedImages?imageId=${id}`, {headers});
+    return this.http.get<any>(`http://52.43.34.172:8181/image/approvedImages?imageId=${id}`, {headers});
   }
 
   getImagensMock(){
@@ -38,7 +38,7 @@ export class ImageService {
 
     formData.append('file', file);
 
-    return this.http.post<any>(`http://52.43.34.172:8181/image/uploadFile?name=${nomeDaPeca}`, formData, {headers});
+    return this.http.post<any>(`http://52.11.195.30:8181/image/uploadFile?name=${nomeDaPeca}`, formData, {headers});
 
   }
 
@@ -47,7 +47,7 @@ export class ImageService {
       'Content-Type': 'multipart/form-data'
     });
     
-    return this.http.post<any>(`http://52.43.34.172:8181/image/imageOpts?imageId=${imageID}`, newImage, {headers});
+    return this.http.post<any>(`http://52.11.195.30:8181/image/approvedImages?imageId=${imageID}`, newImage, {headers});
   }
 
 }

@@ -166,8 +166,8 @@ export class AddImageComponent implements OnInit {
     
     //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
     this.imageservice.adminPostImage(this.fileBase, this.newImage.name).subscribe(res => {
-      this.enviaVariaveis('id');
       console.log(res);
+      this.enviaVariaveis(res);
     }, err => {
       console.log(err);
     })
