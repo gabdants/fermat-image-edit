@@ -37,7 +37,7 @@ export class AddImageComponent implements OnInit {
   */
 
   newImage: NewImage = new NewImage("", "", "", "", "", "", "", true, true, []);
-  variavel: Variavel = new Variavel("", "", "", "Arial", "", "", "", true, "", ""); 
+  variavel: Variavel = new Variavel("", "", "", "", "", "", "", true, "", ""); 
   alinhamentos: any[] = ["center", "left", "right", "start", "end"];
 
   listaVariaveis: Variavel[] = [];
@@ -52,6 +52,9 @@ export class AddImageComponent implements OnInit {
   flagEvents = true;
   flagAdd = false;
 
+  googleFontsList: any[] = [];
+  selectedFont: any;
+
   //Variavel que recebe a imagem BASE no tipo file para mandar para o backend
   fileBase: File;
 
@@ -59,7 +62,13 @@ export class AddImageComponent implements OnInit {
               private imageservice: ImageService) { }
 
   ngOnInit() {
-    
+    this.googleService.getGoogleFonts().subscribe((res: any) => {
+      console.log(res.items);
+      this.googleFontsList = res.items;
+    }, err => {
+      console.log(err);
+      alert('Impossível carregar fontes do google. Favor contatar um administrador do sistema.')
+    })
   } 
 
   addVariavel(){
@@ -68,7 +77,7 @@ export class AddImageComponent implements OnInit {
       alert('Favor preencher o título da variável')
     }else if(this.variavel.textoModelo == ''){
       alert('Favor preencher o texto modelo da variável')
-    }else if(this.variavel.fonte == ''){
+    }else if(this.selectedFont == undefined){
       alert('Favor preencher a fonte da variável')
     }else if(this.variavel.tamanho == ''){
       alert('Favor preencher o tamanho da variável')
@@ -153,7 +162,10 @@ export class AddImageComponent implements OnInit {
             floatText.removeChild(floatText.childNodes[0]);
 
             this.listaVariaveis.push(this.variavel);
-            this.variavel = new Variavel("", "", "", "Arial", "", "", "", true, "", "");
+            //instancia uma nova variavel
+            this.variavel = new Variavel("", "", "", "", "", "", "", true, "", "");
+            //limpa a fonte selecionada
+            this.selectedFont = undefined;
               //flag para esconder botão cancelar
               this.flagAdd = false;
           }
@@ -322,5 +334,36 @@ export class AddImageComponent implements OnInit {
       
       this.ctx.fillText(variavel.textoModelo, +variavel.cordX, +variavel.cordY);
     });
+  }
+
+  mudaFonte(){
+    //assim que selecionar a fonte, seta na variavel
+    this.variavel.fonte = this.selectedFont.family;
+    //seleciona a url (mais para frente, implementar a opção de escolher ao usuário https://www.webcis.com.br/utilizando-font-face-tipografia-web.html)
+    let src = '';
+    //busca pelo regular
+    if(this.selectedFont.files.regular){
+      src = this.selectedFont.files.regular;
+    }else{
+      src = this.selectedFont.files[0];
+    }
+    //cria o @fontface
+    let style = `
+    @font-face {
+      font-family: '${this.selectedFont.family}';
+      src: url(${src}) format('opentype');
+    }
+    `;
+
+    //adiciona a fonte no DOM
+    const node = document.createElement('style');
+    node.innerHTML = style; 
+    document.head.appendChild(node);
+
+    setTimeout(() => {
+      document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
+    }, 1000);
+
+    console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
   }
 }
