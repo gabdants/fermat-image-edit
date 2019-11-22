@@ -34,15 +34,15 @@ export class ImageService {
       'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
     });
 
-    let formData = new FormData();
-    console.log(file)
+    let formData: FormData = new FormData();
+    file = file
 
-    formData.append('file', file);
+    formData.append('file', file, file.name);
     console.log(formData)
-    var option = { 'file': file };
+    var option = { file: file };
     console.log(option)
 
-    return this.http.post<any>(`http://34.220.175.217:8181/image/uploadFile?name=${nomeDaPeca}`, option.file, {headers});
+    return this.http.post<any>(`http://52.43.50.97:8181/image/uploadFile?name=${nomeDaPeca}`, option, {headers});
 
   }
 
@@ -59,7 +59,7 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://34.220.175.217:8181/image/all`, {headers});
+    return this.http.get<any>(`https://nswn2k45r4.execute-api.us-west-2.amazonaws.com/dev/image/all`, {headers});
   }
 
 }

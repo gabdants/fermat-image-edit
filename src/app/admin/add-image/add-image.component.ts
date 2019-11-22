@@ -3,12 +3,22 @@ import { NewImage } from 'src/typings/newImage';
 import { Variavel } from 'src/typings/variavel';
 import { GoogleApiService } from 'src/app/services/commom/google-api.service';
 import { ImageService } from 'src/app/services/image/image-service';
+import { CategoryService } from '../../services/category/category-service';
+
+interface Category {
+  name: string;
+  children?: Category[];
+}
+
+var TREE_DATA: Category[] = [
+];
 
 @Component({
   selector: 'app-add-image',
   templateUrl: './add-image.component.html',
   styleUrls: ['./add-image.component.scss']
 })
+
 export class AddImageComponent implements OnInit {
 
   //DOCUMENTAÇÃO
@@ -42,6 +52,9 @@ export class AddImageComponent implements OnInit {
 
   listaVariaveis: Variavel[] = [];
 
+  categorias: Category[];
+  selectCategorias: string[] = [];
+
   //variáveis canvas
   @ViewChild('canvas') canvas: ElementRef<HTMLCanvasElement>;
   ctx: CanvasRenderingContext2D;
@@ -58,7 +71,8 @@ export class AddImageComponent implements OnInit {
   //Variavel que recebe a imagem BASE no tipo file para mandar para o backend
   fileBase: File;
 
-  constructor(private googleService: GoogleApiService,
+  constructor(private categoryService: CategoryService,
+              private googleService: GoogleApiService,
               private imageservice: ImageService) { }
 
   ngOnInit() {
@@ -68,8 +82,55 @@ export class AddImageComponent implements OnInit {
     }, err => {
       console.log(err);
       alert('Impossível carregar fontes do google. Favor contatar um administrador do sistema.')
-    })
+    });
+    this.carregaMenu();
+
   } 
+  async carregaMenu(){
+    TREE_DATA = []
+    await this.categoryService.getCategory().subscribe(response => {
+      console.log(response);
+      
+      response.map(item => {
+        let aux = {
+          id: '',
+          name: '',
+          children: [{
+            name: '',
+            id: '',
+          }]
+        }
+        aux.name = '';
+        aux.children = []
+        aux.id = ''
+        aux.name = item.name;
+        aux.id = item.idCategory;
+        this.selectCategorias.push(item.name);
+        if(item.subCategories){
+          item.subCategories.map(subItem => {
+            let auxChildren = {
+              name: '',
+              id: '',
+            }
+            auxChildren.name = '';
+            auxChildren.id = '';
+            auxChildren.name = subItem.name
+            auxChildren.id = subItem.idSubCategory
+            aux.children.push(auxChildren);
+            this.selectCategorias.push(`${subItem.name} > ${item.name}`);
+
+          });
+        }
+        
+        console.log(aux);
+        TREE_DATA.push(aux);
+        console.log(TREE_DATA)
+
+      })
+      this.categorias = TREE_DATA
+      
+    });
+  }
 
   addVariavel(){
   //validações para criação da variável (título, texto modelo, observação...)

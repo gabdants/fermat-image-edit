@@ -28,7 +28,15 @@
                 <input [(ngModel)]='newImage.obsPrint'  type='text' id='txtCrm' name='txtCrm' placeholder="Observações adicionais sobre a impressão" #nameVerify="ngModel" required>
     
                 <label for='txtUf'>Categoria</label>
-                <input [(ngModel)]='newImage.categoria' type='text' id='txtUf' name='txtUf' placeholder="Categoria" #nameVerify="ngModel" required>
+                <!-- <input [(ngModel)]='newImage.categoria' type='text' id='txtUf' name='txtUf' placeholder="Categoria" #nameVerify="ngModel" required> -->
+                <mat-form-field>
+                  <mat-label>Categoria</mat-label>
+                  <mat-select>
+                    <mat-option *ngFor="let item of selectCategorias" [value]="item" [(ngModel)]='newImage.categoria'>
+                      {{item}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
   
                 <mat-slide-toggle [checked]="newImage.aprovacao" (change)="newImage.aprovacao = !newImage.aprovacao">Precisa de aprovação</mat-slide-toggle>
   
