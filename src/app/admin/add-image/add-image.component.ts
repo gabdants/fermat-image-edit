@@ -354,18 +354,12 @@ export class AddImageComponent implements OnInit {
 
     //adiciona a fonte no DOM
     const node = document.createElement('style');
-    node.innerHTML = style;
+    node.innerHTML = style; 
     document.head.appendChild(node);
 
-    //cria um elemento com a fonte para baixá-la
-    let genElem = document.createElement('p');
-    genElem.id = 'fontLoader'
-    document.body.append(genElem);
-
     setTimeout(() => {
-      //adiciona o estilo
-      document.getElementById('fontLoader').style.fontFamily = this.selectedFont.family;
-    }, 2000);
+      document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
+    }, 1000);
 
     console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
   }
