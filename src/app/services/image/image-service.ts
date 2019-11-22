@@ -31,27 +31,23 @@ export class ImageService {
 
   adminPostImage(file: File, nomeDaPeca: string){
     let headers = new HttpHeaders({
-      'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
+      'Accept': 'text/plain',
     });
 
     let formData: FormData = new FormData();
-    file = file
 
     formData.append('file', file, file.name);
-    console.log(formData)
-    var option = { file: file };
-    console.log(option)
 
-    return this.http.post<any>(`http://52.43.50.97:8181/image/uploadFile?name=${nomeDaPeca}`, option, {headers});
+    return this.http.post<any>(`http://52.43.50.97:8181/image/uploadFile?name=${nomeDaPeca}`, formData, {
+      headers,
+      responseType: "text" as "json"
+    });
 
   }
 
   adminPostImageVariables(newImage: NewImage, imageID: string){
-    let headers = new HttpHeaders({
-      'Content-Type': 'multipart/form-data'
-    });
     
-    return this.http.post<any>(`http://52.11.195.30:8181/image/approvedImages?imageId=${imageID}`, newImage, {headers});
+    return this.http.post<any>(`http://52.11.195.30:8181/image/approvedImages?imageId=${imageID}`, newImage);
   }
 
   getAllImages(){

@@ -31,8 +31,8 @@
                 <!-- <input [(ngModel)]='newImage.categoria' type='text' id='txtUf' name='txtUf' placeholder="Categoria" #nameVerify="ngModel" required> -->
                 <mat-form-field>
                   <mat-label>Categoria</mat-label>
-                  <mat-select>
-                    <mat-option *ngFor="let item of selectCategorias" [value]="item" [(ngModel)]='newImage.categoria'>
+                  <mat-select id='categ' name='categ' [disabled]="!newImage.editavel" [(ngModel)]='newImage.categoria'>
+                    <mat-option *ngFor="let item of selectCategorias" [value]="item">
                       {{item}}
                     </mat-option>
                   </mat-select>
