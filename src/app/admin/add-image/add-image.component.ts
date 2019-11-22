@@ -127,6 +127,9 @@ export class AddImageComponent implements OnInit {
             //Recupera as posições od click
             let posX = event.offsetX;
             let posY = event.offsetY;
+            console.log(this.variavel);
+            console.log('x', posX)
+            console.log('y', posY)
 
             //volta com o canvas da imagem base e esconde o Thumb
             cvThumb.style.display = 'none';

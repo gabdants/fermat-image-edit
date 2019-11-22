@@ -42,81 +42,26 @@
 
         <!-- Fotos para download ou edição -->
         <div *ngIf="!semFotos" class="toEdit">
-          <div class="singleImage">
-            <img src="../../assets/images/bg-login.png">
-            <h4>Necessidades básica cão</h4>
+          <div class="singleImage" *ngFor="let imagem of imagens">
+            <img src="{{imagem.s3Url}}">
+            <h4>{{imagem.name}}</h4>
             <div class="tagsImage">
-              <p>Editável</p>
-              <p>Papel: A4</p>
+              <p *ngIf="imagem.editable">Editável</p>
+              <p *ngIf="!imagem.editable">Não editável</p>
+              <!-- <p>Papel: A4</p>
               <p>Obs</p>
               <p>Obs</p>
               <p>Obs</p>
               <p>Obs</p>
               <p>Obs</p>
-              <p>Obs</p>
+              <p>Obs</p> -->
             </div>
             <div class="btnImagesEdit">
-              <button class="orange-button">Download</button>
-              <button class="orange-button" (click)="chamaEdicao()">Personalizar</button>
+              <button class="orange-button" (click)="chamaDownload(imagem.idImage)">Download</button>
+              <button class="orange-button" (click)="chamaEdicao(imagem.idImage)">Personalizar</button>
             </div>
           </div>
 
-          <div class="singleImage">
-              <img src="../../assets/images/jimmy.jpg">
-              <h4>Necessidades básica cão</h4>
-              <div class="tagsImage">
-                <p>Editável</p>
-                <p>Papel: A4</p>
-                <p>Obs</p>
-                <p>Obs</p>
-                <p>Obs</p>
-                <p>Obs</p>
-                <p>Obs</p>
-                <p>Obs</p>
-              </div>
-              <div class="btnImagesEdit">
-                <button class="orange-button">Download</button>
-                <button class="orange-button" (click)="chamaEdicao()">Personalizar</button>
-              </div>
-            </div>
-
-            <div class="singleImage">
-                <img src="../../assets/images/bg-login.png">
-                <h4>Necessidades básica cão</h4>
-                <div class="tagsImage">
-                  <p>Editável</p>
-                  <p>Papel: A4</p>
-                  <p>Obs</p>
-                  <p>Obs</p>
-                  <p>Obs</p>
-                  <p>Obs</p>
-                  <p>Obs</p>
-                  <p>Obs</p>
-                </div>
-                <div class="btnImagesEdit">
-                  <button class="orange-button">Download</button>
-                  <button class="orange-button" (click)="chamaEdicao()">Personalizar</button>
-                </div>
-              </div>
-
-              <div class="singleImage">
-                  <img src="../../assets/images/bg-login.png">
-                  <h4>Necessidades básica cão</h4>
-                  <div class="tagsImage">
-                    <p>Editável</p>
-                    <p>Papel: A4</p>
-                    <p>Obs</p>
-                    <p>Obs</p>
-                    <p>Obs</p>
-                    <p>Obs</p>
-                    <p>Obs</p>
-                    <p>Obs</p>
-                  </div>
-                  <div class="btnImagesEdit">
-                    <button class="orange-button">Download</button>
-                    <button class="orange-button" (click)="chamaEdicao()">Personalizar</button>
-                  </div>
-                </div>
         </div>
       </div>
       <!-- <div *ngIf="isAdmin" class="toApproveBox">

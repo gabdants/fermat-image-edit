@@ -31,14 +31,18 @@ export class ImageService {
 
   adminPostImage(file: File, nomeDaPeca: string){
     let headers = new HttpHeaders({
-      'Content-Type': 'multipart/form-data; boundary=--------------------------212049611664365973243604'
+      'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
     });
 
-    let formData: FormData = new FormData();
+    let formData = new FormData();
+    console.log(file)
 
-    formData.append('file', file, nomeDaPeca);
+    formData.append('file', file);
+    console.log(formData)
+    var option = { 'file': file };
+    console.log(option)
 
-    return this.http.post<any>(`http://52.11.195.30:8181/image/uploadFile?name=${nomeDaPeca}`, formData, {headers});
+    return this.http.post<any>(`http://34.220.175.217:8181/image/uploadFile?name=${nomeDaPeca}`, option.file, {headers});
 
   }
 
@@ -48,6 +52,14 @@ export class ImageService {
     });
     
     return this.http.post<any>(`http://52.11.195.30:8181/image/approvedImages?imageId=${imageID}`, newImage, {headers});
+  }
+
+  getAllImages(){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.get<any>(`http://34.220.175.217:8181/image/all`, {headers});
   }
 
 }

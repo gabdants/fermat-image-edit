@@ -3,6 +3,8 @@ import {FlatTreeControl} from '@angular/cdk/tree';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { CategoryService } from '../services/category/category-service';
 import { Router } from '@angular/router';
+import { ImageService } from '../services/image/image-service';
+import { Image } from '../../typings/imagem';
 
 
 
@@ -27,11 +29,15 @@ interface ExampleFlatNode {
 
 export class DashboardComponent implements OnInit {
 
-  constructor(private categoryService: CategoryService, private router: Router) {
+  constructor(private categoryService: CategoryService, private router: Router, private imageService: ImageService) {
     
    }
   isAdmin = true;
   semFotos = false;
+
+  // imagem: Image = new Image(false, false, "", "", false, [], "", "", "", "", "", "", "", "", ""); 
+  imagens: Image[] = [];
+
 
   private _transformer = (node: FoodNode, level: number) => {
     return {
@@ -53,6 +59,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.carregaMenu();
+    this.carregaImagens();
   }
 
   async carregaMenu(){
@@ -74,17 +81,20 @@ export class DashboardComponent implements OnInit {
         aux.id = ''
         aux.name = item.name;
         aux.id = item.idCategory;
-        item.subCategories.map(subItem => {
-          let auxChildren = {
-            name: '',
-            id: '',
-          }
-          auxChildren.name = '';
-          auxChildren.id = '';
-          auxChildren.name = subItem.name
-          auxChildren.id = subItem.idSubCategory
-          aux.children.push(auxChildren);
-        });
+        if(item.subCategories){
+          item.subCategories.map(subItem => {
+            let auxChildren = {
+              name: '',
+              id: '',
+            }
+            auxChildren.name = '';
+            auxChildren.id = '';
+            auxChildren.name = subItem.name
+            auxChildren.id = subItem.idSubCategory
+            aux.children.push(auxChildren);
+          });
+        }
+        
         console.log(aux);
         TREE_DATA.push(aux);
         console.log(TREE_DATA)
@@ -93,13 +103,24 @@ export class DashboardComponent implements OnInit {
       this.dataSource.data = TREE_DATA;
     });
   }
+
+  async carregaImagens(){
+    await this.imageService.getAllImages().subscribe(response => {
+      console.log(response);
+      response.map(item => {
+        this.imagens.push(item);
+      })
+      console.log(this.imagens)
+    })
+  }
   selecionaMenu(nome){
     console.log(nome)
   }
   callAddImage(){
     this.router.navigateByUrl('addImage');
   }
-  chamaEdicao(){
+  chamaEdicao(id){
+    console.log(id)
     this.router.navigateByUrl('editImage/d914defb-fd4e-437e-bdf7-cf45e08d6f56')
   }
 
