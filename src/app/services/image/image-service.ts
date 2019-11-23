@@ -3,6 +3,7 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Variavel } from 'src/typings/variavel';
 import { NewImage } from 'src/typings/newImage';
+import { ImageVariables } from 'src/typings/imageVariables';
 
 const API_URL = environment.apiUrl;
 
@@ -18,7 +19,7 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://52.43.34.172:8181/image/approvedImages?imageId=${id}`, {headers});
+    return this.http.get<any>(`http://api.petlandtech.com/v1/image/approvedImages?imageId=${id}`, {headers});
   }
 
   getImagensMock(){
@@ -38,7 +39,7 @@ export class ImageService {
 
     formData.append('file', file, file.name);
 
-    return this.http.post<any>(`http://52.43.50.97:8181/image/uploadFile?name=${nomeDaPeca}`, formData, {
+    return this.http.post<any>(`http://api.petlandtech.com/v1/image/uploadFile?name=${nomeDaPeca}`, formData, {
       headers,
       responseType: "text" as "json"
     });
@@ -46,8 +47,25 @@ export class ImageService {
   }
 
   adminPostImageVariables(newImage: NewImage, imageID: string){
-    
-    return this.http.post<any>(`http://52.11.195.30:8181/image/approvedImages?imageId=${imageID}`, newImage);
+
+    //Necessidade de realizar um cast pois o idiota do dantas escreveu os parametros tudo em inglês
+    let variables: ImageVariables = new ImageVariables(
+      newImage.editavel,
+      newImage.aprovacao,
+      "admin",
+      !newImage.aprovacao,
+      newImage.acabamento,
+      newImage.categoria,
+      newImage.fmtAberto,
+      newImage.fmtFechado,
+      "",
+      "",
+      newImage.variaveis
+    )
+
+    return this.http.post<any>(`http://api.petlandtech.com/v1/image/imageOpts?imageId=${imageID}`, {
+      
+    });
   }
 
   getAllImages(){
@@ -55,7 +73,7 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`https://nswn2k45r4.execute-api.us-west-2.amazonaws.com/dev/image/all`, {headers});
+    return this.http.get<any>(`http://api.petlandtech.com/v1/image/all`, {headers});
   }
 
 }
