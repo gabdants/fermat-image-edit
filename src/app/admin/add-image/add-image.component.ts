@@ -4,6 +4,7 @@ import { Variavel } from 'src/typings/variavel';
 import { GoogleApiService } from 'src/app/services/commom/google-api.service';
 import { ImageService } from 'src/app/services/image/image-service';
 import { CategoryService } from '../../services/category/category-service';
+import { Router } from '@angular/router';
 
 interface Category {
   name: string;
@@ -73,7 +74,8 @@ export class AddImageComponent implements OnInit {
 
   constructor(private categoryService: CategoryService,
               private googleService: GoogleApiService,
-              private imageservice: ImageService) { }
+              private imageservice: ImageService,
+              private router: Router) { }
 
   ngOnInit() {
     this.googleService.getGoogleFonts().subscribe((res: any) => {
@@ -255,6 +257,7 @@ export class AddImageComponent implements OnInit {
     //endpoint que utiliza o ID retornado para enviar os atributos da imagem (nome, tamanho, etc...)
     this.imageservice.adminPostImageVariables(this.newImage, id, this.img.width, this.img.height).subscribe(res => {
       console.log(res);
+      this.router.navigateByUrl('dashboard')
     }, err => {
       console.log(err);
     })

@@ -25,40 +25,43 @@ export class CustomImageComponent implements OnInit {
   savedImageURL: string;
 
   ngOnInit() {
-    // let id = this.route.snapshot.params.id;
-    // this.imageService.getImageById(id).subscribe(response => {
-      // this.imgX = res.width; 
-      // this.imgY = res.height;
-      // this.imgPreview = new Image();
+     let id = this.route.snapshot.params.id;
+    this.imageService.getImageById(id).subscribe((response:any) => {
+      this.imgX = response.width; 
+      this.imgY = response.height;
+      this.imgPreview = new Image();
 
       //também precisa pegar o array de variaveis e colocar no this.listaVariaveis
 
-      // this.imgPreview.src = res.s3Url;
-
-      // this.imgPreview.onload = function() {
-      //   this.constroiCanvasPreview();
-      // }.bind(this)
-
-    //   console.log(response);
-    // })
- 
-    this.imageService.getImagensMock().subscribe((res) => {
-      console.log(res);
-      this.imgPreview = new Image();
-      this.imgX = res[0].imageSizeX; 
-      this.imgY = res[0].imageSizeY;
-
-      this.imgPreview.src = res[0].imageUrl;
+      this.imgPreview.src = response.s3Url;
 
       this.imgPreview.onload = function() {
         this.constroiCanvasPreview();
       }.bind(this)
-    })
 
-    this.imageService.getVariaveisMock().subscribe((res) => {
-      console.log(res);
-      this.listaVariaveis = res;
-    })
+      console.log(response);
+     },err => {
+       console.log(err);
+     })
+ 
+    // this.imageService.getImagensMock().subscribe((res) => {
+    //   console.log(res);
+    //   this.imgPreview = new Image();
+    //   this.imgX = res[0].imageSizeX; 
+    //   this.imgY = res[0].imageSizeY;
+
+    //   this.imgPreview.src = res[0].imageUrl;
+
+    //   this.imgPreview.onload = function() {
+    //     this.constroiCanvasPreview();
+    //   }.bind(this)
+    // })
+    
+
+    // this.imageService.getVariaveisMock().subscribe((res) => {
+    //   console.log(res);
+    //   this.listaVariaveis = res;
+    // })
 
   }
 

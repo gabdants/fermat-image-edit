@@ -6,7 +6,7 @@ export class Variables{
     fontFamily: string;
     fontSize: string;
     allign: string;
-    collor: string;
+    color: string;
     required: boolean;
     modelText: string;
     title: string;
@@ -18,7 +18,7 @@ export class Variables{
                 fontFamily: string,
                 fontSize: string,
                 allign: string,
-                collor: string,
+                color: string,
                 required: boolean,
                 modelText: string,
                 title: string){
@@ -30,7 +30,7 @@ export class Variables{
         this.fontFamily = fontFamily;
         this.fontSize = fontSize;
         this.allign = allign;
-        this.collor = collor;            
+        this.color = color;            
         this.required = required;            
         this.modelText = modelText;            
         this.title = title;            

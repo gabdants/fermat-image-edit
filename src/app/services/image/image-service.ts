@@ -68,7 +68,8 @@ export class ImageService {
       fields.push(variable);
     });
 
-    console.log('Variaveis: ' + fields);
+    console.log('Variaveis: ');
+    console.log(fields);
 
     //Necessidade de realizar um cast pois o idiota do dantas escreveu os parametro tudo em inglês
     let variables: ImageVariables = new ImageVariables(
@@ -85,7 +86,8 @@ export class ImageService {
       fields
     )
 
-    console.log('final: ' + variables)
+    console.log('final: ');
+    console.log(variables);
 
     return this.http.post<any>(`http://52.43.50.97:8181/image/imageOpts?imageId=${imageID}`, variables);
   }
@@ -95,7 +97,7 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://api.petlandtech.com/v1/image/all`, {headers});
+    return this.http.get<any>(`http://52.43.50.97:8181/image/all`, {headers});
   }
 
 }
