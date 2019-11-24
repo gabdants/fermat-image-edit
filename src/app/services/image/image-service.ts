@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Variavel } from 'src/typings/variavel';
 import { NewImage } from 'src/typings/newImage';
 import { ImageVariables } from 'src/typings/imageVariables';
+import { Variavel } from 'src/typings/variavel';
+import { Variables } from 'src/typings/variables';
 
 const API_URL = environment.apiUrl;
 
@@ -22,14 +23,6 @@ export class ImageService {
     return this.http.get<any>(`http://api.petlandtech.com/v1/image/approvedImages?imageId=${id}`, {headers});
   }
 
-  getImagensMock(){
-    return this.http.get<any>('http://localhost:3000/imagens');
-  }
-
-  getVariaveisMock(){
-    return this.http.get<Variavel[]>('http://localhost:3000/variaveis');
-  }
-
   adminPostImage(file: File, nomeDaPeca: string){
     let headers = new HttpHeaders({
       'Accept': 'text/plain',
@@ -39,16 +32,45 @@ export class ImageService {
 
     formData.append('file', file, file.name);
 
-    return this.http.post<any>(`http://api.petlandtech.com/v1/image/uploadFile?name=${nomeDaPeca}`, formData, {
+    return this.http.post<any>(`http://52.43.50.97:8181/image/uploadFile?name=${nomeDaPeca}`, formData, {
       headers,
       responseType: "text" as "json"
     });
 
   }
 
-  adminPostImageVariables(newImage: NewImage, imageID: string){
+  getImagensMock(){
+    return this.http.get<any>('http://localhost:3000/imagens');
+  }
 
-    //Necessidade de realizar um cast pois o idiota do dantas escreveu os parametros tudo em inglês
+  getVariaveisMock(){ 
+    return this.http.get<Variavel[]>('http://localhost:3000/variaveis');
+  }
+
+  adminPostImageVariables(newImage: NewImage, imageID: string, imgBaseWidth: number, imgBaseHeight: number ){
+    console.log('post variables!')
+    let fields: Variables[] = [];
+    //Necessidade de realizar um cast pois o idiota do dantas escreveu os parametro tudo em inglês
+    newImage.variaveis.forEach(element => {
+      let variable: Variables = new Variables(
+                                              element.titulo, 
+                                              element.cordX, 
+                                              element.cordY, 
+                                              element.obs, 
+                                              element.fonte, 
+                                              element.tamanho, 
+                                              element.alinhamento, 
+                                              element.cor, 
+                                              element.obrigatorio,
+                                              element.textoModelo,
+                                              element.titulo
+                                              );
+      fields.push(variable);
+    });
+
+    console.log('Variaveis: ' + fields);
+
+    //Necessidade de realizar um cast pois o idiota do dantas escreveu os parametro tudo em inglês
     let variables: ImageVariables = new ImageVariables(
       newImage.editavel,
       newImage.aprovacao,
@@ -58,14 +80,14 @@ export class ImageService {
       newImage.categoria,
       newImage.fmtAberto,
       newImage.fmtFechado,
-      "",
-      "",
-      newImage.variaveis
+      imgBaseHeight,
+      imgBaseWidth, 
+      fields
     )
 
-    return this.http.post<any>(`http://api.petlandtech.com/v1/image/imageOpts?imageId=${imageID}`, {
-      
-    });
+    console.log('final: ' + variables)
+
+    return this.http.post<any>(`http://52.43.50.97:8181/image/imageOpts?imageId=${imageID}`, variables);
   }
 
   getAllImages(){

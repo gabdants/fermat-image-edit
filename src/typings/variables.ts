@@ -1,0 +1,38 @@
+export class Variables{
+    name: string;
+    cordX: string;
+    cordY: string;
+    obs: string;
+    fontFamily: string;
+    fontSize: string;
+    allign: string;
+    collor: string;
+    required: boolean;
+    modelText: string;
+    title: string;
+
+    constructor(name: string,
+                cordX: string,
+                cordY: string,
+                obs: string,
+                fontFamily: string,
+                fontSize: string,
+                allign: string,
+                collor: string,
+                required: boolean,
+                modelText: string,
+                title: string){
+
+        this.name = name;
+        this.cordX = cordX;
+        this.cordY = cordY;
+        this.obs = obs;
+        this.fontFamily = fontFamily;
+        this.fontSize = fontSize;
+        this.allign = allign;
+        this.collor = collor;            
+        this.required = required;            
+        this.modelText = modelText;            
+        this.title = title;            
+    }
+}

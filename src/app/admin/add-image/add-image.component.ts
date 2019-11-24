@@ -239,24 +239,21 @@ export class AddImageComponent implements OnInit {
 
   salvarImage(){
     this.newImage.variaveis = this.listaVariaveis;
-
-    console.log(this.newImage);
     
-    
-    // //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
-    // this.imageservice.adminPostImage(this.fileBase, this.newImage.name).subscribe(res => {
-    //   console.log(res);
-    //   //Ultima atualização do Dantas, o res já é o ID da imagem
-    //   this.enviaVariaveis(res);
-    // }, err => {
-    //   console.log(err);
-    // })
+    //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
+    this.imageservice.adminPostImage(this.fileBase, this.newImage.name).subscribe(res => {
+      console.log('Token: ' + res);
+      //Ultima atualização do Dantas, o res já é o ID da imagem
+      this.enviaVariaveis(res);
+    }, err => {
+      console.log(err);
+    })
     
   }
 
   enviaVariaveis(id: string){
     //endpoint que utiliza o ID retornado para enviar os atributos da imagem (nome, tamanho, etc...)
-    this.imageservice.adminPostImageVariables(this.newImage, id).subscribe(res => {
+    this.imageservice.adminPostImageVariables(this.newImage, id, this.img.width, this.img.height).subscribe(res => {
       console.log(res);
     }, err => {
       console.log(err);

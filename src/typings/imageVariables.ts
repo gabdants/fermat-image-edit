@@ -7,8 +7,8 @@
     category: string;
     openFormat: string;
     closedFormat: string;
-    height: string;
-    width: string;
+    height: number;
+    width: number;
     field: any[]
 
     constructor(editable: boolean,
@@ -19,8 +19,8 @@
         category: string,
         openFormat: string,
         closedFormat: string,
-        height: string,
-        width: string,
+        height: number,
+        width: number,
         field: any[]){
 
         this.editable = editable;
