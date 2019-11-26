@@ -20,7 +20,7 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://api.petlandtech.com/v1/image/approvedImages?imageId=${id}`, {headers});
+    return this.http.get<any>(`http://52.43.50.97:8181/image/approvalImages?imageId=${id}`, {headers});
   }
 
   adminPostImage(file: File, nomeDaPeca: string){
@@ -98,6 +98,14 @@ export class ImageService {
     });
 
     return this.http.get<any>(`http://52.43.50.97:8181/image/all`, {headers});
+  }
+
+  getFields(id){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.get<any>(`http://52.43.50.97:8181/image/imageFields?imageId=${id}`, {headers});
   }
 
 }

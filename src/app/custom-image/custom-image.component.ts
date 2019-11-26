@@ -17,7 +17,7 @@ export class CustomImageComponent implements OnInit {
   @ViewChild('canvasPreview') canvasPreview: ElementRef<HTMLCanvasElement>;
   ctxPreview: CanvasRenderingContext2D;
 
-  listaVariaveis: Variavel[];
+  listaVariaveis: Variavel[] = [];
   imgPreview: HTMLImageElement;
   imgX: string;
   imgY: string;
@@ -25,13 +25,21 @@ export class CustomImageComponent implements OnInit {
   savedImageURL: string;
 
   ngOnInit() {
-     let id = this.route.snapshot.params.id;
+    let id = this.route.snapshot.params.id;
     this.imageService.getImageById(id).subscribe((response:any) => {
+      console.log(response)
       this.imgX = response.width; 
       this.imgY = response.height;
       this.imgPreview = new Image();
 
       //também precisa pegar o array de variaveis e colocar no this.listaVariaveis
+
+      this.imageService.getFields(id).subscribe(fields => {
+        console.log(fields);
+        fields.forEach(item => {
+          this.listaVariaveis.push(new Variavel(item.name, item.modelText, item.obs, item.fontFamily, item.fontSize, item.color, item.allign, item.required, item.cordX, item.cordY))
+        })
+      })
 
       this.imgPreview.src = response.s3Url;
 
@@ -40,9 +48,9 @@ export class CustomImageComponent implements OnInit {
       }.bind(this)
 
       console.log(response);
-     },err => {
+    },err => {
        console.log(err);
-     })
+    })
  
     // this.imageService.getImagensMock().subscribe((res) => {
     //   console.log(res);

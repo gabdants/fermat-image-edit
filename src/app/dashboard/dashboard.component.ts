@@ -121,7 +121,7 @@ export class DashboardComponent implements OnInit {
   }
   chamaEdicao(id){
     console.log(id)
-    this.router.navigateByUrl('editImage/d914defb-fd4e-437e-bdf7-cf45e08d6f56')
+    this.router.navigateByUrl(`editImage/${id}`)
   }
 
 }
