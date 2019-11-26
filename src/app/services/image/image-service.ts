@@ -3,7 +3,6 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { NewImage } from 'src/typings/newImage';
 import { ImageVariables } from 'src/typings/imageVariables';
-import { Variavel } from 'src/typings/variavel';
 import { Variables } from 'src/typings/variables';
 
 const API_URL = environment.apiUrl;
@@ -20,7 +19,7 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://52.43.50.97:8181/image/approvalImages?imageId=${id}`, {headers});
+    return this.http.get<any>(`http://54.218.22.220:8181/image/approvalImages?imageId=${id}`, {headers});
   }
 
   adminPostImage(file: File, nomeDaPeca: string){
@@ -32,19 +31,11 @@ export class ImageService {
 
     formData.append('file', file, file.name);
 
-    return this.http.post<any>(`http://52.43.50.97:8181/image/uploadFile?name=${nomeDaPeca}`, formData, {
+    return this.http.post<any>(`http://54.218.22.220:8181/image/uploadFile?name=${nomeDaPeca}`, formData, {
       headers,
       responseType: "text" as "json"
     });
 
-  }
-
-  getImagensMock(){
-    return this.http.get<any>('http://localhost:3000/imagens');
-  }
-
-  getVariaveisMock(){ 
-    return this.http.get<Variavel[]>('http://localhost:3000/variaveis');
   }
 
   adminPostImageVariables(newImage: NewImage, imageID: string, imgBaseWidth: number, imgBaseHeight: number ){
@@ -89,7 +80,7 @@ export class ImageService {
     console.log('final: ');
     console.log(variables);
 
-    return this.http.post<any>(`http://52.43.50.97:8181/image/imageOpts?imageId=${imageID}`, variables);
+    return this.http.post<any>(`http://54.218.22.220:8181/image/imageOpts?imageId=${imageID}`, variables);
   }
 
   getAllImages(){
@@ -97,7 +88,7 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://52.43.50.97:8181/image/all`, {headers});
+    return this.http.get<any>(`http://54.218.22.220:8181/image/all`, {headers});
   }
 
   getFields(id){
@@ -105,7 +96,7 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://52.43.50.97:8181/image/imageFields?imageId=${id}`, {headers});
+    return this.http.get<any>(`http://54.218.22.220:8181/image/imageFields?imageId=${id}`, {headers});
   }
 
 }

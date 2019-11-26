@@ -22,6 +22,8 @@ export class CustomImageComponent implements OnInit {
   imgX: string;
   imgY: string;
 
+  flagPreview: boolean = true;
+
   savedImageURL: string;
 
   ngOnInit() {
@@ -41,13 +43,15 @@ export class CustomImageComponent implements OnInit {
         })
       })
 
-      this.imgPreview.src = response.s3Url;
-
+      setTimeout(() => {
+        this.imgPreview.src = response.s3Url;  
+        this.imgPreview.crossOrigin = 'anonymous';
+      }, 400); 
+      
       this.imgPreview.onload = function() {
         this.constroiCanvasPreview();
       }.bind(this)
-
-      console.log(response);
+      
     },err => {
        console.log(err);
     })
@@ -86,10 +90,9 @@ export class CustomImageComponent implements OnInit {
   }
 
   chamaPreview(){
-    //Guarda o base64 do canvas atual
-    this.savedImageURL = this.canvasPreview.nativeElement.toDataURL();
-
-
+    //EXEMPLO DE COMO ABAIXAR A QUALIDADE DA IMAGEM
+    //console.log(this.canvasPreview.nativeElement.toDataURL('image/jpeg', 0.4));
+    
     //Cria um canvas na memória
     let cvWaterMark = document.createElement('canvas');
     //Seta width e height
@@ -99,35 +102,45 @@ export class CustomImageComponent implements OnInit {
     let ctxWaterMark = cvWaterMark.getContext('2d');
 
     //Inicia a marca d'agua
-    let img=new Image();
-    img.crossOrigin='anonymous';
+    let img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = this.canvasPreview.nativeElement.toDataURL();
+
     img.onload = function () {
       ctxWaterMark.drawImage(img,0,0);
         
-          ctxWaterMark.font="240px verdana";
-          ctxWaterMark.globalAlpha=.50;
+          let tamanhoFonte:number = cvWaterMark.width * 0.07;
+
+          ctxWaterMark.font=`${tamanhoFonte}px verdana`;
+          ctxWaterMark.globalAlpha=.30;
           ctxWaterMark.fillStyle='white'
 
           let metrics = ctxWaterMark.measureText("WaterMark Demo");
-          let width = metrics.width;
+          let width = metrics.width/2;
           
-          ctxWaterMark.translate(cvWaterMark.width/2, cvWaterMark.height/2);
+          ctxWaterMark.translate(cvWaterMark.width/3, cvWaterMark.height/2);
           ctxWaterMark.rotate(-Math.atan(cvWaterMark.height/cvWaterMark.width));
-          ctxWaterMark.fillText("Aguarde aprovação", -width/2, 240/2);
+          ctxWaterMark.fillText("Aguarde aprovação", -width/2, tamanhoFonte/2);
+          ctxWaterMark.fillStyle='black'
+          ctxWaterMark.fillText("Aguarde aprovação", -width/2 + 3, tamanhoFonte/2);
 
-          console.log(cvWaterMark.toDataURL('image/jpeg', 0.5));
-        //console.log(cvWaterMark.toDataURL())
+          
+          let imagePreview = new Image();
+          imagePreview.src = cvWaterMark.toDataURL('image/jpeg', 0.8);
+
+          imagePreview.onload = function() {
+            let w = window.open('');
+            w.document.write(imagePreview.outerHTML)
+          }
+
     }.bind(this)
-    img.src = this.savedImageURL;
     
-
-
-    // //chave demais isso aqui....
-    // cvWaterMark.requestFullscreen();
+    //chave demais isso aqui....
+    //cvWaterMark.requestFullscreen();
   } 
 
   salvarImage(){
-    this.savedImageURL = this.canvasPreview.nativeElement.toDataURL();
+    this.ctxPreview.save();
   }
 
   changeInput(event){
@@ -151,15 +164,17 @@ export class CustomImageComponent implements OnInit {
   }
 
   escreveCampos(){
+    console.log(this.listaVariaveis)
      this.listaVariaveis.forEach(variavel => {
       //escreve o texto na imagem base
-      this.ctxPreview.font = `${variavel.tamanho}px ${variavel.fonte}`; 
+      this.ctxPreview.font = `${variavel.tamanho}px ${variavel.fonte}`;
+
       if(variavel.cor == ''){
         this.ctxPreview.fillStyle = 'black';
       }else{
         this.ctxPreview.fillStyle = variavel.cor;
       }
- 
+
       //Case para alinhamento
       switch (variavel.alinhamento) {
           case 'center':
@@ -178,8 +193,11 @@ export class CustomImageComponent implements OnInit {
             this.ctxPreview.textAlign = "end";
           break;
       }
-      
+
       this.ctxPreview.fillText(variavel.textoModelo, +variavel.cordX, +variavel.cordY);
+      
+      //habilita botão de preview
+      this.flagPreview = false;
     });
   }
 
