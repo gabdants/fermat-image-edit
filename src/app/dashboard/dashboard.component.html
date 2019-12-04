@@ -25,7 +25,25 @@
           {{node.name}}
         </mat-tree-node>
         
+        
+
+        
       </mat-tree>
+      <p *ngIf="isAdmin" class="addCategory" (click)="addCategory();"> <i class="fas fa-plus"></i>Adicionar categoria</p>
+      <form #form="ngForm" *ngIf="isAdmin" class="formAddCategory">
+        <label>Título:</label>
+        <input [(ngModel)]='newCategory.title' id="title" name="title" placeholder="Nome da categoria" />
+
+        <label>Subcategoria de: </label>
+        <select [(ngModel)]='newCategory.subCategoryOff' id="subCategory" name="subCategory" placeholder="Escolha uma categoria">
+          <option value="0" >Escolha uma categoria</option>
+          <option value="1" >Não é subcategoria</option>
+          <option *ngFor="let categoria of selectCategorias" value="{{categoria}}">{{categoria}}</option>
+        </select>
+
+        <button class="orange-button" (click)="saveCategory();">Adicionar categoria</button>
+      </form>
+
     </div>
     <div class="imagesBox">
       <div class="imagesToEdit">

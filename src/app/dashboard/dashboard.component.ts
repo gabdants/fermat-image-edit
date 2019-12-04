@@ -6,8 +6,6 @@ import { Router } from '@angular/router';
 import { ImageService } from '../services/image/image-service';
 import { Image } from '../../typings/imagem';
 
-
-
 interface FoodNode {
   name: string;
   children?: FoodNode[];
@@ -29,11 +27,21 @@ interface ExampleFlatNode {
 
 export class DashboardComponent implements OnInit {
 
-  constructor(private categoryService: CategoryService, private router: Router, private imageService: ImageService) {
+  constructor(
+    private categoryService: CategoryService, 
+    private router: Router, 
+    private imageService: ImageService) {
     
    }
   isAdmin = true;
   semFotos = false;
+  selectCategorias: string[] = [];
+  categorias: any;
+  newCategory = {
+    title: '',
+    subCategoryOff: '0',
+  }
+
 
   // imagem: Image = new Image(false, false, "", "", false, [], "", "", "", "", "", "", "", "", ""); 
   imagens: Image[] = [];
@@ -81,6 +89,7 @@ export class DashboardComponent implements OnInit {
         aux.id = ''
         aux.name = item.name;
         aux.id = item.idCategory;
+        this.selectCategorias.push(item.name);
         if(item.subCategories){
           item.subCategories.map(subItem => {
             let auxChildren = {
@@ -92,6 +101,7 @@ export class DashboardComponent implements OnInit {
             auxChildren.name = subItem.name
             auxChildren.id = subItem.idSubCategory
             aux.children.push(auxChildren);
+            this.selectCategorias.push(`${item.name} > ${subItem.name}`);
           });
         }
         
@@ -102,6 +112,28 @@ export class DashboardComponent implements OnInit {
       })
       this.dataSource.data = TREE_DATA;
     });
+  }
+
+  saveCategory(){
+    console.log(this.newCategory);
+    if(this.newCategory.subCategoryOff == '0'){
+      alert('Preencha o campo "Subcategoria de: "');
+      return;
+    }else if(this.newCategory.subCategoryOff == '1'){
+      this.categoryService.addCategory(this.newCategory.title).subscribe(response => {
+        console.log(response);
+        alert('Categoria adicionada com sucesso!');
+      })
+    }else{
+      this.categoryService.addSubCategory(this.newCategory.title, this.newCategory.subCategoryOff).subscribe(response => {
+        console.log(response);
+        alert('Subcategoria adicionada com sucesso')
+      });
+    }
+  }
+
+  addCategory(){
+    document.getElementsByClassName('formAddCategory')[0].setAttribute("style", "display:flex;");
   }
 
   async carregaImagens(){

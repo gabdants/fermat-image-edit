@@ -119,7 +119,7 @@ export class AddImageComponent implements OnInit {
             auxChildren.name = subItem.name
             auxChildren.id = subItem.idSubCategory
             aux.children.push(auxChildren);
-            this.selectCategorias.push(`${subItem.name} > ${item.name}`);
+            this.selectCategorias.push(`${item.name} > ${subItem.name}`);
 
           });
         }

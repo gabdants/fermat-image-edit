@@ -19,4 +19,22 @@ export class CategoryService {
     return this.http.get<any>(`${API_URL}:8080/category/get`, {headers});
   }
 
+  addCategory(categoria: string){
+    let headers = new HttpHeaders({
+      'Accept': '*/*',
+    });
+
+    return this.http.post<any>(`${API_URL}:8080/category/new?name=${categoria}`, categoria ,{
+      headers,
+      responseType: "text" as "json"
+    });
+  }
+  addSubCategory(categoria: string, subcategoria: string){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.post<any>(`${API_URL}:8080/category/subcategory/new?name=${subcategoria}&category=${categoria}`, {headers});
+  }
+
 }

@@ -11,6 +11,7 @@ import { SharedModule } from './shared/shared.module';
 import { AddImageComponent } from './admin/add-image/add-image.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CustomImageComponent } from './custom-image/custom-image.component';
+import { ToAproveComponent } from './admin/to-aprove/to-aprove.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { CustomImageComponent } from './custom-image/custom-image.component';
     AddImageComponent,
     DashboardComponent,
     CustomImageComponent,
+    ToAproveComponent,
   ],
   imports: [
     BrowserModule,

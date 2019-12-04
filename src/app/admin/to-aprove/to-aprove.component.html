@@ -1,0 +1,44 @@
+<app-header></app-header>
+<div class="container">
+  <div class="dashHeader">
+    <h4>Edição de peças</h4>
+    <p class="addImageBtn" (click)="callAddImage();" >Adicionar imagem</p>
+  </div>
+  <div class="dashContent">
+    <div class="categoriesBox">
+      
+
+    </div>
+    <div class="imagesBox">
+      <div class="imagesToEdit">
+
+        <!-- Mensagem que será exibida caso não tenha nenhuma foto -->
+        <div *ngIf="semFotos" class="semFotos">
+          <div *ngIf="isAdmin">
+            <h3>Selecione uma imagem ou adicione uma nova</h3>
+          </div>
+          <div *ngIf="!isAdmin">
+            <h3>Não há imagens para editar</h3>
+          </div>
+        </div>
+
+        <!-- Fotos para download ou edição -->
+        <div *ngIf="!semFotos" class="toEdit">
+          <div class="singleImage" *ngFor="let imagem of imagens">
+            <img src="{{imagem.s3Url}}">
+            <h4>{{imagem.name}}</h4>
+            <div class="tagsImage">
+              <p *ngIf="imagem.editable">Editável</p>
+              <p *ngIf="!imagem.editable">Não editável</p>
+            </div>
+            <div class="btnImagesEdit">
+              <button class="orange-button" (click)="chamaDownload(imagem.idImage)">Rejeitar</button>
+              <button class="orange-button" (click)="chamaEdicao(imagem.idImage)">Aprovar</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
