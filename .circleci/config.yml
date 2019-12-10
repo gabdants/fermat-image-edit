@@ -21,6 +21,6 @@ workflows:
             - aws-ecr/build-and-push-image
           family: 'petland-app-ui'
           cluster-name: 'petland-cluster'
-          service-name: 'petland-app-sevice'
+          service-name: 'petland-app-service'
           container-image-name-updates: 'container=petland-app-container,tag=0.0.2'
 
