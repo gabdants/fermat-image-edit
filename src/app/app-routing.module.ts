@@ -5,6 +5,7 @@ import { AddImageComponent } from './admin/add-image/add-image.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CustomImageComponent } from './custom-image/custom-image.component';
 import { ToAproveComponent } from './admin/to-aprove/to-aprove.component';
+import { AprovadasComponent } from './aprovadas/aprovadas.component';
 
 const routes: Routes = [
   // { path: '', redirectTo: 'home', pathMatch: 'full', canActivate: [AuthGuard], },
@@ -23,6 +24,8 @@ const routes: Routes = [
   { path: 'editImage/:id', component: CustomImageComponent },  
   { path: 'addImage', component: AddImageComponent },
   { path: 'toApprove', component: ToAproveComponent },
+  { path: 'aprovadas', component: AprovadasComponent },
+
 
 ];
 

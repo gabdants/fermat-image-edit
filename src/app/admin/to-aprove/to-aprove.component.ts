@@ -28,7 +28,9 @@ export class ToAproveComponent implements OnInit {
     await this.imageService.getFinalImages().subscribe(response => {
       console.log(response);
       response.map(item => {
-        this.imagens.push(item);
+        if(!item.approved){
+          this.imagens.push(item);
+        }
       })
       console.log(this.imagens)
     })

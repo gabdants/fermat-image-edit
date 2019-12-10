@@ -125,7 +125,7 @@ export class DashboardComponent implements OnInit {
         alert('Categoria adicionada com sucesso!');
       })
     }else{
-      this.categoryService.addSubCategory(this.newCategory.title, this.newCategory.subCategoryOff).subscribe(response => {
+      this.categoryService.addSubCategory(this.newCategory.subCategoryOff, this.newCategory.title).subscribe(response => {
         console.log(response);
         alert('Subcategoria adicionada com sucesso')
       });
@@ -143,6 +143,21 @@ export class DashboardComponent implements OnInit {
         this.imagens.push(item);
       })
       console.log(this.imagens)
+    })
+  }
+  carregaCategoria(categoria){
+    this.imagens = [];
+    this.imageService.getByCategory(categoria).subscribe(response => {
+      console.log(response);
+      if(response){
+        response.map(item => {
+          this.imagens.push(item);
+        })
+        this.semFotos = false;
+      }else{
+        this.semFotos = true;
+      }
+
     })
   }
   selecionaMenu(nome){

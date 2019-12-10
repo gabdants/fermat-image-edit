@@ -7,6 +7,7 @@ export class NewImage{
     fmtAberto: string;
     acabamento: string;
     obsPrint: string;
+    requester: string;
     categoria: string;
     editavel: boolean;
     aprovacao: boolean;
@@ -19,6 +20,7 @@ export class NewImage{
                 acabamento: string,
                 obsPrint: string,
                 categoria: string,
+                requester: string,
                 editavel: boolean,
                 aprovacao: boolean,
                 variaveis: Variavel[]){
@@ -33,5 +35,6 @@ export class NewImage{
         this.editavel = editavel;
         this.aprovacao = aprovacao;
         this.variaveis = variaveis;
+        this.requester = requester;
     }
 }

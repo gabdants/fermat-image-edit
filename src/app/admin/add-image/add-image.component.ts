@@ -47,7 +47,7 @@ export class AddImageComponent implements OnInit {
         4- utilizar o .fillText() do canvas para adicionar o texto à imagem base
   */
 
-  newImage: NewImage = new NewImage("", "", "", "", "", "", "", true, true, []);
+  newImage: NewImage = new NewImage("", "", "", "", "", "", "", "", true, true, []);
   variavel: Variavel = new Variavel("", "", "", "", "", "", "", true, "", ""); 
   alinhamentos: any[] = ["center", "left", "right", "start", "end"];
 
@@ -272,6 +272,13 @@ export class AddImageComponent implements OnInit {
       }else if(this.newImage.categoria == ''){
         alert('Por favor, insira uma categoria para a peça');
         return false;
+      }else{
+        if(this.newImage.categoria.includes('>')){
+          let aux = this.newImage.categoria.split('>');
+          let num = aux.length;
+          this.newImage.categoria = aux[num-1].trim();
+          console.log(this.newImage.categoria)
+        }
       }
     }else if(number == 2){
       if(!this.newImage.editavel){
