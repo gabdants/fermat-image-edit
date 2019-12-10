@@ -22,5 +22,5 @@ workflows:
           family: 'petland-app-ui'
           cluster-name: 'petland-cluster'
           service-name: 'petland-app-sevice'
-          container-image-name-updates: 'container=petland-app-conatiner,tag=0.0.2'
+          container-image-name-updates: 'container=petland-app-container,tag=0.0.2'
 
