@@ -35,5 +35,12 @@ export class ToAproveComponent implements OnInit {
       console.log(this.imagens)
     })
   }
+  aprovarImagem(id){
+    this.imageService.approveImage(id).subscribe(response => {
+      alert('Imagem Aprovada!')
+    }, err => {
+      alert('Não foi possível aprovar a imagem, tente novamente');
+    })
+  }
 
 }

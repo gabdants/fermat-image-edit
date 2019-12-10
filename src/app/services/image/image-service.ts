@@ -141,6 +141,13 @@ export class ImageService {
     return this.http.get<any>(`http://34.221.64.23:8181/image/finalImagesByRequester?requester=${requester}`, {headers});
   }
 
+  approveImage(id){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.put<any>(`http://34.221.64.23:8181/image/approvedImages?imageId=${id}`, {headers});
+  }
+
   getFields(id){
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
