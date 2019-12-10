@@ -243,7 +243,7 @@ export class AddImageComponent implements OnInit {
     this.newImage.variaveis = this.listaVariaveis;
     
     //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
-    this.imageservice.adminPostImage(this.fileBase, this.newImage.name).subscribe(res => {
+    this.imageservice.postImage(this.fileBase, this.newImage.name).subscribe(res => {
       console.log('Token: ' + res);
       //Ultima atualização do Dantas, o res já é o ID da imagem
       this.enviaVariaveis(res);

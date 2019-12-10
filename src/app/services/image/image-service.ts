@@ -23,7 +23,7 @@ export class ImageService {
     return this.http.get<any>(`http://34.221.64.23:8181/image/approvalImages?imageId=${id}`, {headers});
   }
 
-  adminPostImage(file: File, nomeDaPeca: string){
+  postImage(file: File, nomeDaPeca: string){
     let headers = new HttpHeaders({
       'Accept': 'text/plain',
     });
@@ -161,6 +161,14 @@ export class ImageService {
     });
 
     return this.http.get<any>(`http://34.221.64.23:8181/image/finalImageByRequester?imageId=${user}`, {headers});
+  }
+
+  setFinalImageToTrue(token: string){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.put<any>(`http://34.221.64.23:8181/image/finalImages?imageId=${token}`, {headers});
   }
 
 }

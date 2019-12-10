@@ -19,6 +19,7 @@ export class CustomImageComponent implements OnInit {
 
   listaVariaveis: Variavel[] = [];
   imgPreview: HTMLImageElement;
+  name: string;
   imgX: string;
   imgY: string;
 
@@ -32,6 +33,7 @@ export class CustomImageComponent implements OnInit {
       console.log(response)
       this.imgX = response.width; 
       this.imgY = response.height;
+      this.name = response.name;
       this.imgPreview = new Image();
 
       //também precisa pegar o array de variaveis e colocar no this.listaVariaveis
@@ -140,7 +142,25 @@ export class CustomImageComponent implements OnInit {
   } 
 
   salvarImage(){
-    this.ctxPreview.save();
+    this.canvasPreview.nativeElement.toBlob(function(blob) {
+      let file: any = blob;
+      //O new date é apenas para o cast dar certo.
+      file.lastModifiedDate = new Date();
+      file.name = this.name;
+
+      this.imageService.postImage(<File>file, file.name).subscribe(res => {
+        this.imageService.setFinalImageToTrue(res).subscribe(res => {
+          alert('Imagem salva');
+          console.log(res);
+        }, err => {
+          alert('Erro ao salvar imagem. Entre em contato com um administrador do sistema.')
+        console.log(err)
+        })
+      }, err => {
+        alert('Erro ao salvar imagem. Entre em contato com um administrador do sistema.')
+        console.log(err)
+      })
+    }.bind(this))
   }
 
   changeInput(event){
