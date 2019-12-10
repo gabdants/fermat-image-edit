@@ -26,7 +26,7 @@
     left: -100px;
 }
 .dashContent{
-    display: flex;
+    // display: flex;
     margin: 0;
     padding: 0 50px;
     height: 100%;
@@ -187,4 +187,15 @@
     font-family: Roboto;
     background: transparent;
     margin-bottom: 10px;
+}
+.itemMenu{
+    margin-top: 20px;
+    display: block;
+    color: #cf4e0e;
+    font-size: 16px;
+    font-weight: 100;
+    text-decoration: none;
+}
+.itemMenu:hover{
+    text-decoration: underline;
 }

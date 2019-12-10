@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit {
     private imageService: ImageService) {
     
    }
-  isAdmin = true;
+  isAdmin: boolean;
   semFotos = false;
   selectCategorias: string[] = [];
   categorias: any;
@@ -66,6 +66,12 @@ export class DashboardComponent implements OnInit {
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
   ngOnInit() {
+    let admin = localStorage.getItem('admin');
+    if(admin == 'true'){
+      this.isAdmin = true;
+    }else {
+      this.isAdmin = false;
+    }
     this.carregaMenu();
     this.carregaImagens();
   }
@@ -140,7 +146,9 @@ export class DashboardComponent implements OnInit {
     await this.imageService.getAllImages().subscribe(response => {
       console.log(response);
       response.map(item => {
-        this.imagens.push(item);
+        if(!item.finalImage){
+          this.imagens.push(item);
+        }
       })
       console.log(this.imagens)
     })

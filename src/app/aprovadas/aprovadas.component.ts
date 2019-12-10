@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ImageService } from '../services/image/image-service';
 import { Image } from '../../typings/imagem';
+import { browser } from 'protractor';
 
 
 @Component({
@@ -32,16 +33,7 @@ export class AprovadasComponent implements OnInit {
   }
 
   downloadImage(url){
-    var element = document.createElement('a');
-    element.setAttribute('href', 'image:png' + url);
-    element.setAttribute('download', 'filename');
-
-    element.style.display = 'none';
-    document.body.appendChild(element);
-
-    element.click();
-
-    document.body.removeChild(element);
+  
   }
 
 }

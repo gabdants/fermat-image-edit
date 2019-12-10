@@ -22,8 +22,24 @@ export class LoginComponent implements OnInit {
     //   this.router.navigateByUrl('/dashboard');
     // })
 
-    this.loginService.login();
-    this.router.navigateByUrl('/dashboard');
+    this.loginService.getLogin(this.txtLogin, this.txtPass).subscribe(response => {
+      console.log(response);
+    }, err => {
+      console.log(err)
+      if(err.status == 200){
+        console.log(err.error.text)
+        if(err.error.text == 'admin'){
+          localStorage.setItem('admin', 'true');
+          this.router.navigateByUrl('/dashboard');
+        }else{
+          localStorage.setItem('admin', 'false');
+          this.router.navigateByUrl('/dashboard');
+        }
+        
+      }else{
+        alert('Login ou senha incorretos. Tente novamente');
+      }
+    });
     
   }
 }

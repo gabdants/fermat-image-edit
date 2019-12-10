@@ -12,13 +12,17 @@ export class LoginService {
   showHeader = new EventEmitter<boolean>();
   constructor(private http: HttpClient) { }
 
-  login() {
-    this.showHeader.emit(true);
-    // let headers = new HttpHeaders({
-    //   'Content-Type': 'application/json'
-    // });
-    // return this.http.post<User>(`${this.API_URL}login`, { email: email, password: password });
-    // return this.http.get<any>(`${API_URL}:8080/category/get`, {headers});
+  getLogin(login, senha){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    let user = {
+      username: login,
+      password: senha
+
+    }
+    return this.http.post<any>(`http://34.220.91.231:8282/user/login`, user, {headers});
   }
   logout() {
     this.showHeader.emit(false);
