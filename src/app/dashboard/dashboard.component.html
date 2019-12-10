@@ -7,7 +7,7 @@
   <div class="dashContent">       
     <div class="categoriesBox">
       <a *ngIf="isAdmin" class="itemMenu" href="/toApprove">Imagens para aprovação</a>
-      <a *ngIf="!isAdmin" class="itemMenu" href="/aprovadas">Imagens para Download</a> 
+      <a class="itemMenu" href="/aprovadas">Imagens para Download</a> 
       <h4>Categorias</h4>
       <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
         <!-- This is the tree node template for leaf nodes -->
@@ -53,7 +53,7 @@
         <!-- Mensagem que será exibida caso não tenha nenhuma foto -->
         <div *ngIf="semFotos" class="semFotos">
           <div *ngIf="isAdmin">
-            <h3>Selecione uma imagem ou adicione uma nova</h3>
+            <h3>Selecione uma categoria ou adicione uma nova imagem</h3>
           </div>
           <div *ngIf="!isAdmin">
             <h3>Não há imagens para editar</h3>

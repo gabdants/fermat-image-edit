@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('admin', 'false');
           this.router.navigateByUrl('/dashboard');
         }
+        localStorage.setItem('user', this.txtLogin);
         
       }else{
         alert('Login ou senha incorretos. Tente novamente');

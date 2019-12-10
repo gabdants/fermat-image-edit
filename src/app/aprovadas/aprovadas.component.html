@@ -31,9 +31,10 @@
               <p *ngIf="!imagem.editable">Não editável</p>
             </div>
             <div class="btnImagesEdit">
-              <button class="orange-button" (click)="downloadImage(imagem.s3Url)">Download</button>
-              <a href="{{imagem.s3Url}}" id={{imagem.idImage}}>teste</a>
-              <button class="orange-button" (click)="aprovarImagem(imagem.idImage)">Aprovar</button>
+              <a href="{{imagem.s3Url}}">
+                <button class="orange-button" (click)="downloadImage(imagem.s3Url)">Download</button>
+              </a>
+               
             </div>
           </div>
 

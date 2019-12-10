@@ -15,15 +15,18 @@ export class AprovadasComponent implements OnInit {
 
   imagens: Image[] = [];
 
+  usuario : string;
+
   ngOnInit() {
-    this.imageService.getFinalImagesByRequester('admin').subscribe(response => {
-      console.log(response);
-    })
+    this.usuario = localStorage.getItem('user');
+    // this.imageService.getFinalImagesByRequester(usuario).subscribe(response => {
+    //   console.log(response);
+    // })
     this.carregaImagens();    
   }
 
   async carregaImagens(){
-    await this.imageService.getFinalImagesByRequester('admin').subscribe(response => {
+    await this.imageService.getFinalImagesByRequester(this.usuario).subscribe(response => {
       console.log(response);
       response.map(item => {
         this.imagens.push(item);

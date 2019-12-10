@@ -149,6 +149,9 @@ export class CustomImageComponent implements OnInit {
       file.name = this.name;
 
       this.imageService.postImage(<File>file, file.name).subscribe(res => {
+        this.imageService.setImageRequester(res, localStorage.getItem('user')).subscribe(response => {
+          console.log(response)
+        })
         this.imageService.setFinalImageToTrue(res).subscribe(res => {
           alert('Imagem salva');
           console.log(res);
@@ -156,6 +159,7 @@ export class CustomImageComponent implements OnInit {
           alert('Erro ao salvar imagem. Entre em contato com um administrador do sistema.')
         console.log(err)
         })
+        
       }, err => {
         alert('Erro ao salvar imagem. Entre em contato com um administrador do sistema.')
         console.log(err)

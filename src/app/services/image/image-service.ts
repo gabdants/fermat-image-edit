@@ -83,6 +83,9 @@ export class ImageService {
 
     return this.http.post<any>(`http://34.221.64.23:8181/image/imageOpts?imageId=${imageID}`, variables);
   }
+  setImageRequester(id, requester){
+    return this.http.post<any>(`http://34.221.64.23:8181/image/imageOpts?imageId=${id}`, {requester: requester});
+  }
 
   postFinalImageOpts(infos){
 

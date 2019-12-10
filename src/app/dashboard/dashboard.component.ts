@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit {
     
    }
   isAdmin: boolean;
-  semFotos = false;
+  semFotos = true;
   selectCategorias: string[] = [];
   categorias: any;
   newCategory = {
@@ -157,12 +157,13 @@ export class DashboardComponent implements OnInit {
     this.imagens = [];
     this.imageService.getByCategory(categoria).subscribe(response => {
       console.log(response);
-      if(response){
+      if(response.length > 0){
         response.map(item => {
           this.imagens.push(item);
         })
         this.semFotos = false;
       }else{
+        console.log('teste')
         this.semFotos = true;
       }
 
