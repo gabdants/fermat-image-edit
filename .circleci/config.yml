@@ -15,12 +15,12 @@ workflows:
           path: ./
           region: AWS_REGION_ENV_VAR_NAME
           repo: petland-app-ui
-          tag: '0.0.2'
+          tag: '0.0.3'
       - aws-ecs/deploy-service-update:
           requires:
             - aws-ecr/build-and-push-image
           family: 'petland-app-ui'
           cluster-name: 'petland-cluster'
           service-name: 'petland-app-service'
-          container-image-name-updates: 'container=petland-app-container,tag=0.0.2'
+          container-image-name-updates: 'container=petland-app-container,tag=0.0.3'
 
