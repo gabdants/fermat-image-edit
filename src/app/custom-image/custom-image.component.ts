@@ -193,7 +193,7 @@ export class CustomImageComponent implements OnInit {
       //escreve o texto na imagem base
       this.ctxPreview.font = `${variavel.tamanho}px ${variavel.fonte}`;
 
-      if(variavel.cor == ''){
+      if(variavel.cor == '' || variavel.cor == null){
         this.ctxPreview.fillStyle = 'black';
       }else{
         this.ctxPreview.fillStyle = variavel.cor;

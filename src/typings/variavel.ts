@@ -9,6 +9,7 @@ export class Variavel{
     obrigatorio: boolean;
     cordX: string;
     cordY: string;
+    textWidth: number;
     
     constructor(titulo: string,
                 textoModelo: string,
@@ -19,7 +20,8 @@ export class Variavel{
                 alinhamento: string,
                 obrigatorio: boolean,
                 cordX: string,
-                cordY: string){
+                cordY: string,
+                textWidht: number = 0){
                     
         this.titulo = titulo;    
         this.textoModelo = textoModelo;    
@@ -30,6 +32,8 @@ export class Variavel{
         this.alinhamento = alinhamento;
         this.obrigatorio = obrigatorio;
         this.cordX = cordX;
-        this.cordY = cordY;    
+        this.cordY = cordY;
+        this.textWidth = textWidht; 
     }
+    
 }
