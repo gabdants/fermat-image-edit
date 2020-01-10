@@ -56,8 +56,8 @@
             <div class="esqImage">
               <h4 class="formTitle">Imagem base</h4>
               <div class="uploader">
-                  <img class="uploadIcon" src="../../../assets/images/upload.png" />
-                  Arraste o arquivo ou clique para selecionar
+                  <img *ngIf="exibeImgPlaceholder" class="uploadIcon fadeOut" src="../../../assets/images/upload.png" />
+                  <p *ngIf="exibeImgPlaceholder" class="fadeOut">Arraste o arquivo ou clique para selecionar</p>
                   <img src="{{imageFixed}}" alt="">
                   <input type="file" (change)="getImage($event);" name="userprofile_picture"  id="filePhoto" />
               </div>
@@ -68,8 +68,8 @@
                 <div *ngIf="!newImage.editavel" >
                   Não disponível
                 </div>
-                <img class="uploadIcon" src="../../../assets/images/upload.png" />
-                <div *ngIf="newImage.editavel">
+                <img *ngIf="exibeImgPlaceholderThumb" class="uploadIcon" src="../../../assets/images/upload.png" />
+                <div *ngIf="newImage.editavel && exibeImgPlaceholderThumb">
                   Arraste o arquivo ou clique para selecionar
                 </div>
                   <img src="{{imageThumbFixed}}" alt="">
@@ -77,7 +77,7 @@
               </div>
             </div>
             <div class="bot-dir">
-              <button class="orange-button" style="margin-top: 30px;" (click)="onClickNext(2);">PRÓXIMO</button>
+              <button class="orange-button" (click)="onClickNext(2);">PRÓXIMO</button>
             </div>
           </form>
       </mat-tab>

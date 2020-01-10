@@ -176,6 +176,7 @@ export class AddImageComponent implements OnInit {
 
   }
 
+
   addVariavel(){
   //validações para criação da variável (título, texto modelo, observação...)
     if(this.variavel.titulo == ''){
@@ -285,9 +286,8 @@ export class AddImageComponent implements OnInit {
   }
 
   salvarImage(){
-    
     this.newImage.variaveis = this.listaVariaveis;
-
+    
     //CORREÇÃO PARA ALINHAMENTO, QUANDO O ALINHAMENTO É PARA A DIREITA OU ESQUERDA, NA HORA DE EDITAR, A VARIÁVEL FICA METADE PARA O LADO OPOSTO DO ALINHAMENTO
     this.newImage.variaveis.forEach(variavel => {
       if(variavel.alinhamento == 'right'){
@@ -301,7 +301,7 @@ export class AddImageComponent implements OnInit {
 
     console.log('lista');
     console.log(this.listaVariaveis);
-    
+
     //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
     this.imageservice.postImage(this.fileBase, this.newImage.name).subscribe(res => {
       console.log('Token: ' + res);
@@ -378,7 +378,11 @@ export class AddImageComponent implements OnInit {
   img: HTMLImageElement;
   imgThumb: HTMLImageElement;
 
+  exibeImgPlaceholder = true;
   getImage(result){
+
+    this.exibeImgPlaceholder = false;
+
     var reader = new FileReader();
     reader.onload = function (event) {
       //instancia a imagem com as propriedades reais
@@ -394,7 +398,11 @@ export class AddImageComponent implements OnInit {
     reader.readAsDataURL(result.target.files[0]);
     this.fileBase = result.target.files[0];
   }
+  exibeImgPlaceholderThumb = true;
   getImageThumb(result){
+
+    this.exibeImgPlaceholderThumb = false;
+
     var reader = new FileReader();
     reader.onload = function (event) {
       //instancia a imagem com as propriedades reais
@@ -477,7 +485,7 @@ export class AddImageComponent implements OnInit {
       src = this.selectedFont.files.regular;
     }else{
       src = this.selectedFont.files[0];
-    } 
+    }
     //cria o @fontface
     let style = `
     @font-face {
