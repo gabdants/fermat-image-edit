@@ -170,10 +170,6 @@ export class AddImageComponent implements OnInit {
       //coloca as variáveis novamente
       this.escreveCamposCanvas();
 
-    setTimeout(() => {
-      this.addVariavel();
-    }, 500);
-
   }
 
 
@@ -504,5 +500,9 @@ export class AddImageComponent implements OnInit {
     }, 1000);
 
     console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
+  }
+
+  previewImage(){
+    this.canvas.nativeElement.requestFullscreen();
   }
 }
