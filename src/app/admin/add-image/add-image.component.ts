@@ -5,6 +5,7 @@ import { GoogleApiService } from 'src/app/services/commom/google-api.service';
 import { ImageService } from 'src/app/services/image/image-service';
 import { CategoryService } from '../../services/category/category-service';
 import { Router } from '@angular/router';
+import { element } from 'protractor';
 
 interface Category {
   name: string;
@@ -134,6 +135,44 @@ export class AddImageComponent implements OnInit {
     });
   }
 
+
+  editVariavel(event){
+    //Recupera o id para alterar no array
+    let id = event.target.id;
+    let toBeEdited: Variavel;
+
+    //Pega a lista de variaveis
+    this.listaVariaveis.forEach(element => {
+      //encontra a clicada
+      if(id == element.titulo){
+        //atribui ao auxiliar
+        toBeEdited = element;
+        //Retira a clicada do array
+        this.listaVariaveis.splice(this.listaVariaveis.indexOf(element), 1);
+        //atribui a clicada a variavel que faz bind com os campos da tela, apenas para preenchê-los
+        this.variavel = element;
+      }
+    });
+
+    //encontra a fonte no array do google fonts
+    this.selectedFont = this.googleFontsList.find(element => {
+      //coloca a fonte no estilo do canvas
+      document.getElementById('boxImagePreview').style.fontFamily = toBeEdited.fonte;
+      //Retorna o objeto de fonte do google
+      return element.family == toBeEdited.fonte;
+    })
+
+    //Redesenha o canvas
+      //limpa o canvas inteiro
+      this.limpaCamposCanvas();
+      //reconstroi o canvas
+      this.constroiCanvas();
+      //coloca as variáveis novamente
+      this.escreveCamposCanvas();
+
+  }
+
+
   addVariavel(){
   //validações para criação da variável (título, texto modelo, observação...)
     if(this.variavel.titulo == ''){
@@ -156,7 +195,7 @@ export class AddImageComponent implements OnInit {
             }
           });
         }  
-        //Gambiarra para sair do metodo quando o títulojá existe
+        //Gambiarra para sair do metodo quando o título já existe
         if(this.variavel.titulo == ''){
           return false;
         }
@@ -221,6 +260,9 @@ export class AddImageComponent implements OnInit {
             this.variavel.cordX = ''+posX;
             this.variavel.cordY = '' + (posY + +(this.ctx.measureText(this.variavel.textoModelo).actualBoundingBoxAscent/2)); 
 
+            //Setando textWidth para ajuste de alinhamento
+            this.variavel.textWidth = this.ctx.measureText(this.variavel.textoModelo).width;
+
             //remove o floattext
             floatText.removeChild(floatText.childNodes[0]);
 
@@ -242,6 +284,20 @@ export class AddImageComponent implements OnInit {
   salvarImage(){
     this.newImage.variaveis = this.listaVariaveis;
     
+    //CORREÇÃO PARA ALINHAMENTO, QUANDO O ALINHAMENTO É PARA A DIREITA OU ESQUERDA, NA HORA DE EDITAR, A VARIÁVEL FICA METADE PARA O LADO OPOSTO DO ALINHAMENTO
+    this.newImage.variaveis.forEach(variavel => {
+      if(variavel.alinhamento == 'right'){
+        //Gambiarra pois o cordX e cordY são strings e preciso somar com numero
+        variavel.cordX = (+variavel.cordX + variavel.textWidth) + '';
+      }else if(variavel.alinhamento == 'center'){
+        //Gambiarra pois o cordX e cordY são strings e preciso somar com numero
+        variavel.cordX = (+variavel.cordX + variavel.textWidth/2) + '';
+      }
+    });
+
+    console.log('lista');
+    console.log(this.listaVariaveis);
+
     //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
     this.imageservice.postImage(this.fileBase, this.newImage.name).subscribe(res => {
       console.log('Token: ' + res);
@@ -318,7 +374,11 @@ export class AddImageComponent implements OnInit {
   img: HTMLImageElement;
   imgThumb: HTMLImageElement;
 
+  exibeImgPlaceholder = true;
   getImage(result){
+
+    this.exibeImgPlaceholder = false;
+
     var reader = new FileReader();
     reader.onload = function (event) {
       //instancia a imagem com as propriedades reais
@@ -334,7 +394,11 @@ export class AddImageComponent implements OnInit {
     reader.readAsDataURL(result.target.files[0]);
     this.fileBase = result.target.files[0];
   }
+  exibeImgPlaceholderThumb = true;
   getImageThumb(result){
+
+    this.exibeImgPlaceholderThumb = false;
+
     var reader = new FileReader();
     reader.onload = function (event) {
       //instancia a imagem com as propriedades reais
@@ -436,5 +500,9 @@ export class AddImageComponent implements OnInit {
     }, 1000);
 
     console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
+  }
+
+  previewImage(){
+    this.canvas.nativeElement.requestFullscreen();
   }
 }
