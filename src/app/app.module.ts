@@ -13,6 +13,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CustomImageComponent } from './custom-image/custom-image.component';
 import { ToAproveComponent } from './admin/to-aprove/to-aprove.component';
 import { AprovadasComponent } from './aprovadas/aprovadas.component';
+import { AddFonteComponent } from './admin/add-fonte/add-fonte.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { AprovadasComponent } from './aprovadas/aprovadas.component';
     CustomImageComponent,
     ToAproveComponent,
     AprovadasComponent,
+    AddFonteComponent,
   ],
   imports: [
     BrowserModule,

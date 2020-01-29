@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://petlandcss.s3-us-west-2.amazonaws.com/dynamic.css">
+
 <app-header></app-header>
 <div id="main-container" class="container">
   <div class="content-tabs">
@@ -99,6 +101,9 @@
                     <mat-select id='fonte' name='fonte' (selectionChange)='mudaFonte();' [disabled]="!newImage.editavel || flagAdd" [(ngModel)]="selectedFont">
                       <mat-option *ngFor="let font of googleFontsList" [value]="font">  
                         {{font.family}}
+                      </mat-option>
+                      <mat-option *ngFor="let font of createdFontsList" [value]="font">  
+                        {{font}}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
