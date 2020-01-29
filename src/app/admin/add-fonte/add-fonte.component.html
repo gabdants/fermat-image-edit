@@ -1,0 +1,24 @@
+<app-header></app-header>
+<div class="container">
+  <div class="dashHeader">
+    <h4>Edição de peças</h4>
+    <p class="addImageBtn" (click)="callAddImage();" >Adicionar imagem</p>
+  </div>
+  <div class="dashContent">
+    <div class="categoriesBox">
+      
+
+    </div>
+    <div class="imagesBox">
+        <div class="uploader">
+            <img *ngIf="exibeImgPlaceholder" class="uploadIcon fadeOut" src="../../../assets/images/upload.png" />
+            <p *ngIf="exibeImgPlaceholder" class="fadeOut">Arraste o arquivo ou clique para selecionar</p>
+            <img src="{{imageFixed}}" alt="">
+            <input type="file" (change)="getFonte($event);" name="userprofile_picture"  id="filePhoto" />
+        </div>
+        <div class="add-button">
+          <button (click)="carregaFonte();" class="orange-button">Adicionar Fonte</button>
+        </div>
+    </div>
+  </div>
+</div>

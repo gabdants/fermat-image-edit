@@ -3,6 +3,7 @@ import { NewImage } from 'src/typings/newImage';
 import { Variavel } from 'src/typings/variavel';
 import { GoogleApiService } from 'src/app/services/commom/google-api.service';
 import { ImageService } from 'src/app/services/image/image-service';
+import { FonteService } from 'src/app/services/fonte/fonte.service';
 import { CategoryService } from '../../services/category/category-service';
 import { Router } from '@angular/router';
 import { element } from 'protractor';
@@ -68,6 +69,8 @@ export class AddImageComponent implements OnInit {
   flagAdd = false;
 
   googleFontsList: any[] = [];
+  createdFontsList: any[] = [];
+
   selectedFont: any;
 
   //Variavel que recebe a imagem BASE no tipo file para mandar para o backend
@@ -76,6 +79,7 @@ export class AddImageComponent implements OnInit {
   constructor(private categoryService: CategoryService,
               private googleService: GoogleApiService,
               private imageservice: ImageService,
+              private fonteService: FonteService,
               private router: Router) { }
 
   ngOnInit() {
@@ -86,6 +90,9 @@ export class AddImageComponent implements OnInit {
       console.log(err);
       alert('Impossível carregar fontes do google. Favor contatar um administrador do sistema.')
     });
+    this.fonteService.getFonts().subscribe(response => {
+      this.createdFontsList = response
+    })
     this.carregaMenu();
 
   } 
@@ -472,34 +479,64 @@ export class AddImageComponent implements OnInit {
   }
 
   mudaFonte(){
-    //assim que selecionar a fonte, seta na variavel
-    this.variavel.fonte = this.selectedFont.family;
-    //seleciona a url (mais para frente, implementar a opção de escolher ao usuário https://www.webcis.com.br/utilizando-font-face-tipografia-web.html)
-    let src = '';
-    //busca pelo regular
-    if(this.selectedFont.files.regular){
-      src = this.selectedFont.files.regular;
+    if(this.selectedFont.family){
+      //assim que selecionar a fonte, seta na variavel
+      this.variavel.fonte = this.selectedFont.family;
+      //seleciona a url (mais para frente, implementar a opção de escolher ao usuário https://www.webcis.com.br/utilizando-font-face-tipografia-web.html)
+      let src = '';
+      //busca pelo regular
+      if(this.selectedFont.files.regular){
+        src = this.selectedFont.files.regular;
+      }else{
+        src = this.selectedFont.files[0];
+      }
+      //cria o @fontface
+      let style = `
+      @font-face {
+        font-family: '${this.selectedFont.family}';
+        src: url(${src}) format('opentype');
+      }
+      
+      `;
+  
+      //adiciona a fonte no DOM
+      const node = document.createElement('style');
+      node.innerHTML = style; 
+      let font = `<link rel="stylesheet" href="https://petlandcss.s3-us-west-2.amazonaws.com/dynamic.css">`
+      document.head.append(font);
+      document.head.appendChild(node);
+  
+      setTimeout(() => {
+        document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
+      }, 1000);
+  
+      console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
     }else{
-      src = this.selectedFont.files[0];
+      //assim que selecionar a fonte, seta na variavel
+      this.variavel.fonte = this.selectedFont;
+      
+      //cria o @fontface
+      let style = `
+      @font-face {
+        font-family: '${this.selectedFont}';
+        src: url(https://petlandfonts.s3-us-west-2.amazonaws.com/${this.selectedFont}.ttf) format('opentype');
+      }
+      
+      `;
+  
+      //adiciona a fonte no DOM
+      const node = document.createElement('style');
+      node.innerHTML = style; 
+      let font = `<link rel="stylesheet" href="https://petlandcss.s3-us-west-2.amazonaws.com/dynamic.css">`
+      document.head.append(font);
+      document.head.appendChild(node);
+  
+      setTimeout(() => {
+        document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
+      }, 1000);
+  
+      // console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
     }
-    //cria o @fontface
-    let style = `
-    @font-face {
-      font-family: '${this.selectedFont.family}';
-      src: url(${src}) format('opentype');
-    }
-    `;
-
-    //adiciona a fonte no DOM
-    const node = document.createElement('style');
-    node.innerHTML = style; 
-    document.head.appendChild(node);
-
-    setTimeout(() => {
-      document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
-    }, 1000);
-
-    console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
   }
 
   previewImage(){
