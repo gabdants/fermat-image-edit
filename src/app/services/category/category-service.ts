@@ -34,4 +34,12 @@ export class CategoryService {
     return this.http.get<any>(`${API_URL}:8080/category/subcategory/new?name=${subcategoria}&category=${categoria}`, {headers});
   }
 
+  addFinalCategory(categoria: string, subcategoria: string, finalCategory: string){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.get<any>(`${API_URL}:8080/category/subcategory/finalcategory/new?name=${finalCategory}&category=${categoria}&subCategory=${subcategoria}`, {headers});
+  }
+
 }

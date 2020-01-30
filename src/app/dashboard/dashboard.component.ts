@@ -88,11 +88,16 @@ export class DashboardComponent implements OnInit {
           children: [{
             name: '',
             id: '',
+            children: [{
+              name: '',
+              id: '',
+            }],
           }]
-        }
+        } 
         aux.name = '';
         aux.children = []
-        aux.id = ''
+        // aux.children[0].children = []
+        aux.id = '';
         aux.name = item.name;
         aux.id = item.idCategory;
         this.selectCategorias.push(item.name);
@@ -101,6 +106,7 @@ export class DashboardComponent implements OnInit {
             let auxChildren = {
               name: '',
               id: '',
+              children: []
             }
             auxChildren.name = '';
             auxChildren.id = '';
@@ -108,6 +114,20 @@ export class DashboardComponent implements OnInit {
             auxChildren.id = subItem.idSubCategory
             aux.children.push(auxChildren);
             this.selectCategorias.push(`${item.name} > ${subItem.name}`);
+            if(subItem.finalCategory){
+              subItem.finalCategory.map(finalItem => {
+                let auxFinal = {
+                  name: '',
+                  id: '',
+                }
+                auxFinal.name = '';
+                auxFinal.id = '';
+                auxFinal.name = finalItem.name
+                auxFinal.id = finalItem.idFinalCategory
+                aux.children[0].children.push(auxFinal);
+                this.selectCategorias.push(`${item.name} > ${subItem.name} > ${finalItem.name}`);
+              })
+            }
           });
         }
         
@@ -131,10 +151,18 @@ export class DashboardComponent implements OnInit {
         alert('Categoria adicionada com sucesso!');
       })
     }else{
-      this.categoryService.addSubCategory(this.newCategory.subCategoryOff, this.newCategory.title).subscribe(response => {
-        console.log(response);
-        alert('Subcategoria adicionada com sucesso')
-      });
+      if(this.newCategory.subCategoryOff.includes('>')){
+        let auxCategorias = this.newCategory.subCategoryOff.split('>');
+        console.log(auxCategorias);
+        this.categoryService.addFinalCategory(auxCategorias[0].trim(), auxCategorias[1].trim(), this.newCategory.title).subscribe(response => {
+          console.log(response);
+        })
+      }else{
+        this.categoryService.addSubCategory(this.newCategory.subCategoryOff, this.newCategory.title).subscribe(response => {
+          console.log(response);
+          alert('Subcategoria adicionada com sucesso')
+        });
+      }
     }
   }
 
@@ -163,7 +191,6 @@ export class DashboardComponent implements OnInit {
         })
         this.semFotos = false;
       }else{
-        console.log('teste')
         this.semFotos = true;
       }
 

@@ -14,6 +14,8 @@ import { Image } from '../../../typings/imagem';
 export class AddFonteComponent implements OnInit {
 
   font: File;
+  exibeImgPlaceholder = true;
+  exibeFontConfirm = false;
 
   constructor(
     private categoryService: CategoryService, 
@@ -37,6 +39,9 @@ export class AddFonteComponent implements OnInit {
     })
   }
   getFonte(event){
+    this.exibeImgPlaceholder = false;
+    this.exibeFontConfirm = true;
+    
     console.log(event)
     this.font = event.target.files[0];
   }
