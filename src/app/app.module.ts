@@ -14,6 +14,7 @@ import { CustomImageComponent } from './custom-image/custom-image.component';
 import { ToAproveComponent } from './admin/to-aprove/to-aprove.component';
 import { AprovadasComponent } from './aprovadas/aprovadas.component';
 import { AddFonteComponent } from './admin/add-fonte/add-fonte.component';
+import { ContinueEditComponent } from './admin/continue-edit/continue-edit.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { AddFonteComponent } from './admin/add-fonte/add-fonte.component';
     ToAproveComponent,
     AprovadasComponent,
     AddFonteComponent,
+    ContinueEditComponent,
   ],
   imports: [
     BrowserModule,
