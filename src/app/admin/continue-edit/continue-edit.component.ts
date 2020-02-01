@@ -26,13 +26,13 @@ export class ContinueEditComponent implements OnInit {
   //Variável de canvas
   @ViewChild('canvasPreview') canvasPreview: ElementRef<HTMLCanvasElement>;
   @ViewChild('canvas') canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvasThumb') canvasThumb: ElementRef<HTMLCanvasElement>;
   ctx: CanvasRenderingContext2D;
-
-
   ctxPreview: CanvasRenderingContext2D;
 
   listaVariaveis: Variavel[] = [];
   imgPreview: HTMLImageElement;
+  imgThumb: HTMLImageElement;
   name: string;
   imgX: string;
   imgY: string;
@@ -45,6 +45,8 @@ export class ContinueEditComponent implements OnInit {
 
   flagEvents = true;
   flagAdd = false;
+
+  ctxThumb: CanvasRenderingContext2D;
 
   fileBase: File;
 
@@ -78,6 +80,8 @@ export class ContinueEditComponent implements OnInit {
       this.imgY = response.height;
       this.name = response.name;
       this.imgPreview = new Image();
+      this.imgThumb = new Image();
+
 
       this.newImage = response;
       //também precisa pegar o array de variaveis e colocar no this.listaVariaveis
@@ -91,12 +95,25 @@ export class ContinueEditComponent implements OnInit {
 
       setTimeout(() => {
         this.imgPreview.src = response.s3Url;  
+        this.imgThumb.src = response.S3UrlThumb;
         this.imgPreview.crossOrigin = 'anonymous';
+        this.imgThumb.crossOrigin = 'anonymous';
+
+        
       }, 400); 
       
       this.imgPreview.onload = function() {
         this.constroiCanvasPreview();
       }.bind(this)
+
+      //instancia a imagem com as propriedades reais
+      this.imgThumb = new Image();
+      //Quando a imagem (mesmo que apenas um objeto) é carregada, constroi o canvasThumb
+      this.imgThumb.onload = function () {
+        this.constroiCanvasThumb();
+      }.bind(this)
+      this.imgThumb.src = response.s3UrlThumb;
+      
       
     },err => {
        console.log(err);
@@ -192,7 +209,7 @@ export class ContinueEditComponent implements OnInit {
       //limpa o canvas inteiro
       this.limpaCamposCanvas();
       //reconstroi o canvas
-      this.constroiCanvas();
+      this.constroiCanvasThumb();
       //coloca as variáveis novamente
       this.escreveCamposCanvas();
 
@@ -219,14 +236,14 @@ export class ContinueEditComponent implements OnInit {
   escreveCamposCanvas(){
     this.listaVariaveis.forEach(variavel => {
       //escreve o texto na imagem base
-      this.ctx.font = `${variavel.tamanho}px ${variavel.fonte}`; 
+      this.ctxPreview.font = `${variavel.tamanho}px ${variavel.fonte}`; 
       if(variavel.cor == ''){
-        this.ctx.fillStyle = 'black';
+        this.ctxPreview.fillStyle = 'black';
       }else{
-        this.ctx.fillStyle = variavel.cor;
+        this.ctxPreview.fillStyle = variavel.cor;
       }
       
-      this.ctx.fillText(variavel.textoModelo, +variavel.cordX, +variavel.cordY);
+      this.ctxPreview.fillText(variavel.textoModelo, +variavel.cordX, +variavel.cordY);
     });
   }
   addVariavel(){
@@ -303,21 +320,21 @@ export class ContinueEditComponent implements OnInit {
               cvBase.style.display = 'block';
   
               //escreve o texto na imagem base
-              this.ctx.font = `${this.variavel.tamanho}px ${this.variavel.fonte}`; 
+              this.ctxPreview.font = `${this.variavel.tamanho}px ${this.variavel.fonte}`; 
               if(this.variavel.cor == ''){
-                this.ctx.fillStyle = 'black';
+                this.ctxPreview.fillStyle = 'black';
               }else{
-                this.ctx.fillStyle = this.variavel.cor;
+                this.ctxPreview.fillStyle = this.variavel.cor;
               }
               
-              this.ctx.fillText(this.variavel.textoModelo, posX, posY + this.ctx.measureText(this.variavel.textoModelo).actualBoundingBoxAscent/2);
+              this.ctxPreview.fillText(this.variavel.textoModelo, posX, posY + this.ctxPreview.measureText(this.variavel.textoModelo).actualBoundingBoxAscent/2);
   
               //Setando coordenadas
               this.variavel.cordX = ''+posX;
-              this.variavel.cordY = '' + (posY + +(this.ctx.measureText(this.variavel.textoModelo).actualBoundingBoxAscent/2)); 
+              this.variavel.cordY = '' + (posY + +(this.ctxPreview.measureText(this.variavel.textoModelo).actualBoundingBoxAscent/2)); 
   
               //Setando textWidth para ajuste de alinhamento
-              this.variavel.textWidth = this.ctx.measureText(this.variavel.textoModelo).width;
+              this.variavel.textWidth = this.ctxPreview.measureText(this.variavel.textoModelo).width;
   
               //remove o floattext
               floatText.removeChild(floatText.childNodes[0]);
@@ -414,12 +431,22 @@ export class ContinueEditComponent implements OnInit {
     //pega o contexto 
     this.ctxPreview = this.canvas.nativeElement.getContext('2d');
     //Seta o tamanho do canvas
-    // this.canvas.nativeElement.width = this.newImage.width;
-    // this.canvas.nativeElement.height = this.newImage.height;
+    this.canvas.nativeElement.width = this.newImage['width'];
+    this.canvas.nativeElement.height = this.newImage['height'];
     //constroi o canvas baseado na imagem BASE
     this.ctxPreview.drawImage(this.imgPreview, 0, 0);
 
     this.escreveCampos();
+  }
+
+  constroiCanvasThumb(){
+    //pega o contexto
+    this.ctxThumb = this.canvasThumb.nativeElement.getContext('2d');
+    //Seta o tamanho do canvas
+    this.canvasThumb.nativeElement.width = this.imgThumb.width;
+    this.canvasThumb.nativeElement.height = this.imgThumb.height;
+    //constroi o canvas baseado na imagem BASE
+    this.ctxThumb.drawImage(this.imgThumb, 0, 0);
   }
 
   chamaPreview(){

@@ -29,6 +29,7 @@ const routes: Routes = [
   { path: 'aprovadas', component: AprovadasComponent },
   { path: 'addFonte', component: AddFonteComponent },
   { path: 'addImage/:id', component: AddImageComponent },
+  { path: 'continueEdit/:id', component: ContinueEditComponent },
 
 ];
 
