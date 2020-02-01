@@ -39,7 +39,23 @@ export class ImageService {
 
   }
 
-  adminPostImageVariables(newImage: NewImage, imageID: string, imgBaseWidth: number, imgBaseHeight: number ){
+  postImageThumb(file: File, nomeDaPeca: string){
+    let headers = new HttpHeaders({
+      'Accept': 'text/plain',
+    });
+
+    let formData: FormData = new FormData();
+
+    formData.append('file', file, file.name);
+
+    return this.http.post<any>(`http://52.27.128.99:8181/image/uploadFile?name=${nomeDaPeca}&type=thumb`, formData, {
+      headers,
+      responseType: "text" as "json"
+    });
+
+  }
+
+  adminPostImageVariables(newImage: NewImage, imageID: string, imgBaseWidth: number, imgBaseHeight: number, s3UrlThumb: string){
     console.log('post variables!')
     let fields: Variables[] = [];
     //Necessidade de realizar um cast pois o idiota do dantas escreveu os parametro tudo em inglês
@@ -75,7 +91,8 @@ export class ImageService {
       newImage.fmtFechado,
       imgBaseHeight,
       imgBaseWidth, 
-      fields
+      fields,
+      s3UrlThumb
     )
 
     console.log('final: ');
@@ -87,7 +104,7 @@ export class ImageService {
     return this.http.post<any>(`http://52.27.128.99:8181/image/imageOpts?imageId=${id}`, {requester: requester});
   }
 
-  postFinalImageOpts(infos){
+  postFinalImageOpts(infos, s3UrlThumb){
 
     let imageID = '';
 
@@ -102,7 +119,8 @@ export class ImageService {
       "",
       100,
       100, 
-      []
+      [],
+      s3UrlThumb
     )
 
     console.log('final: ');

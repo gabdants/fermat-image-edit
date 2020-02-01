@@ -65,7 +65,7 @@
         <!-- Fotos para download ou edição -->
         <div *ngIf="!semFotos" class="toEdit">
           <div class="singleImage" *ngFor="let imagem of imagens">
-            <img src="{{imagem.s3Url}}">
+            <img src="{{imagem.s3UrlThumb}}">
             <h4>{{imagem.name}}</h4>
             <div class="tagsImage">
               <p *ngIf="imagem.editable">Editável</p>

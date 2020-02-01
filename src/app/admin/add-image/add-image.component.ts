@@ -73,8 +73,10 @@ export class AddImageComponent implements OnInit {
 
   selectedFont: any;
 
+  s3UrlThumb: string;
   //Variavel que recebe a imagem BASE no tipo file para mandar para o backend
   fileBase: File;
+  fileThumb: File;
 
   constructor(private categoryService: CategoryService,
               private googleService: GoogleApiService,
@@ -308,8 +310,16 @@ export class AddImageComponent implements OnInit {
     //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
     this.imageservice.postImage(this.fileBase, this.newImage.name).subscribe(res => {
       console.log('Token: ' + res);
-      //Ultima atualização do Dantas, o res já é o ID da imagem
-      this.enviaVariaveis(res);
+
+      this.imageservice.postImageThumb(this.fileThumb, this.newImage.name).subscribe(response => {
+        if(response){
+          this.s3UrlThumb = response;
+
+          //Ultima atualização do Dantas, o res já é o ID da imagem
+          this.enviaVariaveis(res);
+        }
+      })
+      
     }, err => {
       console.log(err);
     })
@@ -318,7 +328,7 @@ export class AddImageComponent implements OnInit {
 
   enviaVariaveis(id: string){
     //endpoint que utiliza o ID retornado para enviar os atributos da imagem (nome, tamanho, etc...)
-    this.imageservice.adminPostImageVariables(this.newImage, id, this.img.width, this.img.height).subscribe(res => {
+    this.imageservice.adminPostImageVariables(this.newImage, id, this.img.width, this.img.height, this.s3UrlThumb).subscribe(res => {
       console.log(res);
       this.router.navigateByUrl('dashboard')
     }, err => {
@@ -419,6 +429,7 @@ export class AddImageComponent implements OnInit {
       this.imageThumbFixed = event.target.result;
     }.bind(this);
     reader.readAsDataURL(result.target.files[0]);
+    this.fileThumb = result.target.files[0];
   }
 
   constroiCanvas(){

@@ -41,6 +41,7 @@ export class ContinueEditComponent implements OnInit {
 
   selectedFont: any;
   img: HTMLImageElement;
+  S3UrlThumb: string;
 
   flagEvents = true;
   flagAdd = false;
@@ -153,7 +154,7 @@ export class ContinueEditComponent implements OnInit {
 
   enviaVariaveis(id: string){
     //endpoint que utiliza o ID retornado para enviar os atributos da imagem (nome, tamanho, etc...)
-    this.imageService.adminPostImageVariables(this.newImage, id, this.img.width, this.img.height).subscribe(res => {
+    this.imageService.adminPostImageVariables(this.newImage, id, this.img.width, this.img.height, this.S3UrlThumb).subscribe(res => {
       console.log(res);
       this.router.navigateByUrl('dashboard')
     }, err => {
@@ -413,8 +414,8 @@ export class ContinueEditComponent implements OnInit {
     //pega o contexto 
     this.ctxPreview = this.canvas.nativeElement.getContext('2d');
     //Seta o tamanho do canvas
-    this.canvas.nativeElement.width = this.newImage.width;
-    this.canvas.nativeElement.height = this.newImage.height;
+    // this.canvas.nativeElement.width = this.newImage.width;
+    // this.canvas.nativeElement.height = this.newImage.height;
     //constroi o canvas baseado na imagem BASE
     this.ctxPreview.drawImage(this.imgPreview, 0, 0);
 
