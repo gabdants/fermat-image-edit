@@ -28,7 +28,7 @@ const routes: Routes = [
   { path: 'toApprove', component: ToAproveComponent },
   { path: 'aprovadas', component: AprovadasComponent },
   { path: 'addFonte', component: AddFonteComponent },
-  { path: 'addImage/:id', component: ContinueEditComponent },
+  { path: 'addImage/:id', component: AddImageComponent },
 
 ];
 

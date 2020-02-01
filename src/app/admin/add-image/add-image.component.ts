@@ -5,7 +5,7 @@ import { GoogleApiService } from 'src/app/services/commom/google-api.service';
 import { ImageService } from 'src/app/services/image/image-service';
 import { FonteService } from 'src/app/services/fonte/fonte.service';
 import { CategoryService } from '../../services/category/category-service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { element } from 'protractor';
 
 interface Category {
@@ -82,7 +82,8 @@ export class AddImageComponent implements OnInit {
               private googleService: GoogleApiService,
               private imageservice: ImageService,
               private fonteService: FonteService,
-              private router: Router) { }
+              private router: Router,
+              private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.googleService.getGoogleFonts().subscribe((res: any) => {
@@ -90,14 +91,94 @@ export class AddImageComponent implements OnInit {
       this.googleFontsList = res.items;
     }, err => {
       console.log(err);
-      alert('Impossível carregar fontes do google. Favor contatar um administrador do sistema.')
+      alert('Não foi carregar fontes do google. Favor contatar um administrador do sistema.')
     });
     this.fonteService.getFonts().subscribe(response => {
       this.createdFontsList = response
     })
-    this.carregaMenu();
+    
+    this.carregaMenu().then(this.validaFluxoDuplicar.bind(this));
 
   } 
+
+    async validaFluxoDuplicar(){
+      //Fluxo de duplicar imagem
+      if(this.activeRoute.snapshot.params.id){
+        await this.retornaImgInfosAndFields();
+      }
+    } 
+
+    async retornaImgInfosAndFields(){
+      await this.imageservice.getImageById(this.activeRoute.snapshot.params.id).subscribe((response) => {
+        //preenche os campos do primeiro step
+        this.newImage = new NewImage(
+          response.name,
+          "",
+          response.closedFormat,
+          response.openFormat,
+          response.finalDetails,
+          "",
+          response.category,
+          response.requester,
+          response.editable,
+          response.approval,
+          response.fields
+        )
+        
+        //preenche a lista de variáveis
+        if(response.field){
+          response.field.forEach(element => {
+              this.listaVariaveis.push(new Variavel(
+                element.title,
+                element.modelText,
+                element.obs,
+                element.fontFamily,
+                element.fontSize,
+                element.color,
+                element.allign,
+                element.required,
+                element.cordX,
+                element.cordY
+              ))
+          });
+        }
+
+        //Aqui está substituindo o input do usuário, mas nada o impede de clicar de novo e selcionar outra imagem
+        if(response.s3Url){
+          this.exibeImgPlaceholder = false;
+          //instancia a imagem com as propriedades reais
+          this.img = new Image();
+          //Quando a imagem (mesmo que apenas um objeto) é carregada, constroi o canvas
+            this.img.onload = function () {
+              this.constroiCanvas();
+              //coloca as variáveis
+              this.escreveCamposCanvas();
+            }.bind(this)
+          this.img.src = response.s3Url;
+          //preview com tamanho fixo
+          this.imageFixed = response.s3Url;
+
+        }
+        
+        //Aqui está substituindo o input do usuário, mas nada o impede de clicar de novo e selcionar outra imagem
+        if(this.exibeImgPlaceholderThumb){
+          this.exibeImgPlaceholderThumb = false;
+          //instancia a imagem com as propriedades reais
+          this.imgThumb = new Image();
+          //Quando a imagem (mesmo que apenas um objeto) é carregada, constroi o canvasThumb
+          this.imgThumb.onload = function () {
+            this.constroiCanvasThumb();
+          }.bind(this)
+          this.imgThumb.src = response.s3UrlThumb;
+          //preview com tamanho fixo
+          this.imageThumbFixed = response.s3UrlThumb;
+        }
+
+      }, (err) => {
+        console.log(err);
+      })
+    }
+    
   async carregaMenu(){
     TREE_DATA = []
     await this.categoryService.getCategory().subscribe(response => {
@@ -408,6 +489,7 @@ export class AddImageComponent implements OnInit {
       //preview com tamanho fixo
       this.imageFixed = event.target.result;
     }.bind(this);
+    
     reader.readAsDataURL(result.target.files[0]);
     this.fileBase = result.target.files[0];
   }
@@ -479,7 +561,7 @@ export class AddImageComponent implements OnInit {
     this.listaVariaveis.forEach(variavel => {
       //escreve o texto na imagem base
       this.ctx.font = `${variavel.tamanho}px ${variavel.fonte}`; 
-      if(variavel.cor == ''){
+      if(variavel.cor == '' || variavel.cor == null){
         this.ctx.fillStyle = 'black';
       }else{
         this.ctx.fillStyle = variavel.cor;
