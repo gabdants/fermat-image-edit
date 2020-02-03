@@ -71,7 +71,8 @@ export class ImageService {
                                               element.cor, 
                                               element.obrigatorio,
                                               element.textoModelo,
-                                              element.titulo
+                                              element.titulo,
+                                              element.fontUrl
                                               );
       fields.push(variable);
     });
