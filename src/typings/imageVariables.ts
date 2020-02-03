@@ -11,6 +11,8 @@
     width: number;
     field: any[];
     s3UrlThumb: string;
+    obsPublic: string;
+    obsPrint: string;
 
     constructor(editable: boolean,
         approval: boolean,
@@ -24,6 +26,8 @@
         width: number,
         field: any[],
         s3UrlThumb: string,
+        obsPublic: string = '',
+        obsPrint: string = ''
     ){
 
         this.editable = editable;
@@ -38,5 +42,7 @@
         this.width = width;
         this.field = field;
         this.s3UrlThumb = s3UrlThumb;
+        this.obsPublic = obsPublic;
+        this.obsPrint = obsPrint;
     }
 }

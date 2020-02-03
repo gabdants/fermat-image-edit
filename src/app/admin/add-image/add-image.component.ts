@@ -78,6 +78,8 @@ export class AddImageComponent implements OnInit {
   fileBase: File;
   fileThumb: File;
 
+  flagDuplicate: boolean = false;
+
   constructor(private categoryService: CategoryService,
               private googleService: GoogleApiService,
               private imageservice: ImageService,
@@ -104,6 +106,7 @@ export class AddImageComponent implements OnInit {
     async validaFluxoDuplicar(){
       //Fluxo de duplicar imagem
       if(this.activeRoute.snapshot.params.id){
+        this.flagDuplicate = true;
         await this.retornaImgInfosAndFields();
       }
     } 
@@ -113,11 +116,11 @@ export class AddImageComponent implements OnInit {
         //preenche os campos do primeiro step
         this.newImage = new NewImage(
           response.name,
-          "",
+          response.obsPublic,
           response.closedFormat,
           response.openFormat,
           response.finalDetails,
-          "",
+          response.obsPrint,
           response.category,
           response.requester,
           response.editable,
@@ -128,6 +131,10 @@ export class AddImageComponent implements OnInit {
         //preenche a lista de variáveis
         if(response.field){
           response.field.forEach(element => {
+
+              //Aplica as fontes
+              this.aplicaFonteDuplicar(element.fontFamily, element.fontUrl);
+
               this.listaVariaveis.push(new Variavel(
                 element.title,
                 element.modelText,
@@ -157,7 +164,6 @@ export class AddImageComponent implements OnInit {
           this.img.src = response.s3Url;
           //preview com tamanho fixo
           this.imageFixed = response.s3Url;
-
         }
         
         //Aqui está substituindo o input do usuário, mas nada o impede de clicar de novo e selcionar outra imagem
@@ -177,6 +183,94 @@ export class AddImageComponent implements OnInit {
       }, (err) => {
         console.log(err);
       })
+    }
+
+    aplicaFonteDuplicar(fontFamily: string, fontUrl: string){
+      //cria o @fontface
+      let style = `
+      @font-face {
+        font-family: '${fontFamily}';
+        src: url(${fontUrl}) format('opentype');
+      }
+      
+      `;
+  
+      //adiciona a fonte no DOM
+      const node = document.createElement('style');
+      node.innerHTML = style; 
+      let font = `<link rel="stylesheet" href="https://petlandcss.s3-us-west-2.amazonaws.com/dynamic.css">`
+      document.head.append(font);
+      document.head.appendChild(node);
+  
+      setTimeout(() => {
+        document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
+      }, 1000);
+    }
+
+    aplicaFonte(fontFamily){
+      if(this.selectedFont.family){
+        //assim que selecionar a fonte, seta na variavel
+        this.variavel.fonte = this.selectedFont.family;
+        //seleciona a url (mais para frente, implementar a opção de escolher ao usuário https://www.webcis.com.br/utilizando-font-face-tipografia-web.html)
+        let src = '';
+        //busca pelo regular
+        if(this.selectedFont.files.regular){
+          src = this.selectedFont.files.regular;
+        }else{
+          src = this.selectedFont.files[0];
+        }
+        //seta a url na variável
+        this.variavel.fontUrl = src;
+        //cria o @fontface
+        let style = `
+        @font-face {
+          font-family: '${this.selectedFont.family}';
+          src: url(${src}) format('opentype');
+        }
+        
+        `;
+    
+        //adiciona a fonte no DOM
+        const node = document.createElement('style');
+        node.innerHTML = style; 
+        let font = `<link rel="stylesheet" href="https://petlandcss.s3-us-west-2.amazonaws.com/dynamic.css">`
+        document.head.append(font);
+        document.head.appendChild(node);
+    
+        setTimeout(() => {
+          document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
+        }, 1000);
+    
+        console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
+      }else{
+        //assim que selecionar a fonte, seta na variavel
+        this.variavel.fonte = this.selectedFont;
+        
+        //cria o @fontface
+        let style = `
+        @font-face {
+          font-family: '${this.selectedFont}';
+          src: url(https://petlandfonts.s3-us-west-2.amazonaws.com/${this.selectedFont}.ttf) format('opentype');
+        }
+        
+        `;
+
+        //seta a url
+        this.variavel.fontUrl = `https://petlandfonts.s3-us-west-2.amazonaws.com/${this.selectedFont}.ttf`;
+    
+        //adiciona a fonte no DOM
+        const node = document.createElement('style');
+        node.innerHTML = style; 
+        let font = `<link rel="stylesheet" href="https://petlandcss.s3-us-west-2.amazonaws.com/dynamic.css">`
+        document.head.append(font);
+        document.head.appendChild(node);
+    
+        setTimeout(() => {
+          document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
+        }, 1000);
+    
+        // console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
+      }
     }
     
   async carregaMenu(){

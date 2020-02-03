@@ -10,6 +10,7 @@ export class Variables{
     required: boolean;
     modelText: string;
     title: string;
+    fontUrl: string;
 
     constructor(name: string,
                 cordX: string,
@@ -21,7 +22,8 @@ export class Variables{
                 color: string,
                 required: boolean,
                 modelText: string,
-                title: string){
+                title: string,
+                fontUrl: string = ''){
 
         this.name = name;
         this.cordX = cordX;
@@ -33,6 +35,7 @@ export class Variables{
         this.color = color;            
         this.required = required;            
         this.modelText = modelText;            
-        this.title = title;            
+        this.title = title;  
+        this.fontUrl = fontUrl;          
     }
 }
