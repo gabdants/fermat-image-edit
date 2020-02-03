@@ -114,29 +114,9 @@ export class ContinueEditComponent implements OnInit {
       }.bind(this)
       this.imgThumb.src = response.s3UrlThumb;
       
-      
     },err => {
        console.log(err);
     })
- 
-    // this.imageService.getImagensMock().subscribe((res) => {
-    //   console.log(res);
-    //   this.imgPreview = new Image();
-    //   this.imgX = res[0].imageSizeX; 
-    //   this.imgY = res[0].imageSizeY;
-
-    //   this.imgPreview.src = res[0].imageUrl;
-
-    //   this.imgPreview.onload = function() {
-    //     this.constroiCanvasPreview();
-    //   }.bind(this)
-    // })
-    
-
-    // this.imageService.getVariaveisMock().subscribe((res) => {
-    //   console.log(res);
-    //   this.listaVariaveis = res;
-    // })
 
   }
 
@@ -209,7 +189,7 @@ export class ContinueEditComponent implements OnInit {
       //limpa o canvas inteiro
       this.limpaCamposCanvas();
       //reconstroi o canvas
-      this.constroiCanvasThumb();
+      this.constroiCanvasPreview();
       //coloca as variáveis novamente
       this.escreveCamposCanvas();
 
