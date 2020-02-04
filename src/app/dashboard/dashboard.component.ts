@@ -207,4 +207,13 @@ export class DashboardComponent implements OnInit {
     this.router.navigateByUrl(`editImage/${id}`)
   }
 
+  duplicaImagem(id){
+    this.router.navigateByUrl(`addImage/${id}`);
+  }
+
+  continuarEditando(id){
+    this.router.navigateByUrl(`continueEdit/${id}`);
+  }
+
+
 }

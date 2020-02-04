@@ -24,7 +24,7 @@ export class FonteService {
 
     formData.append('file', file, file.name);
 
-    return this.http.post<any>(`http://54.203.70.192:8181/font/uploadFont`, formData, {
+    return this.http.post<any>(`http://54.188.14.251:8181/font/uploadFont`, formData, {
       headers,
       responseType: "text" as "json"
     });
@@ -36,7 +36,7 @@ export class FonteService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.203.70.192:8181/font/getCss`, {headers});
+    return this.http.get<any>(`http://54.188.14.251:8181/font/getCss`, {headers});
   }
 
   getFonts(){
@@ -44,7 +44,7 @@ export class FonteService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.203.70.192:8181/font/getFonts`, {headers});
+    return this.http.get<any>(`http://54.188.14.251:8181/font/getFonts`, {headers});
   }
 
   
@@ -54,7 +54,7 @@ export class FonteService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.203.70.192:8181/image/all`, {headers});
+    return this.http.get<any>(`http://54.188.14.251:8181/image/all`, {headers});
   }
 
   getByCategory(categoria){
@@ -62,7 +62,7 @@ export class FonteService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.203.70.192:8181/image/imagesByCategory?category=${categoria}`, {headers});
+    return this.http.get<any>(`http://54.188.14.251:8181/image/imagesByCategory?category=${categoria}`, {headers});
   }
 
   getFinalImages(){
@@ -70,7 +70,7 @@ export class FonteService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.203.70.192:8181/image/finalImages`, {headers});
+    return this.http.get<any>(`http://54.188.14.251:8181/image/finalImages`, {headers});
   }
 
   getFinalImagesByRequester(requester){
@@ -78,14 +78,14 @@ export class FonteService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.203.70.192:8181/image/finalImagesByRequester?requester=${requester}`, {headers});
+    return this.http.get<any>(`http://54.188.14.251:8181/image/finalImagesByRequester?requester=${requester}`, {headers});
   }
 
   approveImage(id){
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.put<any>(`http://54.203.70.192:8181/image/approvedImages?imageId=${id}`, {headers});
+    return this.http.put<any>(`http://54.188.14.251:8181/image/approvedImages?imageId=${id}`, {headers});
   }
 
   getFields(id){
@@ -93,14 +93,14 @@ export class FonteService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.203.70.192:8181/image/imageFields?imageId=${id}`, {headers});
+    return this.http.get<any>(`http://54.188.14.251:8181/image/imageFields?imageId=${id}`, {headers});
   }
   getApproved(user){
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.203.70.192:8181/image/finalImageByRequester?imageId=${user}`, {headers});
+    return this.http.get<any>(`http://54.188.14.251:8181/image/finalImageByRequester?imageId=${user}`, {headers});
   }
 
   setFinalImageToTrue(token: string){
@@ -108,7 +108,7 @@ export class FonteService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.put<any>(`http://54.203.70.192:8181/image/finalImages?imageId=${token}`, {headers});
+    return this.http.put<any>(`http://54.188.14.251:8181/image/finalImages?imageId=${token}`, {headers});
   }
 
 }

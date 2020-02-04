@@ -1,0 +1,70 @@
+<app-header></app-header>
+<div class="container">
+    <div class="content-tabs">
+<div class="third">
+    <form #form="ngForm" class="paddingSpace">
+<div class="main-content">
+    <div class="leftVariavel">
+        <h4 class="formTitle">Adicionar variáveis</h4>
+        <input [(ngModel)]='variavel.titulo' [disabled]="!newImage.editable || flagAdd" type='text' id='titulo' name='titulo' placeholder="Título" #nameVerify="ngModel" required>
+        <!--implementar tratamento depois-->
+        <svg version="1.1" class="hidde-error-icon" id="error-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 286.054 286.054" style="enable-background:new 0 0 286.054 286.054;" xml:space="preserve"><g>	<path style="fill:#E2574C;" d="M143.027,0C64.04,0,0,64.04,0,143.027c0,78.996,64.04,143.027,143.027,143.027		c78.996,0,143.027-64.022,143.027-143.027C286.054,64.04,222.022,0,143.027,0z M143.027,259.236		c-64.183,0-116.209-52.026-116.209-116.209S78.844,26.818,143.027,26.818s116.209,52.026,116.209,116.209		S207.21,259.236,143.027,259.236z M143.036,62.726c-10.244,0-17.995,5.346-17.995,13.981v79.201c0,8.644,7.75,13.972,17.995,13.972		c9.994,0,17.995-5.551,17.995-13.972V76.707C161.03,68.277,153.03,62.726,143.036,62.726z M143.036,187.723		c-9.842,0-17.852,8.01-17.852,17.86c0,9.833,8.01,17.843,17.852,17.843s17.843-8.01,17.843-17.843		C160.878,195.732,152.878,187.723,143.036,187.723z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+        
+        <input [(ngModel)]='variavel.textoModelo' [disabled]="!newImage.editable || flagAdd" type='text' id='textoModelo' name='textoModelo' placeholder="Texto Modelo" #nameVerify="ngModel" required>
+
+        <input [(ngModel)]='variavel.obs' type='text' [disabled]="!newImage.editable || flagAdd" id='obs' name='obs' placeholder="Observação" #nameVerify="ngModel" required>
+
+        <mat-form-field style="width: 85%;">
+          <mat-label>Escolha a fonte</mat-label>
+          <mat-select id='fonte' name='fonte' (selectionChange)='mudaFonte();' [disabled]="!newImage.editable || flagAdd" [(ngModel)]="selectedFont">
+            <mat-option *ngFor="let font of googleFontsList" [value]="font">  
+              {{font.family}}
+            </mat-option>
+            <mat-option *ngFor="let font of createdFontsList" [value]="font">  
+              {{font}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <input [(ngModel)]='variavel.tamanho' type='number' min="0" [disabled]="!newImage.editable || flagAdd" id='tamanho' name='tamanho' class="halfInput marginRight" placeholder="Tamanho" #nameVerify="ngModel" required>
+
+        <input [(ngModel)]='variavel.cor' type='color' [disabled]="!newImage.editable || flagAdd" id='cor' name='cor' placeholder="Cor" class="halfInput" #nameVerify="ngModel" required>
+
+        <mat-form-field>
+            <mat-label>Alinhamento</mat-label>
+            <select [(ngModel)]='variavel.alinhamento'  [disabled]="!newImage.editable || flagAdd" id='alinhamento' placeholder="Alinhamento" name='alinhamento' #nameVerify="ngModel" matNativeControl required>
+              <option value="center">Centro</option>
+              <option value="right">Direita</option>
+              <option value="left">Esquerda</option>
+            </select>
+          </mat-form-field>
+        
+        <mat-slide-toggle style="width: 100%;" [checked]="variavel.obrigatorio" [disabled]="!newImage.editable || flagAdd" (change)="variavel.obrigatorio = !variavel.obrigatorio">Obrigatório</mat-slide-toggle> 
+
+        <button class="orange-button" [disabled]="!newImage.editable || flagAdd" style="width: 90%; margin-top: 10px;" (click)="addVariavel();">Adicionar Variável</button>
+        <div *ngIf='!flagAdd' class="variaveis-left">
+            <div *ngFor='let variavel of listaVariaveis'>
+              <span>{{variavel.titulo}} 
+                <button [id]='variavel.titulo' (click)="editVariavel($event);" class="edit-var" [disabled]="!newImage.editable" style="margin-left: 5px;">Editar</button>
+                <button [id]='variavel.titulo' (click)="cancelVar($event);" class="red-cancel" [disabled]="!newImage.editable" style="margin-left: 5px;">X</button>
+              </span>
+            </div>
+        </div>
+    </div> 
+    <div class="rightVariavel">
+        <h4 class="formTitle">Pré visualizar <span><svg (click)='previewImage();' style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path d="M11.5 9C10.12 9 9 10.12 9 11.5s1.12 2.5 2.5 2.5 2.5-1.12 2.5-2.5S12.88 9 11.5 9zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-3.21 14.21l-2.91-2.91c-.69.44-1.51.7-2.39.7C9.01 16 7 13.99 7 11.5S9.01 7 11.5 7 16 9.01 16 11.5c0 .88-.26 1.69-.7 2.39l2.91 2.9-1.42 1.42z"/></svg></span></h4>
+        <div id="boxImagePreview" class="boxImagePreview">
+            <canvas class="canvasBase" id="canvasBase" #canvas></canvas>
+            <canvas class="canvasThumb" id="canvasThumb" #canvasThumb></canvas>
+          <p class="floatText" id="floatText"></p>
+        </div>
+        <div class="bot-dir add-variavel">
+          <button class="orange-button" (click)="salvarImage();">Salvar</button>
+        </div>
+
+      </div>
+</div>
+</form>
+</div>
+</div>
+</div>

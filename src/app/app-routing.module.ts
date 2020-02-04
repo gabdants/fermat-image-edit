@@ -7,6 +7,7 @@ import { CustomImageComponent } from './custom-image/custom-image.component';
 import { ToAproveComponent } from './admin/to-aprove/to-aprove.component';
 import { AprovadasComponent } from './aprovadas/aprovadas.component';
 import { AddFonteComponent } from './admin/add-fonte/add-fonte.component';
+import { ContinueEditComponent } from './admin/continue-edit/continue-edit.component';
 
 const routes: Routes = [
   // { path: '', redirectTo: 'home', pathMatch: 'full', canActivate: [AuthGuard], },
@@ -27,6 +28,8 @@ const routes: Routes = [
   { path: 'toApprove', component: ToAproveComponent },
   { path: 'aprovadas', component: AprovadasComponent },
   { path: 'addFonte', component: AddFonteComponent },
+  { path: 'addImage/:id', component: AddImageComponent },
+  { path: 'continueEdit/:id', component: ContinueEditComponent },
 
 ];
 

@@ -5,7 +5,7 @@ import { GoogleApiService } from 'src/app/services/commom/google-api.service';
 import { ImageService } from 'src/app/services/image/image-service';
 import { FonteService } from 'src/app/services/fonte/fonte.service';
 import { CategoryService } from '../../services/category/category-service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { element } from 'protractor';
 
 interface Category {
@@ -73,14 +73,19 @@ export class AddImageComponent implements OnInit {
 
   selectedFont: any;
 
+  s3UrlThumb: string;
   //Variavel que recebe a imagem BASE no tipo file para mandar para o backend
   fileBase: File;
+  fileThumb: File;
+
+  flagDuplicate: boolean = false;
 
   constructor(private categoryService: CategoryService,
               private googleService: GoogleApiService,
               private imageservice: ImageService,
               private fonteService: FonteService,
-              private router: Router) { }
+              private router: Router,
+              private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.googleService.getGoogleFonts().subscribe((res: any) => {
@@ -88,14 +93,189 @@ export class AddImageComponent implements OnInit {
       this.googleFontsList = res.items;
     }, err => {
       console.log(err);
-      alert('Impossível carregar fontes do google. Favor contatar um administrador do sistema.')
+      alert('Não foi carregar fontes do google. Favor contatar um administrador do sistema.')
     });
     this.fonteService.getFonts().subscribe(response => {
       this.createdFontsList = response
     })
-    this.carregaMenu();
+    
+    this.carregaMenu().then(this.validaFluxoDuplicar.bind(this));
 
   } 
+
+    async validaFluxoDuplicar(){
+      //Fluxo de duplicar imagem
+      if(this.activeRoute.snapshot.params.id){
+        this.flagDuplicate = true;
+        await this.retornaImgInfosAndFields();
+      }
+    } 
+
+    async retornaImgInfosAndFields(){
+      await this.imageservice.getImageById(this.activeRoute.snapshot.params.id).subscribe((response) => {
+        //preenche os campos do primeiro step
+        this.newImage = new NewImage(
+          response.name,
+          response.obsPublic,
+          response.closedFormat,
+          response.openFormat,
+          response.finalDetails,
+          response.obsPrint,
+          response.category,
+          response.requester,
+          response.editable,
+          response.approval,
+          response.fields
+        )
+        
+        //preenche a lista de variáveis
+        if(response.field){
+          response.field.forEach(element => {
+
+              //Aplica as fontes
+              this.aplicaFonteDuplicar(element.fontFamily, element.fontUrl);
+
+              this.listaVariaveis.push(new Variavel(
+                element.title,
+                element.modelText,
+                element.obs,
+                element.fontFamily,
+                element.fontSize,
+                element.color,
+                element.allign,
+                element.required,
+                element.cordX,
+                element.cordY
+              ))
+          });
+        }
+
+        //Aqui está substituindo o input do usuário, mas nada o impede de clicar de novo e selcionar outra imagem
+        if(response.s3Url){
+          this.exibeImgPlaceholder = false;
+          //instancia a imagem com as propriedades reais
+          this.img = new Image();
+          //Quando a imagem (mesmo que apenas um objeto) é carregada, constroi o canvas
+            this.img.onload = function () {
+              this.constroiCanvas();
+              //coloca as variáveis
+              this.escreveCamposCanvas();
+            }.bind(this)
+          this.img.src = response.s3Url;
+          //preview com tamanho fixo
+          this.imageFixed = response.s3Url;
+        }
+        
+        //Aqui está substituindo o input do usuário, mas nada o impede de clicar de novo e selcionar outra imagem
+        if(this.exibeImgPlaceholderThumb){
+          this.exibeImgPlaceholderThumb = false;
+          //instancia a imagem com as propriedades reais
+          this.imgThumb = new Image();
+          //Quando a imagem (mesmo que apenas um objeto) é carregada, constroi o canvasThumb
+          this.imgThumb.onload = function () {
+            this.constroiCanvasThumb();
+          }.bind(this)
+          this.imgThumb.src = response.s3UrlThumb;
+          this.s3UrlThumb = response.s3UrlThumb;
+          //preview com tamanho fixo
+          this.imageThumbFixed = response.s3UrlThumb;
+        }
+
+      }, (err) => {
+        console.log(err);
+      })
+    }
+
+    aplicaFonteDuplicar(fontFamily: string, fontUrl: string){
+      //cria o @fontface
+      let style = `
+      @font-face {
+        font-family: '${fontFamily}';
+        src: url(${fontUrl}) format('opentype');
+      }
+      
+      `;
+
+      console.log(`fonte`)
+  
+      //adiciona a fonte no DOM
+      const node = document.createElement('style');
+      node.innerHTML = style; 
+      let font = `<link rel="stylesheet" href="https://petlandcss.s3-us-west-2.amazonaws.com/dynamic.css">`
+      document.head.append(font);
+      document.head.appendChild(node);
+  
+      setTimeout(() => {
+        document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
+      }, 1000);
+    }
+
+    aplicaFonte(fontFamily){
+      if(this.selectedFont.family){
+        //assim que selecionar a fonte, seta na variavel
+        this.variavel.fonte = this.selectedFont.family;
+        //seleciona a url (mais para frente, implementar a opção de escolher ao usuário https://www.webcis.com.br/utilizando-font-face-tipografia-web.html)
+        let src = '';
+        //busca pelo regular
+        if(this.selectedFont.files.regular){
+          src = this.selectedFont.files.regular;
+        }else{
+          src = this.selectedFont.files[0];
+        }
+        //seta a url na variável
+        this.variavel.fontUrl = src;
+        //cria o @fontface
+        let style = `
+        @font-face {
+          font-family: '${this.selectedFont.family}';
+          src: url(${src}) format('opentype');
+        }
+        
+        `;
+    
+        //adiciona a fonte no DOM
+        const node = document.createElement('style');
+        node.innerHTML = style; 
+        let font = `<link rel="stylesheet" href="https://petlandcss.s3-us-west-2.amazonaws.com/dynamic.css">`
+        document.head.append(font);
+        document.head.appendChild(node);
+    
+        setTimeout(() => {
+          document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
+        }, 1000);
+    
+        console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
+      }else{
+        //assim que selecionar a fonte, seta na variavel
+        this.variavel.fonte = this.selectedFont;
+        
+        //cria o @fontface
+        let style = `
+        @font-face {
+          font-family: '${this.selectedFont}';
+          src: url(https://petlandfonts.s3-us-west-2.amazonaws.com/${this.selectedFont}.ttf) format('opentype');
+        }
+        
+        `;
+
+        //seta a url
+        this.variavel.fontUrl = `https://petlandfonts.s3-us-west-2.amazonaws.com/${this.selectedFont}.ttf`;
+    
+        //adiciona a fonte no DOM
+        const node = document.createElement('style');
+        node.innerHTML = style; 
+        let font = `<link rel="stylesheet" href="https://petlandcss.s3-us-west-2.amazonaws.com/dynamic.css">`
+        document.head.append(font);
+        document.head.appendChild(node);
+    
+        setTimeout(() => {
+          document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
+        }, 1000);
+    
+        // console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
+      }
+    }
+    
   async carregaMenu(){
     TREE_DATA = []
     await this.categoryService.getCategory().subscribe(response => {
@@ -290,7 +470,11 @@ export class AddImageComponent implements OnInit {
 
   salvarImage(){
     this.newImage.variaveis = this.listaVariaveis;
-    
+
+    if(this.flagDuplicate){
+      this.salvaDuplicateImage();
+      return
+    }
     //CORREÇÃO PARA ALINHAMENTO, QUANDO O ALINHAMENTO É PARA A DIREITA OU ESQUERDA, NA HORA DE EDITAR, A VARIÁVEL FICA METADE PARA O LADO OPOSTO DO ALINHAMENTO
     this.newImage.variaveis.forEach(variavel => {
       if(variavel.alinhamento == 'right'){
@@ -308,17 +492,55 @@ export class AddImageComponent implements OnInit {
     //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
     this.imageservice.postImage(this.fileBase, this.newImage.name).subscribe(res => {
       console.log('Token: ' + res);
-      //Ultima atualização do Dantas, o res já é o ID da imagem
-      this.enviaVariaveis(res);
+
+      this.imageservice.postImageThumb(this.fileThumb, this.newImage.name).subscribe(response => {
+        if(response){
+          this.s3UrlThumb = response;
+
+          //Ultima atualização do Dantas, o res já é o ID da imagem
+          this.enviaVariaveis(res);
+        }
+      })
+      
     }, err => {
       console.log(err);
     })
     
   }
 
+  salvaDuplicateImage(){
+    this.newImage.variaveis.forEach(variavel => {
+      if(variavel.alinhamento == 'right'){
+        //Gambiarra pois o cordX e cordY são strings e preciso somar com numero
+        variavel.cordX = (+variavel.cordX + variavel.textWidth) + '';
+      }else if(variavel.alinhamento == 'center'){
+        //Gambiarra pois o cordX e cordY são strings e preciso somar com numero
+        variavel.cordX = (+variavel.cordX + variavel.textWidth/2) + '';
+      }
+    });
+
+    console.log('lista');
+    console.log(this.listaVariaveis);
+
+    // this.s3UrlThumb = this.newImage
+
+    //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
+    this.imageservice.postDuplicateImage(this.newImage.name, this.activeRoute.snapshot.params.id).subscribe(res => {
+        //Ultima atualização do Dantas, o res já é o ID da imagem
+        this.enviaVariaveis(res);
+      
+    }, err => {
+      // O endpoint esta retornando erro mesmo a req dando certa. Pra isso estou chamando a funcao aqui
+      this.enviaVariaveis(err.error.text);
+      console.log(err.error.text)
+      console.log(err);
+    })
+  }
+
   enviaVariaveis(id: string){
+    console.log(id)
     //endpoint que utiliza o ID retornado para enviar os atributos da imagem (nome, tamanho, etc...)
-    this.imageservice.adminPostImageVariables(this.newImage, id, this.img.width, this.img.height).subscribe(res => {
+    this.imageservice.adminPostImageVariables(this.newImage, id, this.img.width, this.img.height, this.s3UrlThumb).subscribe(res => {
       console.log(res);
       this.router.navigateByUrl('dashboard')
     }, err => {
@@ -398,6 +620,7 @@ export class AddImageComponent implements OnInit {
       //preview com tamanho fixo
       this.imageFixed = event.target.result;
     }.bind(this);
+    
     reader.readAsDataURL(result.target.files[0]);
     this.fileBase = result.target.files[0];
   }
@@ -419,6 +642,7 @@ export class AddImageComponent implements OnInit {
       this.imageThumbFixed = event.target.result;
     }.bind(this);
     reader.readAsDataURL(result.target.files[0]);
+    this.fileThumb = result.target.files[0];
   }
 
   constroiCanvas(){
@@ -468,7 +692,7 @@ export class AddImageComponent implements OnInit {
     this.listaVariaveis.forEach(variavel => {
       //escreve o texto na imagem base
       this.ctx.font = `${variavel.tamanho}px ${variavel.fonte}`; 
-      if(variavel.cor == ''){
+      if(variavel.cor == '' || variavel.cor == null){
         this.ctx.fillStyle = 'black';
       }else{
         this.ctx.fillStyle = variavel.cor;
