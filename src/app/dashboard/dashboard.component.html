@@ -81,7 +81,10 @@
             <div class="btnImagesEdit">
               <button class="orange-button" (click)="chamaDownload(imagem.idImage)">Download</button>
               <button class="orange-button" (click)="chamaEdicao(imagem.idImage)">Personalizar</button>
-              <button class="orange-button-less" (click)="duplicaImagem(imagem.idImage)"><i class="material-icons" style="align-self: center;">control_point_duplicate</i></button>
+            </div>
+            <div class="btnImagesEdit">
+              <button class="orange-button-less" *ngIf="isAdmin" (click)="duplicaImagem(imagem.idImage)"><i class="material-icons" style="align-self: center;">control_point_duplicate</i></button>
+              <button class="orange-button" *ngIf="isAdmin" (click)="continuarEditando(imagem.idImage)">Continuar editando</button>
             </div>
           </div>
 
