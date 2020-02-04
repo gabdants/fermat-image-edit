@@ -2,7 +2,7 @@ import { Variavel } from './variavel';
 
 export class NewImage{
     name: string;
-    obsPublico: string;
+    obsPublic: string;
     fmtFechado: string;
     fmtAberto: string;
     acabamento: string;
@@ -14,7 +14,7 @@ export class NewImage{
     variaveis: Variavel[];
 
     constructor(name: string,
-                obsPublico: string,
+                obsPublic: string,
                 fmtFechado: string,
                 fmtAberto: string,
                 acabamento: string,
@@ -26,7 +26,7 @@ export class NewImage{
                 variaveis: Variavel[]){
 
         this.name = name;
-        this.obsPublico = obsPublico;
+        this.obsPublic = obsPublic;
         this.fmtFechado = fmtFechado;
         this.fmtAberto = fmtAberto;
         this.acabamento = acabamento;

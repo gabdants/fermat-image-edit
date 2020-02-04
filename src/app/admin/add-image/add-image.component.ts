@@ -176,6 +176,7 @@ export class AddImageComponent implements OnInit {
             this.constroiCanvasThumb();
           }.bind(this)
           this.imgThumb.src = response.s3UrlThumb;
+          this.s3UrlThumb = response.s3UrlThumb;
           //preview com tamanho fixo
           this.imageThumbFixed = response.s3UrlThumb;
         }
@@ -194,6 +195,8 @@ export class AddImageComponent implements OnInit {
       }
       
       `;
+
+      console.log(`fonte`)
   
       //adiciona a fonte no DOM
       const node = document.createElement('style');
@@ -467,7 +470,11 @@ export class AddImageComponent implements OnInit {
 
   salvarImage(){
     this.newImage.variaveis = this.listaVariaveis;
-    
+
+    if(this.flagDuplicate){
+      this.salvaDuplicateImage();
+      return
+    }
     //CORREÇÃO PARA ALINHAMENTO, QUANDO O ALINHAMENTO É PARA A DIREITA OU ESQUERDA, NA HORA DE EDITAR, A VARIÁVEL FICA METADE PARA O LADO OPOSTO DO ALINHAMENTO
     this.newImage.variaveis.forEach(variavel => {
       if(variavel.alinhamento == 'right'){
@@ -501,7 +508,37 @@ export class AddImageComponent implements OnInit {
     
   }
 
+  salvaDuplicateImage(){
+    this.newImage.variaveis.forEach(variavel => {
+      if(variavel.alinhamento == 'right'){
+        //Gambiarra pois o cordX e cordY são strings e preciso somar com numero
+        variavel.cordX = (+variavel.cordX + variavel.textWidth) + '';
+      }else if(variavel.alinhamento == 'center'){
+        //Gambiarra pois o cordX e cordY são strings e preciso somar com numero
+        variavel.cordX = (+variavel.cordX + variavel.textWidth/2) + '';
+      }
+    });
+
+    console.log('lista');
+    console.log(this.listaVariaveis);
+
+    // this.s3UrlThumb = this.newImage
+
+    //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
+    this.imageservice.postDuplicateImage(this.newImage.name, this.activeRoute.snapshot.params.id).subscribe(res => {
+        //Ultima atualização do Dantas, o res já é o ID da imagem
+        this.enviaVariaveis(res);
+      
+    }, err => {
+      // O endpoint esta retornando erro mesmo a req dando certa. Pra isso estou chamando a funcao aqui
+      this.enviaVariaveis(err.error.text);
+      console.log(err.error.text)
+      console.log(err);
+    })
+  }
+
   enviaVariaveis(id: string){
+    console.log(id)
     //endpoint que utiliza o ID retornado para enviar os atributos da imagem (nome, tamanho, etc...)
     this.imageservice.adminPostImageVariables(this.newImage, id, this.img.width, this.img.height, this.s3UrlThumb).subscribe(res => {
       console.log(res);
