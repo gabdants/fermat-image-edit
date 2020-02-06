@@ -113,7 +113,7 @@ export class CustomImageComponent implements OnInit {
         
           let tamanhoFonte:number = cvWaterMark.width * 0.07;
 
-          ctxWaterMark.font=`${tamanhoFonte}px verdana`;
+          ctxWaterMark.font=`${tamanhoFonte}pt verdana`;
           ctxWaterMark.globalAlpha=.30;
           ctxWaterMark.fillStyle='white'
 
@@ -191,7 +191,7 @@ export class CustomImageComponent implements OnInit {
     console.log(this.listaVariaveis)
      this.listaVariaveis.forEach(variavel => {
       //escreve o texto na imagem base
-      this.ctxPreview.font = `${variavel.tamanho}px ${variavel.fonte}`;
+      this.ctxPreview.font = `${variavel.tamanho}pt ${variavel.fonte}`;
 
       if(variavel.cor == '' || variavel.cor == null){
         this.ctxPreview.fillStyle = 'black';

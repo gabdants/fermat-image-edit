@@ -34,6 +34,8 @@
             <div class="btnImagesEdit">
               <button class="orange-button" (click)="rejeitarImagem(imagem.idImage)">Rejeitar</button>
               <button class="orange-button" (click)="aprovarImagem(imagem.idImage)">Aprovar</button>
+              <button class="orange-button-less" (click)="ampliaImage(imagem.s3Url)"><i class="material-icons" style="align-self: center;">zoom_in</i></button>
+
             </div>
           </div>
 
@@ -42,3 +44,10 @@
     </div>
   </div>
 </div>
+
+<div class="previewBeforeAprove" *ngIf="showPrev">
+  <img src="{{imgPreviewBeforeAprove}}" >
+</div>
+<i (click)="fecharPrev()" *ngIf="showPrev" class="material-icons fechar" >highlight_off</i>
+
+

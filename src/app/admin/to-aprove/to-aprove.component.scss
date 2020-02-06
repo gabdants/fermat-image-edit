@@ -188,3 +188,29 @@
     background: transparent;
     margin-bottom: 10px;
 }
+.previewBeforeAprove{
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    margin: auto;
+    background: rgba(255, 255, 255, 0.7);
+    margin-left: 5%;
+    top: 5%;
+    border: 2px solid #CF4E0F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px
+}
+.previewBeforeAprove img{
+    max-height: 100%;
+    max-width: 100%;
+}
+.fechar{
+    color: #CF4E0F;
+    position: absolute;
+    top: 7%;
+    font-size: 40px;
+    right: 7%;
+    cursor: pointer;
+}

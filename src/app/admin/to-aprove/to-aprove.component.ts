@@ -15,6 +15,9 @@ export class ToAproveComponent implements OnInit {
 
   imagens: Image[] = [];
 
+  imgPreviewBeforeAprove: string;
+  showPrev: boolean;
+
   constructor(
     private categoryService: CategoryService, 
     private router: Router, 
@@ -22,6 +25,7 @@ export class ToAproveComponent implements OnInit {
 
   ngOnInit() {
     this.carregaImagens();
+    this.showPrev = false;
   }
 
   async carregaImagens(){
@@ -41,6 +45,14 @@ export class ToAproveComponent implements OnInit {
     }, err => {
       alert('Não foi possível aprovar a imagem, tente novamente');
     })
+  }
+
+  ampliaImage(url){
+    this.imgPreviewBeforeAprove = url;
+    this.showPrev = true;
+  }
+  fecharPrev(){
+    this.showPrev = false;
   }
 
 }
