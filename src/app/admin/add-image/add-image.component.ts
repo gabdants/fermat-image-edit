@@ -127,7 +127,6 @@ export class AddImageComponent implements OnInit {
           response.approval,
           response.fields
         )
-        console.log(`asdasdas ${this.newImage}`, this.newImage)
         
         //preenche a lista de variáveis
         if(response.field){
@@ -185,10 +184,6 @@ export class AddImageComponent implements OnInit {
       }, (err) => {
         console.log(err);
       })
-      setTimeout(() => {
-        console.log('--------------')
-        console.log(this.newImage);
-      }, 2000);
       
     }
 
