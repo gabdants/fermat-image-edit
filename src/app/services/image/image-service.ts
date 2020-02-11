@@ -107,8 +107,9 @@ export class ImageService {
       imgBaseWidth, 
       fields,
       s3UrlThumb,
-      newImage.obsPrint,
       newImage.obsPublic,
+      newImage.obsPrint,
+      
     )
 
     console.log('final: ');

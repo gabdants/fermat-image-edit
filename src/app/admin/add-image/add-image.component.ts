@@ -180,6 +180,8 @@ export class AddImageComponent implements OnInit {
           //preview com tamanho fixo
           this.imageThumbFixed = response.s3UrlThumb;
         }
+        console.log(`aakakakß`)
+        console.log(this.newImage)
 
       }, (err) => {
         console.log(err);
@@ -406,7 +408,7 @@ export class AddImageComponent implements OnInit {
       let text = document.createTextNode(this.variavel.textoModelo);
 
       //Adiciona estilo no texto de acordo com inputs de usuário
-      floatText.style.fontSize = this.variavel.tamanho + "pt";
+      floatText.style.fontSize = this.variavel.tamanho + "pc";
       floatText.style.color = this.variavel.cor;
       floatText.style.textAlign = this.variavel.alinhamento;
 
@@ -435,7 +437,7 @@ export class AddImageComponent implements OnInit {
             cvBase.style.display = 'block';
 
             //escreve o texto na imagem base
-            this.ctx.font = `${this.variavel.tamanho}pt ${this.variavel.fonte}`; 
+            this.ctx.font = `${this.variavel.tamanho}pc ${this.variavel.fonte}`; 
             if(this.variavel.cor == ''){
               this.ctx.fillStyle = 'black';
             }else{
@@ -489,6 +491,7 @@ export class AddImageComponent implements OnInit {
 
     console.log('lista');
     console.log(this.listaVariaveis);
+    console.log(this.newImage)
 
     //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
     this.imageservice.postImage(this.fileBase, this.newImage.name).subscribe(res => {
@@ -692,7 +695,7 @@ export class AddImageComponent implements OnInit {
   escreveCamposCanvas(){
     this.listaVariaveis.forEach(variavel => {
       //escreve o texto na imagem base
-      this.ctx.font = `${variavel.tamanho}pt ${variavel.fonte}`; 
+      this.ctx.font = `${variavel.tamanho}pc ${variavel.fonte}`; 
       if(variavel.cor == '' || variavel.cor == null){
         this.ctx.fillStyle = 'black';
       }else{
