@@ -20,7 +20,7 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.188.14.251:8181/image/approvalImages?imageId=${id}`, {headers});
+    return this.http.get<any>(`http://34.220.173.18:8181/image/approvalImages?imageId=${id}`, {headers});
   }
 
   postImage(file: File, nomeDaPeca: string){
@@ -32,7 +32,7 @@ export class ImageService {
 
     formData.append('file', file, file.name);
 
-    return this.http.post<any>(`http://54.188.14.251:8181/image/uploadFile?name=${nomeDaPeca}`, formData, {
+    return this.http.post<any>(`http://34.220.173.18:8181/image/uploadFile?name=${nomeDaPeca}`, formData, {
       headers,
       responseType: "text" as "json"
     });
@@ -48,7 +48,7 @@ export class ImageService {
 
     // formData.append('file', file, file.name);
 
-    return this.http.post<any>(`http://54.188.14.251:8181//image/uploadFile?name=${name}&type=duplicate&imageId=${id}`, `body`);
+    return this.http.post<any>(`http://34.220.173.18:8181//image/uploadFile?name=${name}&type=duplicate&imageId=${id}`, `body`);
 
   }
 
@@ -61,7 +61,7 @@ export class ImageService {
 
     formData.append('file', file, file.name);
 
-    return this.http.post<any>(`http://54.188.14.251:8181/image/uploadFile?name=${nomeDaPeca}&type=thumb`, formData, {
+    return this.http.post<any>(`http://34.220.173.18:8181/image/uploadFile?name=${nomeDaPeca}&type=thumb`, formData, {
       headers,
       responseType: "text" as "json"
     });
@@ -115,10 +115,10 @@ export class ImageService {
     console.log('final: ');
     console.log(variables);
 
-    return this.http.post<any>(`http://54.188.14.251:8181/image/imageOpts?imageId=${imageID}`, variables);
+    return this.http.post<any>(`http://34.220.173.18:8181/image/imageOpts?imageId=${imageID}`, variables);
   }
   setImageRequester(id, requester){
-    return this.http.post<any>(`http://54.188.14.251:8181/image/imageOpts?imageId=${id}`, {requester: requester});
+    return this.http.post<any>(`http://34.220.173.18:8181/image/imageOpts?imageId=${id}`, {requester: requester});
   }
 
   postFinalImageOpts(infos, s3UrlThumb){
@@ -143,7 +143,7 @@ export class ImageService {
     console.log('final: ');
     console.log(variables);
 
-    return this.http.post<any>(`http://54.188.14.251:8181/image/imageOpts?imageId=${imageID}`, variables);
+    return this.http.post<any>(`http://34.220.173.18:8181/image/imageOpts?imageId=${imageID}`, variables);
   }
   
 
@@ -152,7 +152,7 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.188.14.251:8181/image/all`, {headers});
+    return this.http.get<any>(`http://34.220.173.18:8181/image/all`, {headers});
   }
 
   getByCategory(categoria){
@@ -160,7 +160,7 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.188.14.251:8181/image/imagesByCategory?category=${categoria}`, {headers});
+    return this.http.get<any>(`http://34.220.173.18:8181/image/imagesByCategory?category=${categoria}`, {headers});
   }
 
   getFinalImages(){
@@ -168,7 +168,7 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.188.14.251:8181/image/finalImages`, {headers});
+    return this.http.get<any>(`http://34.220.173.18:8181/image/finalImages`, {headers});
   }
 
   getFinalImagesByRequester(requester){
@@ -176,14 +176,14 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.188.14.251:8181/image/finalImagesByRequester?requester=${requester}`, {headers});
+    return this.http.get<any>(`http://34.220.173.18:8181/image/finalImagesByRequester?requester=${requester}`, {headers});
   }
 
   approveImage(id){
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.put<any>(`http://54.188.14.251:8181/image/approvedImages?imageId=${id}`, {headers});
+    return this.http.put<any>(`http://34.220.173.18:8181/image/approvedImages?imageId=${id}`, {headers});
   }
 
   getFields(id){
@@ -191,14 +191,14 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.188.14.251:8181/image/imageFields?imageId=${id}`, {headers});
+    return this.http.get<any>(`http://34.220.173.18:8181/image/imageFields?imageId=${id}`, {headers});
   }
   getApproved(user){
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://54.188.14.251:8181/image/finalImageByRequester?imageId=${user}`, {headers});
+    return this.http.get<any>(`http://34.220.173.18:8181/image/finalImageByRequester?imageId=${user}`, {headers});
   }
 
   setFinalImageToTrue(token: string){
@@ -206,7 +206,7 @@ export class ImageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.put<any>(`http://54.188.14.251:8181/image/finalImages?imageId=${token}`, {headers});
+    return this.http.put<any>(`http://34.220.173.18:8181/image/finalImages?imageId=${token}`, {headers});
   }
 
   updateFields(newImage: NewImage, imageID: string){
@@ -235,7 +235,7 @@ export class ImageService {
     console.log(fields);
 
 
-    return this.http.post<any>(`http://54.188.14.251:8181/image/updateFields?imageId=${imageID}`, fields);
+    return this.http.post<any>(`http://34.220.173.18:8181/image/updateFields?imageId=${imageID}`, fields);
   }
 
 }

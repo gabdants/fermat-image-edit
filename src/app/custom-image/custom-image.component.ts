@@ -46,12 +46,15 @@ export class CustomImageComponent implements OnInit {
       })
 
       setTimeout(() => {
-        this.imgPreview.src = response.s3Url;  
+        // this.imgPreview.addEventListener("load", imageReceived, false);
         this.imgPreview.crossOrigin = 'anonymous';
+        this.imgPreview.src = response.s3Url; 
       }, 400); 
       
       this.imgPreview.onload = function() {
-        this.constroiCanvasPreview();
+        setTimeout(() => {
+          this.constroiCanvasPreview();
+        }, 400); 
       }.bind(this)
       
     },err => {
@@ -80,6 +83,7 @@ export class CustomImageComponent implements OnInit {
   }
 
   constroiCanvasPreview(){
+
     //pega o contexto 
     this.ctxPreview = this.canvasPreview.nativeElement.getContext('2d');
     //Seta o tamanho do canvas
@@ -113,7 +117,7 @@ export class CustomImageComponent implements OnInit {
         
           let tamanhoFonte:number = cvWaterMark.width * 0.07;
 
-          ctxWaterMark.font=`${tamanhoFonte}pc verdana`;
+          ctxWaterMark.font=`${tamanhoFonte}pt verdana`;
           ctxWaterMark.globalAlpha=.30;
           ctxWaterMark.fillStyle='white'
 
@@ -142,7 +146,7 @@ export class CustomImageComponent implements OnInit {
   } 
 
   salvarImage(){
-    this.canvasPreview.nativeElement.toBlob(function(blob) {
+    let a = this.canvasPreview.nativeElement.toBlob(function(blob) {
       let file: any = blob;
       //O new date é apenas para o cast dar certo.
       file.lastModifiedDate = new Date();
@@ -165,6 +169,8 @@ export class CustomImageComponent implements OnInit {
         console.log(err)
       })
     }.bind(this))
+    console.log('aaaaaa')
+    console.log(a)
   }
 
   changeInput(event){
@@ -191,7 +197,7 @@ export class CustomImageComponent implements OnInit {
     console.log(this.listaVariaveis)
      this.listaVariaveis.forEach(variavel => {
       //escreve o texto na imagem base
-      this.ctxPreview.font = `${variavel.tamanho}pc ${variavel.fonte}`;
+      this.ctxPreview.font = `${variavel.tamanho}pt ${variavel.fonte}`;
 
       if(variavel.cor == '' || variavel.cor == null){
         this.ctxPreview.fillStyle = 'black';
