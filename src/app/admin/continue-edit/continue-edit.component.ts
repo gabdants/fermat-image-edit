@@ -170,6 +170,8 @@ export class ContinueEditComponent implements OnInit {
         this.listaVariaveis.splice(this.listaVariaveis.indexOf(element), 1);
         //atribui a clicada a variavel que faz bind com os campos da tela, apenas para preenchê-los
         this.variavel = element;
+        let a = parseFloat(this.variavel.tamanho) / 3.125;
+        this.variavel.tamanho = a.toString(); 
       }
     });
 
@@ -212,7 +214,7 @@ export class ContinueEditComponent implements OnInit {
   escreveCamposCanvas(){
     this.listaVariaveis.forEach(variavel => {
       //escreve o texto na imagem base
-      this.ctxPreview.font = `${variavel.tamanho}pc ${variavel.fonte}`; 
+      this.ctxPreview.font = `${variavel.tamanho}pt ${variavel.fonte}`; 
       if(variavel.cor == ''){
         this.ctxPreview.fillStyle = 'black';
       }else{
@@ -267,7 +269,7 @@ export class ContinueEditComponent implements OnInit {
         let text = document.createTextNode(this.variavel.textoModelo);
   
         //Adiciona estilo no texto de acordo com inputs de usuário
-        floatText.style.fontSize = this.variavel.tamanho + "pc";
+        floatText.style.fontSize = this.variavel.tamanho + "pt";
         floatText.style.color = this.variavel.cor;
         floatText.style.textAlign = this.variavel.alinhamento;
   
@@ -296,7 +298,7 @@ export class ContinueEditComponent implements OnInit {
               cvBase.style.display = 'block';
   
               //escreve o texto na imagem base
-              this.ctxPreview.font = `${this.variavel.tamanho}pc ${this.variavel.fonte}`; 
+              this.ctxPreview.font = `${this.variavel.tamanho}pt ${this.variavel.fonte}`; 
               if(this.variavel.cor == ''){
                 this.ctxPreview.fillStyle = 'black';
               }else{
@@ -447,7 +449,7 @@ export class ContinueEditComponent implements OnInit {
         
           let tamanhoFonte:number = cvWaterMark.width * 0.07;
 
-          ctxWaterMark.font=`${tamanhoFonte}pc verdana`;
+          ctxWaterMark.font=`${tamanhoFonte}pt verdana`;
           ctxWaterMark.globalAlpha=.30;
           ctxWaterMark.fillStyle='white'
 
@@ -525,7 +527,7 @@ export class ContinueEditComponent implements OnInit {
     console.log(this.listaVariaveis)
      this.listaVariaveis.forEach(variavel => {
       //escreve o texto na imagem base
-      this.ctxPreview.font = `${variavel.tamanho}pc ${variavel.fonte}`;
+      this.ctxPreview.font = `${variavel.tamanho}pt ${variavel.fonte}`;
 
       if(variavel.cor == '' || variavel.cor == null){
         this.ctxPreview.fillStyle = 'black';

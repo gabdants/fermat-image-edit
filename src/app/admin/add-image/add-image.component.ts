@@ -341,6 +341,8 @@ export class AddImageComponent implements OnInit {
         this.listaVariaveis.splice(this.listaVariaveis.indexOf(element), 1);
         //atribui a clicada a variavel que faz bind com os campos da tela, apenas para preenchê-los
         this.variavel = element;
+        let a = parseFloat(this.variavel.tamanho) / 3.125;
+        this.variavel.tamanho = a.toString(); 
       }
     });
 
@@ -385,6 +387,10 @@ export class AddImageComponent implements OnInit {
             }
           });
         }  
+        
+        let x = parseFloat(this.variavel.tamanho) * 3.125;
+        this.variavel.tamanho = x.toString();
+
         //Gambiarra para sair do metodo quando o título já existe
         if(this.variavel.titulo == ''){
           return false;
@@ -408,7 +414,7 @@ export class AddImageComponent implements OnInit {
       let text = document.createTextNode(this.variavel.textoModelo);
 
       //Adiciona estilo no texto de acordo com inputs de usuário
-      floatText.style.fontSize = this.variavel.tamanho + "pc";
+      floatText.style.fontSize = this.variavel.tamanho + "pt";
       floatText.style.color = this.variavel.cor;
       floatText.style.textAlign = this.variavel.alinhamento;
 
@@ -437,7 +443,7 @@ export class AddImageComponent implements OnInit {
             cvBase.style.display = 'block';
 
             //escreve o texto na imagem base
-            this.ctx.font = `${this.variavel.tamanho}pc ${this.variavel.fonte}`; 
+            this.ctx.font = `${this.variavel.tamanho}pt ${this.variavel.fonte}`; 
             if(this.variavel.cor == ''){
               this.ctx.fillStyle = 'black';
             }else{
@@ -695,7 +701,7 @@ export class AddImageComponent implements OnInit {
   escreveCamposCanvas(){
     this.listaVariaveis.forEach(variavel => {
       //escreve o texto na imagem base
-      this.ctx.font = `${variavel.tamanho}pc ${variavel.fonte}`; 
+      this.ctx.font = `${variavel.tamanho}pt ${variavel.fonte}`; 
       if(variavel.cor == '' || variavel.cor == null){
         this.ctx.fillStyle = 'black';
       }else{
