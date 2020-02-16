@@ -23,11 +23,8 @@ export class LoginComponent implements OnInit {
     // })
 
     this.loginService.getLogin(this.txtLogin, this.txtPass).subscribe(response => {
-      console.log(response);
     }, err => {
-      console.log(err)
       if(err.status == 200){
-        console.log(err.error.text)
         if(err.error.text == 'admin'){
           localStorage.setItem('admin', 'true');
           this.router.navigateByUrl('/dashboard');

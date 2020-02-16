@@ -22,7 +22,7 @@ export class LoginService {
       password: senha
 
     }
-    return this.http.post<any>(`http://34.220.91.231:8282/user/login`, user, {headers});
+    return this.http.post<any>(`http://52.43.144.231:8282/user/login`, user, {headers});
   }
   logout() {
     this.showHeader.emit(false);

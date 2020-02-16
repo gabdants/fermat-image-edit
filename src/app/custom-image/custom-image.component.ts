@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ImageService } from '../services/image/image-service';
+import { HistoryService } from '../services/history/history-service';
 import { Variavel } from 'src/typings/variavel';
 
 @Component({
@@ -10,7 +11,9 @@ import { Variavel } from 'src/typings/variavel';
 })
 export class CustomImageComponent implements OnInit {
 
-  constructor(public route: ActivatedRoute, private imageService: ImageService) { }
+  constructor(public route: ActivatedRoute, 
+    private imageService: ImageService,
+    private historyService: HistoryService) { }
   titulo: string;
 
   //Variável de canvas
@@ -22,6 +25,7 @@ export class CustomImageComponent implements OnInit {
   name: string;
   imgX: string;
   imgY: string;
+  category: string;
 
   flagPreview: boolean = true;
 
@@ -30,16 +34,15 @@ export class CustomImageComponent implements OnInit {
   ngOnInit() {
     let id = this.route.snapshot.params.id;
     this.imageService.getImageById(id).subscribe((response:any) => {
-      console.log(response)
       this.imgX = response.width; 
       this.imgY = response.height;
       this.name = response.name;
       this.imgPreview = new Image();
+      this.category = response.category;
 
       //também precisa pegar o array de variaveis e colocar no this.listaVariaveis
 
       this.imageService.getFields(id).subscribe(fields => {
-        console.log(fields);
         fields.forEach(item => {
           this.listaVariaveis.push(new Variavel(item.name, item.modelText, item.obs, item.fontFamily, item.fontSize, item.color, item.allign, item.required, item.cordX, item.cordY))
         })
@@ -58,27 +61,12 @@ export class CustomImageComponent implements OnInit {
       }.bind(this)
       
     },err => {
-       console.log(err);
+      alert('Erro ao salvar imagem. Entre em contato com um administrador do sistema.')
     })
  
-    // this.imageService.getImagensMock().subscribe((res) => {
-    //   console.log(res);
-    //   this.imgPreview = new Image();
-    //   this.imgX = res[0].imageSizeX; 
-    //   this.imgY = res[0].imageSizeY;
+  }
 
-    //   this.imgPreview.src = res[0].imageUrl;
-
-    //   this.imgPreview.onload = function() {
-    //     this.constroiCanvasPreview();
-    //   }.bind(this)
-    // })
-    
-
-    // this.imageService.getVariaveisMock().subscribe((res) => {
-    //   console.log(res);
-    //   this.listaVariaveis = res;
-    // })
+  AfterViewInit(){
 
   }
 
@@ -97,7 +85,6 @@ export class CustomImageComponent implements OnInit {
 
   chamaPreview(){
     //EXEMPLO DE COMO ABAIXAR A QUALIDADE DA IMAGEM
-    //console.log(this.canvasPreview.nativeElement.toDataURL('image/jpeg', 0.4));
     
     //Cria um canvas na memória
     let cvWaterMark = document.createElement('canvas');
@@ -154,23 +141,24 @@ export class CustomImageComponent implements OnInit {
 
       this.imageService.postImage(<File>file, file.name).subscribe(res => {
         this.imageService.setImageRequester(res, localStorage.getItem('user')).subscribe(response => {
-          console.log(response)
         })
         this.imageService.setFinalImageToTrue(res).subscribe(res => {
-          alert('Imagem salva');
-          console.log(res);
+          let history = {
+            solicitor: localStorage.getItem('user'),
+            piece: this.name,
+            category: 'Categoria 1'
+          }
+          this.historyService.postHistory(history).subscribe(response => {
+            alert('Imagem salva');
+          })
         }, err => {
           alert('Erro ao salvar imagem. Entre em contato com um administrador do sistema.')
-        console.log(err)
         })
         
       }, err => {
         alert('Erro ao salvar imagem. Entre em contato com um administrador do sistema.')
-        console.log(err)
       })
     }.bind(this))
-    console.log('aaaaaa')
-    console.log(a)
   }
 
   changeInput(event){
@@ -194,7 +182,6 @@ export class CustomImageComponent implements OnInit {
   }
 
   escreveCampos(){
-    console.log(this.listaVariaveis)
      this.listaVariaveis.forEach(variavel => {
       //escreve o texto na imagem base
       this.ctxPreview.font = `${variavel.tamanho}pt ${variavel.fonte}`;

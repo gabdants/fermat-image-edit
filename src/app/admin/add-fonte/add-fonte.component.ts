@@ -41,8 +41,6 @@ export class AddFonteComponent implements OnInit {
   getFonte(event){
     this.exibeImgPlaceholder = false;
     this.exibeFontConfirm = true;
-    
-    console.log(event)
     this.font = event.target.files[0];
   }
   

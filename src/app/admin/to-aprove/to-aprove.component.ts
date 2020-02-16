@@ -30,13 +30,11 @@ export class ToAproveComponent implements OnInit {
 
   async carregaImagens(){
     await this.imageService.getFinalImages().subscribe(response => {
-      console.log(response);
       response.map(item => {
         if(!item.approved){
           this.imagens.push(item);
         }
       })
-      console.log(this.imagens)
     })
   }
   aprovarImagem(id){
