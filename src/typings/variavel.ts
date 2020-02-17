@@ -11,6 +11,7 @@ export class Variavel{
     cordY: string;
     textWidth: number;
     fontUrl: string;
+    initVar: boolean;
     
     constructor(titulo: string,
                 textoModelo: string,
@@ -23,7 +24,8 @@ export class Variavel{
                 cordX: string,
                 cordY: string,
                 textWidht: number = 0,
-                fontUrl: string = ''){
+                fontUrl: string = '',
+                initVar: boolean = false){
                     
         this.titulo = titulo;    
         this.textoModelo = textoModelo;    
@@ -37,6 +39,7 @@ export class Variavel{
         this.cordY = cordY;
         this.textWidth = textWidht; 
         this.fontUrl = fontUrl;
+        this.initVar = initVar;
     }
     
 }

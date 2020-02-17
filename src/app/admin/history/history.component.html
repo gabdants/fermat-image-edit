@@ -1,0 +1,34 @@
+<app-header></app-header>
+<div class="container">
+  <div class="dashHeader">
+    <h4>Edição de peças</h4>
+    <p class="addImageBtn" (click)="callAddImage();" >Adicionar imagem</p>
+  </div>
+  <div class="dashContent">
+    <div class="categoriesBox">
+      
+
+    </div>
+    <div class="imagesBox">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <ng-container matColumnDef="solicitor">
+              <th mat-header-cell *matHeaderCellDef> Solicitante </th>
+              <td mat-cell *matCellDef="let element"> {{element.solicitor}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="piece">
+              <th mat-header-cell *matHeaderCellDef> Peça </th>
+              <td mat-cell *matCellDef="let element"> {{element.piece}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="category">
+              <th mat-header-cell *matHeaderCellDef> Categoria </th>
+              <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+    </div>
+  </div>
+</div>

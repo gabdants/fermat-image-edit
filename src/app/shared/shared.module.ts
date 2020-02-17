@@ -20,7 +20,8 @@ import {
   MatListModule,
   MatSnackBarModule,
   MatSlideToggleModule,
-  MatTreeModule
+  MatTreeModule,
+  MatTableModule
 } from '@angular/material';
 
 import { RouterModule } from '@angular/router';
@@ -54,7 +55,8 @@ import { ImageService } from '../services/image/image-service';
     MatListModule,
     MatSnackBarModule,
     MatSlideToggleModule,
-    MatTreeModule
+    MatTreeModule,
+    MatTableModule
   ],
   declarations: [],
   exports: [
@@ -77,7 +79,8 @@ import { ImageService } from '../services/image/image-service';
     MatListModule,
     MatSnackBarModule,
     MatSlideToggleModule,
-    MatTreeModule
+    MatTreeModule,
+    MatTableModule
   ],
 })
 export class SharedModule {

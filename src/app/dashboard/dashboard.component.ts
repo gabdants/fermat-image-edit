@@ -79,7 +79,6 @@ export class DashboardComponent implements OnInit {
   async carregaMenu(){
     TREE_DATA = []
     await this.categoryService.getCategory().subscribe(response => {
-      console.log(response);
       
       response.map(item => {
         let aux = {
@@ -131,9 +130,7 @@ export class DashboardComponent implements OnInit {
           });
         }
         
-        console.log(aux);
         TREE_DATA.push(aux);
-        console.log(TREE_DATA)
 
       })
       this.dataSource.data = TREE_DATA;
@@ -141,25 +138,20 @@ export class DashboardComponent implements OnInit {
   }
 
   saveCategory(){
-    console.log(this.newCategory);
     if(this.newCategory.subCategoryOff == '0'){
       alert('Preencha o campo "Subcategoria de: "');
       return;
     }else if(this.newCategory.subCategoryOff == '1'){
       this.categoryService.addCategory(this.newCategory.title).subscribe(response => {
-        console.log(response);
         alert('Categoria adicionada com sucesso!');
       })
     }else{
       if(this.newCategory.subCategoryOff.includes('>')){
         let auxCategorias = this.newCategory.subCategoryOff.split('>');
-        console.log(auxCategorias);
         this.categoryService.addFinalCategory(auxCategorias[0].trim(), auxCategorias[1].trim(), this.newCategory.title).subscribe(response => {
-          console.log(response);
         })
       }else{
         this.categoryService.addSubCategory(this.newCategory.subCategoryOff, this.newCategory.title).subscribe(response => {
-          console.log(response);
           alert('Subcategoria adicionada com sucesso')
         });
       }
@@ -172,19 +164,16 @@ export class DashboardComponent implements OnInit {
 
   async carregaImagens(){
     await this.imageService.getAllImages().subscribe(response => {
-      console.log(response);
       response.map(item => {
         if(!item.finalImage){
           this.imagens.push(item);
         }
       })
-      console.log(this.imagens)
     })
   }
   carregaCategoria(categoria){
     this.imagens = [];
     this.imageService.getByCategory(categoria).subscribe(response => {
-      console.log(response);
       if(response.length > 0){
         response.map(item => {
           this.imagens.push(item);
@@ -197,13 +186,11 @@ export class DashboardComponent implements OnInit {
     })
   }
   selecionaMenu(nome){
-    console.log(nome)
   }
   callAddImage(){
     this.router.navigateByUrl('addImage');
   }
   chamaEdicao(id){
-    console.log(id)
     this.router.navigateByUrl(`editImage/${id}`)
   }
 

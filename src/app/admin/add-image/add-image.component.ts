@@ -89,10 +89,8 @@ export class AddImageComponent implements OnInit {
 
   ngOnInit() {
     this.googleService.getGoogleFonts().subscribe((res: any) => {
-      console.log(res.items);
       this.googleFontsList = res.items;
     }, err => {
-      console.log(err);
       alert('Não foi carregar fontes do google. Favor contatar um administrador do sistema.')
     });
     this.fonteService.getFonts().subscribe(response => {
@@ -145,7 +143,10 @@ export class AddImageComponent implements OnInit {
                 element.allign,
                 element.required,
                 element.cordX,
-                element.cordY
+                element.cordY,
+                0,
+                element.fontUrl,
+                true
               ))
           });
         }
@@ -159,11 +160,13 @@ export class AddImageComponent implements OnInit {
             this.img.onload = function () {
               this.constroiCanvas();
               //coloca as variáveis
-              this.escreveCamposCanvas();
+              this.escreveCamposCanvasDuplicar();
+              this.ctx.textAlign = "left";
             }.bind(this)
           this.img.src = response.s3Url;
           //preview com tamanho fixo
           this.imageFixed = response.s3Url;
+          
         }
         
         //Aqui está substituindo o input do usuário, mas nada o impede de clicar de novo e selcionar outra imagem
@@ -180,11 +183,8 @@ export class AddImageComponent implements OnInit {
           //preview com tamanho fixo
           this.imageThumbFixed = response.s3UrlThumb;
         }
-        console.log(`aakakakß`)
-        console.log(this.newImage)
 
       }, (err) => {
-        console.log(err);
       })
       
     }
@@ -199,7 +199,6 @@ export class AddImageComponent implements OnInit {
       
       `;
 
-      console.log(`fonte`)
   
       //adiciona a fonte no DOM
       const node = document.createElement('style');
@@ -215,6 +214,7 @@ export class AddImageComponent implements OnInit {
 
     aplicaFonte(fontFamily){
       if(this.selectedFont.family){
+
         //assim que selecionar a fonte, seta na variavel
         this.variavel.fonte = this.selectedFont.family;
         //seleciona a url (mais para frente, implementar a opção de escolher ao usuário https://www.webcis.com.br/utilizando-font-face-tipografia-web.html)
@@ -247,7 +247,6 @@ export class AddImageComponent implements OnInit {
           document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
         }, 1000);
     
-        console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
       }else{
         //assim que selecionar a fonte, seta na variavel
         this.variavel.fonte = this.selectedFont;
@@ -270,19 +269,18 @@ export class AddImageComponent implements OnInit {
         let font = `<link rel="stylesheet" href="https://petlandcss.s3-us-west-2.amazonaws.com/dynamic.css">`
         document.head.append(font);
         document.head.appendChild(node);
+
     
         setTimeout(() => {
-          document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
+          document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont;
         }, 1000);
     
-        // console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
       }
     }
     
   async carregaMenu(){
     TREE_DATA = []
     await this.categoryService.getCategory().subscribe(response => {
-      console.log(response);
       
       response.map(item => {
         let aux = {
@@ -304,6 +302,7 @@ export class AddImageComponent implements OnInit {
             let auxChildren = {
               name: '',
               id: '',
+              children: []
             }
             auxChildren.name = '';
             auxChildren.id = '';
@@ -311,13 +310,24 @@ export class AddImageComponent implements OnInit {
             auxChildren.id = subItem.idSubCategory
             aux.children.push(auxChildren);
             this.selectCategorias.push(`${item.name} > ${subItem.name}`);
-
+            if(subItem.finalCategory){
+              subItem.finalCategory.map(finalItem => {
+                let auxFinal = {
+                  name: '',
+                  id: '',
+                }
+                auxFinal.name = '';
+                auxFinal.id = '';
+                auxFinal.name = finalItem.name
+                auxFinal.id = finalItem.idFinalCategory
+                // aux.children[0].children.push(auxFinal);
+                this.selectCategorias.push(`${item.name} > ${subItem.name} > ${finalItem.name}`);
+              })
+            }
           });
         }
         
-        console.log(aux);
         TREE_DATA.push(aux);
-        console.log(TREE_DATA)
 
       })
       this.categorias = TREE_DATA
@@ -360,7 +370,11 @@ export class AddImageComponent implements OnInit {
       //reconstroi o canvas
       this.constroiCanvas();
       //coloca as variáveis novamente
-      this.escreveCamposCanvas();
+      if(this.activeRoute.snapshot.params.id){
+        this.escreveCamposCanvasDuplicar();
+      }else{
+        this.escreveCamposCanvas();
+      }
 
   }
 
@@ -434,9 +448,6 @@ export class AddImageComponent implements OnInit {
             //Recupera as posições od click
             let posX = event.offsetX;
             let posY = event.offsetY;
-            console.log(this.variavel);
-            console.log('x', posX)
-            console.log('y', posY)
 
             //volta com o canvas da imagem base e esconde o Thumb
             cvThumb.style.display = 'none';
@@ -495,13 +506,8 @@ export class AddImageComponent implements OnInit {
       }
     });
 
-    console.log('lista');
-    console.log(this.listaVariaveis);
-    console.log(this.newImage)
-
     //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
     this.imageservice.postImage(this.fileBase, this.newImage.name).subscribe(res => {
-      console.log('Token: ' + res);
 
       this.imageservice.postImageThumb(this.fileThumb, this.newImage.name).subscribe(response => {
         if(response){
@@ -513,7 +519,6 @@ export class AddImageComponent implements OnInit {
       })
       
     }, err => {
-      console.log(err);
     })
     
   }
@@ -529,9 +534,6 @@ export class AddImageComponent implements OnInit {
       }
     });
 
-    console.log('lista');
-    console.log(this.listaVariaveis);
-
     // this.s3UrlThumb = this.newImage
 
     //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
@@ -542,19 +544,16 @@ export class AddImageComponent implements OnInit {
     }, err => {
       // O endpoint esta retornando erro mesmo a req dando certa. Pra isso estou chamando a funcao aqui
       this.enviaVariaveis(err.error.text);
-      console.log(err.error.text)
-      console.log(err);
+
     })
   }
 
   enviaVariaveis(id: string){
-    console.log(id)
+
     //endpoint que utiliza o ID retornado para enviar os atributos da imagem (nome, tamanho, etc...)
     this.imageservice.adminPostImageVariables(this.newImage, id, this.img.width, this.img.height, this.s3UrlThumb).subscribe(res => {
-      console.log(res);
       this.router.navigateByUrl('dashboard')
     }, err => {
-      console.log(err);
     })
   }
 
@@ -572,7 +571,6 @@ export class AddImageComponent implements OnInit {
           let aux = this.newImage.categoria.split('>');
           let num = aux.length;
           this.newImage.categoria = aux[num-1].trim();
-          console.log(this.newImage.categoria)
         }
       }
     }else if(number == 2){
@@ -690,7 +688,11 @@ export class AddImageComponent implements OnInit {
       //reconstroi o canvas
       this.constroiCanvas();
       //coloca as variáveis novamente
-      this.escreveCamposCanvas();
+      if(this.activeRoute.snapshot.params.id){
+        this.escreveCamposCanvasDuplicar();
+      }else{
+        this.escreveCamposCanvas();
+      }
   }
 
   limpaCamposCanvas(){
@@ -709,6 +711,41 @@ export class AddImageComponent implements OnInit {
       }
       
       this.ctx.fillText(variavel.textoModelo, +variavel.cordX, +variavel.cordY);
+    });
+  }
+
+  escreveCamposCanvasDuplicar(){
+    this.listaVariaveis.forEach(variavel => {
+      //escreve o texto na imagem base
+      this.ctx.font = `${variavel.tamanho}pt ${variavel.fonte}`; 
+      if(variavel.cor == '' || variavel.cor == null){
+        this.ctx.fillStyle = 'black';
+      }else{
+        this.ctx.fillStyle = variavel.cor;
+      }
+
+      if(variavel.initVar){
+        switch (variavel.alinhamento) {
+          case 'center':
+            this.ctx.textAlign = "center";
+          break;
+          case 'right':
+            this.ctx.textAlign = "right";
+          break;
+          case 'left':
+            this.ctx.textAlign = "left";
+          break;
+          case 'start':
+            this.ctx.textAlign = "start";
+          break;
+          case 'end':
+            this.ctx.textAlign = "end";
+          break;
+        }
+      }
+
+      this.ctx.fillText(variavel.textoModelo, +variavel.cordX, +variavel.cordY);
+      this.ctx.textAlign = "left";
     });
   }
 
@@ -743,8 +780,7 @@ export class AddImageComponent implements OnInit {
       setTimeout(() => {
         document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
       }, 1000);
-  
-      console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
+      this.variavel.fontUrl = src;
     }else{
       //assim que selecionar a fonte, seta na variavel
       this.variavel.fonte = this.selectedFont;
@@ -766,10 +802,8 @@ export class AddImageComponent implements OnInit {
       document.head.appendChild(node);
   
       setTimeout(() => {
-        document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
+        document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont;
       }, 1000);
-  
-      // console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
     }
   }
 

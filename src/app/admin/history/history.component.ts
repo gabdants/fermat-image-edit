@@ -1,29 +1,40 @@
 import { Component, OnInit } from '@angular/core';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
-import { CategoryService } from '../../services/category/category-service';
+import { HistoryService } from '../../services/history/history-service';
 import { Router } from '@angular/router';
 import { FonteService } from '../../services/fonte/fonte.service';
 import { Image } from '../../../typings/imagem';
 
+export interface History {
+  solicitor: string;
+  piece: string;
+  category: string;
+}
+
 @Component({
-  selector: 'app-add-fonte',
-  templateUrl: './add-fonte.component.html',
-  styleUrls: ['./add-fonte.component.scss']
+  selector: 'app-history',
+  templateUrl: './history.component.html',
+  styleUrls: ['./history.component.scss']
 })
-export class AddFonteComponent implements OnInit {
+export class HistoryComponent implements OnInit {
+
+  displayedColumns: string[] = ['solicitor', 'piece', 'category'];
+  dataSource: History[];
 
   font: File;
   exibeImgPlaceholder = true;
   exibeFontConfirm = false;
 
   constructor(
-    private categoryService: CategoryService, 
+    private historyService: HistoryService, 
     private router: Router, 
     private fonteService: FonteService) { }
 
   ngOnInit() {
-
+    this.historyService.getHistory().subscribe(response => {
+      this.dataSource = response;
+    })
   }
 
 
@@ -44,5 +55,4 @@ export class AddFonteComponent implements OnInit {
     this.font = event.target.files[0];
   }
   
-
 }

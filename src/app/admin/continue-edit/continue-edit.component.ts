@@ -27,7 +27,7 @@ export class ContinueEditComponent implements OnInit {
   @ViewChild('canvasPreview') canvasPreview: ElementRef<HTMLCanvasElement>;
   @ViewChild('canvas') canvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('canvasThumb') canvasThumb: ElementRef<HTMLCanvasElement>;
-  ctx: CanvasRenderingContext2D;
+  
   ctxPreview: CanvasRenderingContext2D;
 
   listaVariaveis: Variavel[] = [];
@@ -62,10 +62,8 @@ export class ContinueEditComponent implements OnInit {
 
     //PEGANDO FONTES DO GOOGLE E FONTES INSERIDAS PELO USUARIO
     this.googleService.getGoogleFonts().subscribe((res: any) => {
-      console.log(res.items);
       this.googleFontsList = res.items;
     }, err => {
-      console.log(err);
       alert('Impossível carregar fontes do google. Favor contatar um administrador do sistema.')
     });
     this.fonteService.getFonts().subscribe(response => {
@@ -75,7 +73,6 @@ export class ContinueEditComponent implements OnInit {
 
     let id = this.route.snapshot.params.id;
     this.imageService.getImageById(id).subscribe((response:any) => {
-      console.log(response)
       this.imgX = response.width; 
       this.imgY = response.height;
       this.name = response.name;
@@ -87,9 +84,9 @@ export class ContinueEditComponent implements OnInit {
       //também precisa pegar o array de variaveis e colocar no this.listaVariaveis
 
       this.imageService.getFields(id).subscribe(fields => {
-        console.log(fields);
         fields.forEach(item => {
-          this.listaVariaveis.push(new Variavel(item.name, item.modelText, item.obs, item.fontFamily, item.fontSize, item.color, item.allign, item.required, item.cordX, item.cordY))
+          this.aplicaFonte(item.fontFamily, item.fontUrl);
+          this.listaVariaveis.push(new Variavel(item.name, item.modelText, item.obs, item.fontFamily, item.fontSize, item.color, item.allign, item.required, item.cordX, item.cordY, 0,  item.fontUrl, true))
         })
       })
 
@@ -98,12 +95,11 @@ export class ContinueEditComponent implements OnInit {
         this.imgThumb.src = response.S3UrlThumb;
         this.imgPreview.crossOrigin = 'anonymous';
         this.imgThumb.crossOrigin = 'anonymous';
-
-        
       }, 400); 
       
       this.imgPreview.onload = function() {
-        this.constroiCanvasPreview();
+        this.constroiCanvasPreviewInicio();
+        this.ctxPreview.textAlign = "left";        
       }.bind(this)
 
       //instancia a imagem com as propriedades reais
@@ -115,9 +111,29 @@ export class ContinueEditComponent implements OnInit {
       this.imgThumb.src = response.s3UrlThumb;
       
     },err => {
-       console.log(err);
     })
 
+  }
+
+
+  aplicaFonte(fontFamily: string, fontUrl: string){
+    //cria o @fontface
+    let style = `
+    @font-face {
+      font-family: '${fontFamily}';
+      src: url(${fontUrl}) format('opentype');
+    }
+    
+    `;
+
+    //adiciona a fonte no DOM
+    const node = document.createElement('style');
+    node.innerHTML = style; 
+    let font = `<link rel="stylesheet" href="https://petlandcss.s3-us-west-2.amazonaws.com/dynamic.css">`
+    document.head.append(font);
+    document.head.appendChild(node);
+
+    
   }
 
   salvarImage(){
@@ -134,11 +150,8 @@ export class ContinueEditComponent implements OnInit {
       }
     });
 
-    console.log('lista');
-    console.log(this.listaVariaveis);
 
     //endpoint que envia a imagemBase (file) para o S3, esse endpoint deve retornar o ID da imagem
-    console.log(this.newImage)
       //Ultima atualização do Dantas, o res já é o ID da imagem
     this.enviaVariaveis(this.newImage[`idImage`]);
     
@@ -147,11 +160,9 @@ export class ContinueEditComponent implements OnInit {
   enviaVariaveis(id: string){
     //endpoint que utiliza o ID retornado para enviar os atributos da imagem (nome, tamanho, etc...)
     this.imageService.updateFields(this.newImage, id).subscribe(res => {
-      console.log(res);
       alert('Imagem editada com sucesso!');
       this.router.navigateByUrl('dashboard')
     }, err => {
-      console.log(err);
     })
   }
 
@@ -159,6 +170,7 @@ export class ContinueEditComponent implements OnInit {
     //Recupera o id para alterar no array
     let id = event.target.id;
     let toBeEdited: Variavel;
+
 
     //Pega a lista de variaveis
     this.listaVariaveis.forEach(element => {
@@ -188,8 +200,6 @@ export class ContinueEditComponent implements OnInit {
       this.limpaCamposCanvas();
       //reconstroi o canvas
       this.constroiCanvasPreview();
-      //coloca as variáveis novamente
-      this.escreveCamposCanvas();
 
   }
 
@@ -206,24 +216,10 @@ export class ContinueEditComponent implements OnInit {
       //limpa o canvas inteiro
       this.limpaCamposCanvas();
       //reconstroi o canvas
-      this.constroiCanvas();
-      //coloca as variáveis novamente
-      this.escreveCamposCanvas();
+      this.constroiCanvasPreview();
   }
   
-  escreveCamposCanvas(){
-    this.listaVariaveis.forEach(variavel => {
-      //escreve o texto na imagem base
-      this.ctxPreview.font = `${variavel.tamanho}pt ${variavel.fonte}`; 
-      if(variavel.cor == ''){
-        this.ctxPreview.fillStyle = 'black';
-      }else{
-        this.ctxPreview.fillStyle = variavel.cor;
-      }
-      
-      this.ctxPreview.fillText(variavel.textoModelo, +variavel.cordX, +variavel.cordY);
-    });
-  }
+ 
   addVariavel(){
     //validações para criação da variável (título, texto modelo, observação...)
       if(this.variavel.titulo == ''){
@@ -246,6 +242,10 @@ export class ContinueEditComponent implements OnInit {
               }
             });
           }  
+          
+          let x = parseFloat(this.variavel.tamanho) * 3.125;
+          this.variavel.tamanho = x.toString();
+  
           //Gambiarra para sair do metodo quando o título já existe
           if(this.variavel.titulo == ''){
             return false;
@@ -289,9 +289,6 @@ export class ContinueEditComponent implements OnInit {
               //Recupera as posições od click
               let posX = event.offsetX;
               let posY = event.offsetY;
-              console.log(this.variavel);
-              console.log('x', posX)
-              console.log('y', posY)
   
               //volta com o canvas da imagem base e esconde o Thumb
               cvThumb.style.display = 'none';
@@ -363,7 +360,6 @@ export class ContinueEditComponent implements OnInit {
           document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
         }, 1000);
     
-        console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
       }else{
         //assim que selecionar a fonte, seta na variavel
         this.variavel.fonte = this.selectedFont;
@@ -388,22 +384,8 @@ export class ContinueEditComponent implements OnInit {
           document.getElementById('boxImagePreview').style.fontFamily = this.selectedFont.family;
         }, 1000);
     
-        // console.log(`Fonte adicionada: Nome: ${this.selectedFont.family}, url: ${src}`)
       }
     }
-
-  constroiCanvas(){
-    //pega o contexto
-    this.ctx = this.canvas.nativeElement.getContext('2d');
-
-    this.img = new Image();
-
-    //Seta o tamanho do canvas
-    this.canvas.nativeElement.width = this.img.width;
-    this.canvas.nativeElement.height = this.img.height;
-    //constroi o canvas baseado na imagem BASE
-    this.ctx.drawImage(this.img, 0, 0);
-  }
 
   constroiCanvasPreview(){
     //pega o contexto 
@@ -415,6 +397,18 @@ export class ContinueEditComponent implements OnInit {
     this.ctxPreview.drawImage(this.imgPreview, 0, 0);
 
     this.escreveCampos();
+  }
+
+  constroiCanvasPreviewInicio(){
+    //pega o contexto 
+    this.ctxPreview = this.canvas.nativeElement.getContext('2d');
+    //Seta o tamanho do canvas
+    this.canvas.nativeElement.width = this.newImage['width'];
+    this.canvas.nativeElement.height = this.newImage['height'];
+    //constroi o canvas baseado na imagem BASE
+    this.ctxPreview.drawImage(this.imgPreview, 0, 0);
+
+    this.escreveCamposInicio();
   }
 
   constroiCanvasThumb(){
@@ -429,7 +423,6 @@ export class ContinueEditComponent implements OnInit {
 
   chamaPreview(){
     //EXEMPLO DE COMO ABAIXAR A QUALIDADE DA IMAGEM
-    //console.log(this.canvasPreview.nativeElement.toDataURL('image/jpeg', 0.4));
     
     //Cria um canvas na memória
     let cvWaterMark = document.createElement('canvas');
@@ -474,34 +467,9 @@ export class ContinueEditComponent implements OnInit {
     }.bind(this)
     
     //chave demais isso aqui....
-    //cvWaterMark.requestFullscreen();
+    cvWaterMark.requestFullscreen();
   } 
 
-  // salvarImage(){
-  //   this.canvasPreview.nativeElement.toBlob(function(blob) {
-  //     let file: any = blob;
-  //     //O new date é apenas para o cast dar certo.
-  //     file.lastModifiedDate = new Date();
-  //     file.name = this.name;
-
-  //     this.imageService.postImage(<File>file, file.name).subscribe(res => {
-  //       this.imageService.setImageRequester(res, localStorage.getItem('user')).subscribe(response => {
-  //         console.log(response)
-  //       })
-  //       this.imageService.setFinalImageToTrue(res).subscribe(res => {
-  //         alert('Imagem salva');
-  //         console.log(res);
-  //       }, err => {
-  //         alert('Erro ao salvar imagem. Entre em contato com um administrador do sistema.')
-  //       console.log(err)
-  //       })
-        
-  //     }, err => {
-  //       alert('Erro ao salvar imagem. Entre em contato com um administrador do sistema.')
-  //       console.log(err)
-  //     })
-  //   }.bind(this))
-  // }
 
   changeInput(event){
     //Recupera o id para alterar no array
@@ -524,7 +492,6 @@ export class ContinueEditComponent implements OnInit {
   }
 
   escreveCampos(){
-    console.log(this.listaVariaveis)
      this.listaVariaveis.forEach(variavel => {
       //escreve o texto na imagem base
       this.ctxPreview.font = `${variavel.tamanho}pt ${variavel.fonte}`;
@@ -535,8 +502,8 @@ export class ContinueEditComponent implements OnInit {
         this.ctxPreview.fillStyle = variavel.cor;
       }
 
-      //Case para alinhamento
-      switch (variavel.alinhamento) {
+      if(variavel.initVar){
+        switch (variavel.alinhamento) {
           case 'center':
             this.ctxPreview.textAlign = "center";
           break;
@@ -552,6 +519,45 @@ export class ContinueEditComponent implements OnInit {
           case 'end':
             this.ctxPreview.textAlign = "end";
           break;
+        }
+      }
+
+      this.ctxPreview.fillText(variavel.textoModelo, +variavel.cordX, +variavel.cordY);
+      this.ctxPreview.textAlign = "left";
+      
+      //habilita botão de preview
+      this.flagPreview = false;
+    });
+  }
+
+  escreveCamposInicio(){
+     this.listaVariaveis.forEach(variavel => {
+      //escreve o texto na imagem base
+      this.ctxPreview.font = `${variavel.tamanho}pt ${variavel.fonte}`;
+
+      if(variavel.cor == '' || variavel.cor == null){
+        this.ctxPreview.fillStyle = 'black';
+      }else{
+        this.ctxPreview.fillStyle = variavel.cor;
+      }
+
+
+      switch (variavel.alinhamento) {
+        case 'center':
+          this.ctxPreview.textAlign = "center";
+        break;
+        case 'right':
+          this.ctxPreview.textAlign = "right";
+        break;
+        case 'left':
+          this.ctxPreview.textAlign = "left";
+        break;
+        case 'start':
+          this.ctxPreview.textAlign = "start";
+        break;
+        case 'end':
+          this.ctxPreview.textAlign = "end";
+        break;
       }
 
       this.ctxPreview.fillText(variavel.textoModelo, +variavel.cordX, +variavel.cordY);
@@ -566,7 +572,8 @@ export class ContinueEditComponent implements OnInit {
     this.ctxPreview.clearRect(0, 0, +this.imgX, +this.imgY);
   }
   
+
   previewImage(){
-    this.canvasPreview.nativeElement.requestFullscreen();
+    this.canvas.nativeElement.requestFullscreen();
   }
 }

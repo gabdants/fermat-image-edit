@@ -8,6 +8,8 @@ import { ToAproveComponent } from './admin/to-aprove/to-aprove.component';
 import { AprovadasComponent } from './aprovadas/aprovadas.component';
 import { AddFonteComponent } from './admin/add-fonte/add-fonte.component';
 import { ContinueEditComponent } from './admin/continue-edit/continue-edit.component';
+import { HistoryComponent } from './admin/history/history.component';
+
 
 const routes: Routes = [
   // { path: '', redirectTo: 'home', pathMatch: 'full', canActivate: [AuthGuard], },
@@ -30,6 +32,8 @@ const routes: Routes = [
   { path: 'addFonte', component: AddFonteComponent },
   { path: 'addImage/:id', component: AddImageComponent },
   { path: 'continueEdit/:id', component: ContinueEditComponent },
+  { path: 'history', component: HistoryComponent },
+
 
 ];
 
