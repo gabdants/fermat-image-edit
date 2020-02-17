@@ -150,6 +150,8 @@ export class CustomImageComponent implements OnInit {
           }
           this.historyService.postHistory(history).subscribe(response => {
             alert('Imagem salva');
+          }, err => {
+            console.log(err)
           })
         }, err => {
           alert('Erro ao salvar imagem. Entre em contato com um administrador do sistema.')

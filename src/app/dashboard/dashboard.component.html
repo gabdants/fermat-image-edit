@@ -9,6 +9,7 @@
       <a *ngIf="isAdmin" class="itemMenu" href="#/toApprove">Imagens para aprovação</a>
       <a *ngIf="isAdmin" class="itemMenu" href="#/addFonte">Adicionar Fonte</a>
       <a class="itemMenu" href="#/aprovadas">Imagens para Download</a> 
+      <a *ngIf="isAdmin" class="itemMenu" href="#/history">Historico de personalização</a> 
       <h4>Categorias</h4> 
 
       <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">

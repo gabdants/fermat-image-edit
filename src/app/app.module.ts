@@ -15,6 +15,7 @@ import { ToAproveComponent } from './admin/to-aprove/to-aprove.component';
 import { AprovadasComponent } from './aprovadas/aprovadas.component';
 import { AddFonteComponent } from './admin/add-fonte/add-fonte.component';
 import { ContinueEditComponent } from './admin/continue-edit/continue-edit.component';
+import { HistoryComponent } from './admin/history/history.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ContinueEditComponent } from './admin/continue-edit/continue-edit.compo
     AprovadasComponent,
     AddFonteComponent,
     ContinueEditComponent,
+    HistoryComponent,
   ],
   imports: [
     BrowserModule,

@@ -28,7 +28,7 @@ export class HistoryService {
       'Accept': 'text/plain',
     });
 
-    return this.http.post<any>(`http://34.220.136.85:8181/image/uploadFile`, history);
+    return this.http.post<any>(`http://34.220.136.85:8181/history/sendHistory`, history);
 
   }
 
