@@ -94,7 +94,7 @@ export class AddImageComponent implements OnInit {
       alert('Não foi carregar fontes do google. Favor contatar um administrador do sistema.')
     });
     this.fonteService.getFonts().subscribe(response => {
-      this.createdFontsList = response
+      this.createdFontsList = response.sort();
     })
     
     this.carregaMenu().then(this.validaFluxoDuplicar.bind(this));

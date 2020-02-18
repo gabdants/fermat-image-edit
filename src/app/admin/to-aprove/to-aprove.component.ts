@@ -4,7 +4,7 @@ import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { CategoryService } from '../../services/category/category-service';
 import { Router } from '@angular/router';
 import { ImageService } from '../../services/image/image-service';
-import { Image } from '../../../typings/imagem';
+import { Imagem } from '../../../typings/imagem';
 
 @Component({
   selector: 'app-to-aprove',
@@ -13,7 +13,7 @@ import { Image } from '../../../typings/imagem';
 })
 export class ToAproveComponent implements OnInit {
 
-  imagens: Image[] = [];
+  imagens: Imagem[] = [];
 
   imgPreviewBeforeAprove: string;
   showPrev: boolean;

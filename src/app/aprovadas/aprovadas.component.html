@@ -23,7 +23,7 @@
 
         <!-- Fotos para download ou edição -->
         <div *ngIf="!semFotos" class="toEdit">
-          <div class="singleImage" *ngFor="let imagem of imagens">
+          <div class="singleImage" *ngFor="let imagem of imagens; let i= index">
             <img src="{{imagem.s3Url}}">
             <h4>{{imagem.name}}</h4>
             <div class="tagsImage">
@@ -31,10 +31,14 @@
               <p *ngIf="!imagem.editable">Não editável</p>
             </div>
             <div class="btnImagesEdit">
-              <a href="{{imagem.s3Url}}">
-                <button class="orange-button" (click)="downloadImage(imagem.s3Url)">Download</button>
-              </a>
+             
+              <button class="orange-button" (click)="downloadImage(imagem.s3Url, i)">Download</button>
                
+            </div>
+            <div class="typeDownloadButton" id="botoes-{{i}}">
+              <button class="clean-button" (click)="downloadPDF(imagem.name)">PDF</button>
+              <button class="clean-button" (click)="downloadPNG(imagem.name)">PNG</button>
+              <button class="clean-button" (click)="downloadJPEG(imagem.name)">JPEG</button>
             </div>
           </div>
 
@@ -43,3 +47,5 @@
     </div>
   </div>
 </div>
+<img id="imageToCanvas" src="{{imgPreviewBeforeAprove}}" >
+<canvas class="canvasBase" id="canvasToDownload"  id="canvasBase" #canvas></canvas>

@@ -1,7 +1,7 @@
 
 import { Variavel } from './variavel';
     
-export class Image{
+export class Imagem{
     approval: boolean;
     approved: boolean;
     category: string;

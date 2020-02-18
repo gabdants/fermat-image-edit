@@ -4,7 +4,7 @@ import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { HistoryService } from '../../services/history/history-service';
 import { Router } from '@angular/router';
 import { FonteService } from '../../services/fonte/fonte.service';
-import { Image } from '../../../typings/imagem';
+import { Imagem } from '../../../typings/imagem';
 
 export interface History {
   solicitor: string;

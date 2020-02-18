@@ -9,7 +9,7 @@
       <div class="variaveisBox">
         <div *ngFor="let variavel of listaVariaveis">
           <label>{{variavel.titulo}}
-          <span>Será o titulo da imagem final</span>
+          <span>{{variavel.obs}}</span>
           </label>
           <input [value]='variavel.textoModelo' type='text' [id]='variavel.titulo' (input)='changeInput($event)' name='titulo' placeholder="Título" required>
         </div>

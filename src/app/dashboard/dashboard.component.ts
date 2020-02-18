@@ -4,7 +4,7 @@ import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { CategoryService } from '../services/category/category-service';
 import { Router } from '@angular/router';
 import { ImageService } from '../services/image/image-service';
-import { Image } from '../../typings/imagem';
+import { Imagem } from '../../typings/imagem';
 
 interface FoodNode {
   name: string;
@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit {
 
 
   // imagem: Image = new Image(false, false, "", "", false, [], "", "", "", "", "", "", "", "", ""); 
-  imagens: Image[] = [];
+  imagens: Imagem[] = [];
 
 
   private _transformer = (node: FoodNode, level: number) => {
