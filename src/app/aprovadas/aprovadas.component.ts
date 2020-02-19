@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild  } from '@angular/core';
 import { ImageService } from '../services/image/image-service';
 import { Imagem } from '../../typings/imagem';
 import { browser } from 'protractor';
+import jsPDF from 'jspdf';
 
 
 @Component({
@@ -77,6 +78,19 @@ export class AprovadasComponent implements OnInit {
   }
 
   downloadPDF(name){
+    let img = this.canvas.nativeElement.toDataURL("image/png");
+    if(this.width > this.height){
+      var pdf = new jsPDF('l');
+    }else{
+      var pdf = new jsPDF({
+        orientation: 'p',
+      });
+    }
+    const imgProps= pdf.getImageProperties(img);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    pdf.addImage(img, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save(`${name}.pdf`);
 
   }
   downloadPNG(name){

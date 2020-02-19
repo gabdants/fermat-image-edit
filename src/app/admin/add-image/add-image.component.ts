@@ -79,6 +79,8 @@ export class AddImageComponent implements OnInit {
   fileThumb: File;
 
   flagDuplicate: boolean = false;
+  changeBase: boolean = false;
+  changeThumb: boolean = false;
 
   constructor(private categoryService: CategoryService,
               private googleService: GoogleApiService,
@@ -491,8 +493,14 @@ export class AddImageComponent implements OnInit {
   salvarImage(){
     this.newImage.variaveis = this.listaVariaveis;
 
-    if(this.flagDuplicate){
+    if(this.flagDuplicate && !this.changeBase && !this.changeThumb){
       this.salvaDuplicateImage();
+      return
+    }else if(this.flagDuplicate && this.changeBase && !this.changeThumb){
+      this.salvaDuplicateImageMudaBase();
+      return
+    }else if(this.flagDuplicate && !this.changeBase && this.changeThumb){
+      this.salvaDuplicateImageMudaThumb();
       return
     }
     //CORREÇÃO PARA ALINHAMENTO, QUANDO O ALINHAMENTO É PARA A DIREITA OU ESQUERDA, NA HORA DE EDITAR, A VARIÁVEL FICA METADE PARA O LADO OPOSTO DO ALINHAMENTO
@@ -545,6 +553,33 @@ export class AddImageComponent implements OnInit {
       // O endpoint esta retornando erro mesmo a req dando certa. Pra isso estou chamando a funcao aqui
       this.enviaVariaveis(err.error.text);
 
+    })
+  }
+
+  salvaDuplicateImageMudaThumb(){
+    this.imageservice.postImageThumb(this.fileThumb, this.newImage.name).subscribe(response => {
+      if(response){
+        this.s3UrlThumb = response;
+        this.salvaDuplicateImage();
+      }
+    })
+  }
+
+  salvaDuplicateImageMudaBase(){
+    this.newImage.variaveis.forEach(variavel => {
+      if(variavel.alinhamento == 'right'){
+        //Gambiarra pois o cordX e cordY são strings e preciso somar com numero
+        variavel.cordX = (+variavel.cordX + variavel.textWidth) + '';
+      }else if(variavel.alinhamento == 'center'){
+        //Gambiarra pois o cordX e cordY são strings e preciso somar com numero
+        variavel.cordX = (+variavel.cordX + variavel.textWidth/2) + '';
+      }
+    });
+
+    this.imageservice.postImage(this.fileBase, this.newImage.name).subscribe(res => {
+          this.enviaVariaveis(res);
+      
+    }, err => {
     })
   }
 
@@ -613,6 +648,7 @@ export class AddImageComponent implements OnInit {
 
   exibeImgPlaceholder = true;
   getImage(result){
+    this.changeBase = true;
 
     this.exibeImgPlaceholder = false;
 
@@ -634,6 +670,7 @@ export class AddImageComponent implements OnInit {
   }
   exibeImgPlaceholderThumb = true;
   getImageThumb(result){
+    this.changeThumb = true;
 
     this.exibeImgPlaceholderThumb = false;
 
