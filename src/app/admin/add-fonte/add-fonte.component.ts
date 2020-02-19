@@ -4,7 +4,6 @@ import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { CategoryService } from '../../services/category/category-service';
 import { Router } from '@angular/router';
 import { FonteService } from '../../services/fonte/fonte.service';
-import { Image } from '../../../typings/imagem';
 
 @Component({
   selector: 'app-add-fonte',

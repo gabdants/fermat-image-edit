@@ -39,6 +39,7 @@ export class CustomImageComponent implements OnInit {
       this.name = response.name;
       this.imgPreview = new Image();
       this.category = response.category;
+      console.log(this.category)
 
       //também precisa pegar o array de variaveis e colocar no this.listaVariaveis
 
@@ -137,7 +138,7 @@ export class CustomImageComponent implements OnInit {
       let file: any = blob;
       //O new date é apenas para o cast dar certo.
       file.lastModifiedDate = new Date();
-      file.name = this.name;
+      file.name = this.name + '.png';
 
       this.imageService.postImage(<File>file, file.name).subscribe(res => {
         this.imageService.setImageRequester(res, localStorage.getItem('user')).subscribe(response => {
@@ -146,7 +147,7 @@ export class CustomImageComponent implements OnInit {
           let history = {
             solicitor: localStorage.getItem('user'),
             piece: this.name,
-            category: 'Categoria 1'
+            category: this.category
           }
           this.historyService.postHistory(history).subscribe(response => {
             alert('Imagem salva');

@@ -61,7 +61,7 @@
                   <img *ngIf="exibeImgPlaceholder" class="uploadIcon fadeOut" src="../../../assets/images/upload.png" />
                   <p *ngIf="exibeImgPlaceholder" class="fadeOut">Arraste o arquivo ou clique para selecionar</p>
                   <img src="{{imageFixed}}" alt="">
-                  <input [disabled]='flagDuplicate' type="file" (change)="getImage($event);" name="userprofile_picture"  id="filePhoto" />
+                  <input type="file" (change)="getImage($event);" name="userprofile_picture"  id="filePhoto" />
               </div>
             </div>
             <div class="dirImage">
