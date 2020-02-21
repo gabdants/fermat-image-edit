@@ -46,6 +46,8 @@ export class CustomImageComponent implements OnInit {
       this.imageService.getFields(id).subscribe(fields => {
         fields.forEach(item => {
           this.listaVariaveis.push(new Variavel(item.name, item.modelText, item.obs, item.fontFamily, item.fontSize, item.color, item.allign, item.required, item.cordX, item.cordY))
+
+          this.aplicaFonte(item.fontFamily, item.fontUrl)
         })
       })
 
@@ -225,5 +227,52 @@ export class CustomImageComponent implements OnInit {
     //Limpa tudo
     this.ctxPreview.clearRect(0, 0, +this.imgX, +this.imgY);
   }
+
+  aplicaFonte(fontFamily: string, fontUrl: string){
+    if(fontUrl){
+  
+      //cria o @fontface
+      let style = `
+      @font-face {
+        font-family: '${fontFamily}';
+        src: url(${fontUrl}) format('opentype');
+      }
+      
+      `;
+
+
+      //adiciona a fonte no DOM
+      const node = document.createElement('style');
+      node.innerHTML = style; 
+      let font = `<link rel="stylesheet" href="https://petlandcss.s3-us-west-2.amazonaws.com/dynamic.css">`
+      document.head.append(font);
+      document.head.appendChild(node);
+
+      setTimeout(() => {
+        document.getElementById('boxImagePreview').style.fontFamily = fontFamily;
+      }, 1000);
+    }else{
+      //cria o @fontface
+      let style = `
+      @font-face {
+        font-family: '${fontFamily}';
+        src: url(https://petlandfonts.s3-us-west-2.amazonaws.com/${fontFamily}.ttf) format('opentype');
+      }
+
+      `;
+
+
+      //adiciona a fonte no DOM
+      const node = document.createElement('style');
+      node.innerHTML = style; 
+      let font = `<link rel="stylesheet" href="https://petlandcss.s3-us-west-2.amazonaws.com/dynamic.css">`
+      document.head.append(font);
+      document.head.appendChild(node);
+
+      setTimeout(() => {
+        document.getElementById('boxImagePreview').style.fontFamily = fontFamily;
+      }, 1000);
+    }
+    }
 
 }
