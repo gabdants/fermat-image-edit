@@ -189,13 +189,19 @@
     margin-bottom: 10px;
 }
 .itemMenu{
-    margin-top: 20px;
+    margin-top: 10px;
     display: block;
-    color: #cf4e0e;
-    font-size: 16px;
-    font-weight: 100;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+    background: #CF4E1E;
+    border-radius: 5px;
+    width: 85%;
+    padding: 10px;
     text-decoration: none;
 }
 .itemMenu:hover{
-    text-decoration: underline;
+    text-decoration: none;
+    background: #CFD60C;
 }

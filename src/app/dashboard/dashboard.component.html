@@ -1,11 +1,12 @@
 <app-header></app-header>
 <div class="container">
-  <div class="dashHeader">
+  <!-- <div class="dashHeader">
     <h4>Edição de peças</h4>
     <p class="addImageBtn" *ngIf="isAdmin" (click)="callAddImage();" >Adicionar imagem</p>
-  </div>
+  </div> -->
   <div class="dashContent">       
     <div class="categoriesBox">
+      <a *ngIf="isAdmin" class="itemMenu" href="#/addImage">Adicionar imagem</a>
       <a *ngIf="isAdmin" class="itemMenu" href="#/toApprove">Imagens para aprovação</a>
       <a *ngIf="isAdmin" class="itemMenu" href="#/addFonte">Adicionar Fonte</a>
       <a class="itemMenu" href="#/aprovadas">Imagens para Download</a> 
