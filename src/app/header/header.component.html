@@ -1,6 +1,9 @@
 <header class='header dark-primary-color text-primary-color'>
-  <a href="/#/dashboard"><img (click)="voltaHome()" src='../../assets/images/logo_petlandbr.png' alt='Logo' class='header__logo' /></a>
+  <a href="/#/dashboard">
+    <img (click)="voltaHome()" src='../../assets/images/logo.png' alt='Logo' class='header__logo' />
+    <p>Portal Petlander</p>
+  </a>
   <div class='header__search'>
   </div>
-  <button (click)="logout()" class="bt-logout orange-button" (click)='logout()'>Sair</button>
+  <a (click)="logout()" class="bt-logout sair-btn" (click)='logout()'>Sair</a>
 </header>
