@@ -90,6 +90,7 @@ export class AddImageComponent implements OnInit {
               private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.newImage.visible = true;
     this.googleService.getGoogleFonts().subscribe((res: any) => {
       this.googleFontsList = res.items;
     }, err => {

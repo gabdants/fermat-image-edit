@@ -106,6 +106,15 @@
     background: #bbb;
     left: 0;
 }
+.singleImage:empty{
+    display: none;
+}
+.singleImage:empty::after{
+    display: none;
+}
+.singleImage:empty::before{
+    display: none;
+}
 .singleImage img{
     max-width: 100%;
     margin: auto;
@@ -204,4 +213,12 @@
 .itemMenu:hover{
     text-decoration: none;
     background: #CFD60C;
+}
+.deleteBtn{
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    color: red;
+    background: #f8f8f8;
+    cursor: pointer;
 }

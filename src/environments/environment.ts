@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'http://34.214.38.69',
+  imagesApiUrl: '54.149.110.179',
   googleApiKey: 'AIzaSyBi5P2I2QBWT2w79ZS4lhCHzP-rTe7zqBg'
 };
 
