@@ -140,7 +140,7 @@ export class CustomImageComponent implements OnInit {
       let file: any = blob;
       //O new date é apenas para o cast dar certo.
       file.lastModifiedDate = new Date();
-      file.name = this.name + '.png';
+      file.name = this.name;
 
       this.imageService.postImage(<File>file, file.name).subscribe(res => {
         this.imageService.setImageRequester(res, localStorage.getItem('user')).subscribe(response => {

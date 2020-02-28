@@ -19,7 +19,7 @@ export interface History {
 })
 export class HistoryComponent implements OnInit {
 
-  displayedColumns: string[] = ['solicitor', 'piece', 'category'];
+  displayedColumns: string[] = ['solicitor', 'piece', 'category', 'date'];
   dataSource: History[];
 
   font: File;

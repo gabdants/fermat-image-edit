@@ -6,7 +6,7 @@ import { ImageVariables } from 'src/typings/imageVariables';
 import { Variables } from 'src/typings/variables';
 import { stringify } from 'querystring';
 
-const API_URL = environment.apiUrl;
+const API_URL = environment.imagesApiUrl;
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class HistoryService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://34.220.136.85:8181/history/getAll`, {headers});
+    return this.http.get<any>(`http://${API_URL}:8181/history/getAll`, {headers});
   }
 
   postHistory(history){
@@ -28,7 +28,7 @@ export class HistoryService {
       'Accept': 'text/plain',
     });
 
-    return this.http.post<any>(`http://34.220.136.85:8181/history/sendHistory`, history);
+    return this.http.post<any>(`http://${API_URL}:8181/history/sendHistory`, history);
 
   }
 
@@ -37,7 +37,7 @@ export class HistoryService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>(`http://34.220.136.85:8181/history/by?type=solicitor&value=${solicitor}`, {headers});
+    return this.http.get<any>(`http://${API_URL}:8181/history/by?type=solicitor&value=${solicitor}`, {headers});
   }
 
 }

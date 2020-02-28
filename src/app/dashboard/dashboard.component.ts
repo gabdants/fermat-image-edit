@@ -202,5 +202,19 @@ export class DashboardComponent implements OnInit {
     this.router.navigateByUrl(`continueEdit/${id}`);
   }
 
+  putVisibility(id){
+    this.imageService.putVisibility(id).subscribe(response => {
+      alert('Visiblidade alterada com sucesso!')
+    })
+  }
+
+  deleteImage(id){
+    this.imageService.deleteImage(id).subscribe(response => {
+      alert('Foto excluida com sucesso!');
+    }, err => {
+      alert('Houve um erro ao excluir a imagem. Tente novamente mais tarde.')
+    })
+  }
+
 
 }

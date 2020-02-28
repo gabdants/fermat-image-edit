@@ -13,6 +13,7 @@
     s3UrlThumb: string;
     obsPublic: string;
     obsPrint: string;
+    visible?: boolean;
 
     constructor(editable: boolean,
         approval: boolean,
@@ -27,7 +28,8 @@
         field: any[],
         s3UrlThumb: string,
         obsPublic: string = '',
-        obsPrint: string = ''
+        obsPrint: string = '',
+        visible: boolean = true,
     ){
 
         this.editable = editable;
@@ -44,5 +46,6 @@
         this.s3UrlThumb = s3UrlThumb;
         this.obsPublic = obsPublic;
         this.obsPrint = obsPrint;
+        this.visible = visible;
     }
 }

@@ -67,26 +67,24 @@
         <!-- Fotos para download ou edição -->
         <div *ngIf="!semFotos" class="toEdit">
           <div class="singleImage" *ngFor="let imagem of imagens">
-            <img src="{{imagem.s3UrlThumb}}">
-            <h4>{{imagem.name}}</h4>
-            <div class="tagsImage">
-              <p *ngIf="imagem.editable">Editável</p>
-              <p *ngIf="!imagem.editable">Não editável</p>
-              <!-- <p>Papel: A4</p>
-              <p>Obs</p>
-              <p>Obs</p>
-              <p>Obs</p>
-              <p>Obs</p>
-              <p>Obs</p>
-              <p>Obs</p> -->
-            </div>
-            <div class="btnImagesEdit">
-              <button class="orange-button" (click)="chamaDownload(imagem.idImage)">Download</button>
-              <button class="orange-button" (click)="chamaEdicao(imagem.idImage)">Personalizar</button>
-            </div>
-            <div class="btnImagesEdit">
-              <button class="orange-button-less" *ngIf="isAdmin" (click)="duplicaImagem(imagem.idImage)"><i class="material-icons" style="align-self: center;">control_point_duplicate</i></button>
-              <button class="orange-button" *ngIf="isAdmin" (click)="continuarEditando(imagem.idImage)">Continuar editando</button>
+            <i  *ngIf="isAdmin" class="material-icons deleteBtn" (click)="deleteImage(imagem.idImage)" style="align-self: center;">cancel</i>
+            <div  *ngIf="isAdmin || (!isAdmin && imagem.visible)">
+              <img src="{{imagem.s3UrlThumb}}">
+              <h4>{{imagem.name}}</h4>
+              <div class="tagsImage">
+                <p *ngIf="imagem.editable">Editável</p>
+                <p *ngIf="!imagem.editable">Não editável</p>
+              </div>
+              <div class="btnImagesEdit">
+                <button class="orange-button" *ngIf="isAdmin && imagem.visible" (click)="putVisibility(imagem.idImage)">Ocultar</button>
+                <button class="orange-button" *ngIf="isAdmin && !imagem.visible" (click)="putVisibility(imagem.idImage)">Tornar visível</button>
+
+                <button class="orange-button" (click)="chamaEdicao(imagem.idImage)">Personalizar</button>
+              </div>
+              <div class="btnImagesEdit">
+                <button class="orange-button-less" *ngIf="isAdmin" (click)="duplicaImagem(imagem.idImage)"><i class="material-icons" style="align-self: center;">control_point_duplicate</i></button>
+                <button class="orange-button" *ngIf="isAdmin" (click)="continuarEditando(imagem.idImage)">Continuar editando</button>
+              </div>
             </div>
           </div>
 

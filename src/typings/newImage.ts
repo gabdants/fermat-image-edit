@@ -12,6 +12,7 @@ export class NewImage{
     editavel: boolean;
     aprovacao: boolean;
     variaveis: Variavel[];
+    visible?: boolean;
 
     constructor(name: string,
                 obsPublic: string,
@@ -23,7 +24,8 @@ export class NewImage{
                 requester: string,
                 editavel: boolean,
                 aprovacao: boolean,
-                variaveis: Variavel[]){
+                variaveis: Variavel[],
+                visible?: boolean){
 
         this.name = name;
         this.obsPublic = obsPublic;
@@ -36,5 +38,6 @@ export class NewImage{
         this.aprovacao = aprovacao;
         this.variaveis = variaveis;
         this.requester = requester;
+        this.visible = visible;
     }
 }
