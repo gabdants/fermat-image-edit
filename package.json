@@ -9,6 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "proxy": "https://petlandimages.s3.us-east-2.amazonaws.com",
   "private": true,
   "dependencies": {
     "@angular/animations": "~7.2.0",

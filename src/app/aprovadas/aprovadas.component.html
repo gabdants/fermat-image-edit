@@ -28,9 +28,10 @@
               <p *ngIf="!imagem.editable">Não editável</p>
             </div>
             <div class="btnImagesEdit">
-             
-              <button class="orange-button" (click)="downloadImage(imagem.s3Url, i)">Download</button>
-               
+              <button class="orange-button" id="download-{{i}}" (click)="downloadImage(imagem.s3Url, i)">Download</button>         
+            </div>
+            <div class="wait" id="wait-{{i}}">
+              <p>Aguarde...</p>
             </div>
             <div class="typeDownloadButton" id="botoes-{{i}}">
               <button class="clean-button" (click)="downloadPDF(imagem.name)">PDF</button>

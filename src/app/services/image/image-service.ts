@@ -234,7 +234,7 @@ export class ImageService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.delete<any>(`http://${API_URL}:8181/image/visible?imageId=${id}`, {headers});
+    return this.http.delete<any>(`http://${API_URL}:8181/image/deleteFile?imageId=${id}`, {headers});
   }
 
 }
