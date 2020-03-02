@@ -39,31 +39,46 @@ export class AprovadasComponent implements OnInit {
     })
   }
 
+  deuCorsNaImagem: boolean
   downloadImage(url, number){
+    this.deuCorsNaImagem = true;
     this.imageToDownload = new Image();
     this.imgPreviewBeforeAprove = url;
 
-    document.getElementById(`botoes-${number}`).style.display = 'block';
+    document.getElementById(`wait-${number}`).style.display = 'block';
 
     
     setTimeout(() => {
       
       // this.width = document.getElementById('imageToCanvas')['width'];
       // this.height = document.getElementById('imageToCanvas')['height'];
-      this.imageToDownload.crossOrigin = 'anonymous';
+      this.imageToDownload.crossOrigin = '';
       this.imageToDownload.src = url; 
+
+      console.log(this.imageToDownload)
 
     }, 100);
 
     // this.imageToDownload.crossOrigin = 'anonymous';
 
     this.imageToDownload.onload = function() {
+      this.deuCorsNaImagem = false;
+      document.getElementById(`wait-${number}`).style.display = 'none';
+      document.getElementById(`botoes-${number}`).style.display = 'block';      
       setTimeout(() => {
         this.width = this.imageToDownload.width;
         this.height = this.imageToDownload.height;
         this.constroiCanvas(this.width, this.height);
       },200); 
     }.bind(this)
+
+    setTimeout(() => {
+      
+      if(this.deuCorsNaImagem){
+        this.downloadImage(url, number);
+      }
+
+    }, 1000);
     
   }
 

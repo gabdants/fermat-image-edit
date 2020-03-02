@@ -41,6 +41,7 @@ export class DashboardComponent implements OnInit {
     title: '',
     subCategoryOff: '0',
   }
+  selectedCategory: string;
 
 
   // imagem: Image = new Image(false, false, "", "", false, [], "", "", "", "", "", "", "", "", ""); 
@@ -172,6 +173,7 @@ export class DashboardComponent implements OnInit {
     })
   }
   carregaCategoria(categoria){
+    this.selectedCategory = categoria;
     this.imagens = [];
     this.imageService.getByCategory(categoria).subscribe(response => {
       if(response.length > 0){
@@ -204,7 +206,8 @@ export class DashboardComponent implements OnInit {
 
   putVisibility(id){
     this.imageService.putVisibility(id).subscribe(response => {
-      alert('Visiblidade alterada com sucesso!')
+      alert('Visiblidade alterada com sucesso!');
+      this.carregaCategoria(this.selectedCategory);
     })
   }
 
@@ -212,7 +215,13 @@ export class DashboardComponent implements OnInit {
     this.imageService.deleteImage(id).subscribe(response => {
       alert('Foto excluida com sucesso!');
     }, err => {
-      alert('Houve um erro ao excluir a imagem. Tente novamente mais tarde.')
+      console.log(err.status)
+      if(err.status == 201){
+        alert('Foto excluida com sucesso!')
+        this.carregaCategoria(this.selectedCategory);
+      }else{
+        alert('Houve um erro ao excluir a imagem. Tente novamente mais tarde.')
+      }
     })
   }
 
