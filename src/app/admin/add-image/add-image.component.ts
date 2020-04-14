@@ -81,6 +81,8 @@ export class AddImageComponent implements OnInit {
   flagDuplicate: boolean = false;
   changeBase: boolean = false;
   changeThumb: boolean = false;
+  imgHeight: number;
+  imgWidth: number;
 
   constructor(private categoryService: CategoryService,
               private googleService: GoogleApiService,
@@ -587,7 +589,7 @@ export class AddImageComponent implements OnInit {
   enviaVariaveis(id: string){
 
     //endpoint que utiliza o ID retornado para enviar os atributos da imagem (nome, tamanho, etc...)
-    this.imageservice.adminPostImageVariables(this.newImage, id, this.img.width, this.img.height, this.s3UrlThumb).subscribe(res => {
+    this.imageservice.adminPostImageVariables(this.newImage, id, this.imgWidth, this.imgHeight, this.s3UrlThumb).subscribe(res => {
       this.router.navigateByUrl('dashboard')
     }, err => {
     })
@@ -602,12 +604,20 @@ export class AddImageComponent implements OnInit {
       }else if(this.newImage.categoria == ''){
         alert('Por favor, insira uma categoria para a peça');
         return false;
+      }else if(this.newImage.fmtAberto == ''){
+        alert('Por favor, insira uma categoria para a peça');
+        return false;
       }else{
         if(this.newImage.categoria.includes('>')){
           let aux = this.newImage.categoria.split('>');
           let num = aux.length;
           this.newImage.categoria = aux[num-1].trim();
         }
+        let aux = this.newImage.fmtAberto.split(`x`);
+        this.imgWidth = +aux[0];
+        this.imgHeight = +aux[1].replace('cm', '');
+        this.imgWidth = (this.imgWidth * 300)/2.54
+        this.imgHeight= (this.imgHeight * 300)/2.54
       }
     }else if(number == 2){
       if(!this.newImage.editavel){
@@ -695,20 +705,21 @@ export class AddImageComponent implements OnInit {
     //pega o contexto
     this.ctx = this.canvas.nativeElement.getContext('2d');
     //Seta o tamanho do canvas
-    this.canvas.nativeElement.width = this.img.width;
-    this.canvas.nativeElement.height = this.img.height;
+    this.canvas.nativeElement.width = this.imgWidth;
+    this.canvas.nativeElement.height = this.imgHeight;
     //constroi o canvas baseado na imagem BASE
-    this.ctx.drawImage(this.img, 0, 0);
+    this.ctx.drawImage(this.img, 0, 0, this.imgWidth, this.imgHeight);
   }
 
   constroiCanvasThumb(){
     //pega o contexto
     this.ctxThumb = this.canvasThumb.nativeElement.getContext('2d');
     //Seta o tamanho do canvas
-    this.canvasThumb.nativeElement.width = this.imgThumb.width;
-    this.canvasThumb.nativeElement.height = this.imgThumb.height;
+
+    this.canvasThumb.nativeElement.width = this.imgWidth;
+    this.canvasThumb.nativeElement.height = this.imgHeight;
     //constroi o canvas baseado na imagem BASE
-    this.ctxThumb.drawImage(this.imgThumb, 0, 0);
+    this.ctxThumb.drawImage(this.imgThumb, 0, 0, this.imgWidth, this.imgHeight);
   }
 
   cancelVar(event){
@@ -735,7 +746,7 @@ export class AddImageComponent implements OnInit {
 
   limpaCamposCanvas(){
     //Limpa tudo
-    this.ctx.clearRect(0, 0, +this.img.width, +this.img.height);
+    this.ctx.clearRect(0, 0, this.imgWidth, this.imgHeight);
   }
 
   escreveCamposCanvas(){

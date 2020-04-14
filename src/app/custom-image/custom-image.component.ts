@@ -78,10 +78,10 @@ export class CustomImageComponent implements OnInit {
     //pega o contexto 
     this.ctxPreview = this.canvasPreview.nativeElement.getContext('2d');
     //Seta o tamanho do canvas
-    this.canvasPreview.nativeElement.width = this.imgPreview.width;
-    this.canvasPreview.nativeElement.height = this.imgPreview.height;
+    this.canvasPreview.nativeElement.width = +this.imgX;
+    this.canvasPreview.nativeElement.height = +this.imgY;
     //constroi o canvas baseado na imagem BASE
-    this.ctxPreview.drawImage(this.imgPreview, 0, 0);
+    this.ctxPreview.drawImage(this.imgPreview, 0, 0, +this.imgX, +this.imgY);
 
     this.escreveCampos();
   }
@@ -103,7 +103,7 @@ export class CustomImageComponent implements OnInit {
     img.src = this.canvasPreview.nativeElement.toDataURL();
 
     img.onload = function () {
-      ctxWaterMark.drawImage(img,0,0);
+      ctxWaterMark.drawImage(img,0,0, +this.imgX, +this.imgY);
         
           let tamanhoFonte:number = cvWaterMark.width * 0.07;
 
