@@ -99,11 +99,11 @@
                   <mat-form-field style="width: 85%;">
                     <mat-label>Escolha a fonte</mat-label>
                     <mat-select id='fonte' name='fonte' (selectionChange)='mudaFonte();' [disabled]="!newImage.editavel || flagAdd" [(ngModel)]="selectedFont">
+                      <mat-option *ngFor="let font of createdFontsList" [value]="font">  
+                          {{font}}
+                      </mat-option>
                       <mat-option *ngFor="let font of googleFontsList" [value]="font">  
                         {{font.family}}
-                      </mat-option>
-                      <mat-option *ngFor="let font of createdFontsList" [value]="font">  
-                        {{font}}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
